@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="de" class="no-js">
+<head>
+<meta charset="utf-8">
+<script>document.documentElement.classList.remove("no-js")</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Presse — Casago</title>
+<link rel="stylesheet" href="colors_and_type.css">
+<link rel="stylesheet" href="shared.css?v=2">
+<style>
+  /* ── Presse-spezifische Stile ── */
+  .press-hero {
+    background: #003B44;
+    color: #FFFFFF;
+    padding: 148px 48px 72px;
+  }
+  .press-hero .container {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .press-hero .kicker {
+    color: #DAE9EC;
+    margin-bottom: 20px;
+  }
+  .press-hero h1 {
+    font-size: clamp(38px, 4.5vw, 64px);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.06;
+    margin: 0;
+    color: #FFFFFF;
+  }
+
+  /* ── Content area ── */
+  .press-body {
+    padding: 96px 48px 120px;
+    background: #FAFAF8;
+  }
+  .press-body .container {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  /* Entry list */
+  .press-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* Single press entry */
+  .press-entry {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 64px;
+    padding: 72px 0;
+    border-bottom: 1px solid #E5E5E5;
+    align-items: start;
+  }
+  .press-entry:first-child {
+    padding-top: 0;
+  }
+  .press-entry:last-child {
+    border-bottom: none;
+  }
+
+  /* Thumbnail */
+  .press-thumb {
+    aspect-ratio: 4 / 3;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #D5E8E5;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .press-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .press-thumb__placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .press-thumb__placeholder svg {
+    width: 64px;
+    height: 64px;
+    opacity: 0.25;
+  }
+
+  /* Meta */
+  .press-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .press-meta__tag {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #005F6A;
+    font-weight: 500;
+  }
+  .press-meta__date {
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    color: #888888;
+  }
+  .press-meta__sep {
+    width: 1px;
+    height: 12px;
+    background: #CCCCCC;
+  }
+
+  /* Text */
+  .press-entry h2 {
+    font-size: clamp(22px, 2.2vw, 30px);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    margin: 0 0 16px;
+    color: #1A1A1A;
+  }
+  .press-entry .lead {
+    font-size: 15px;
+    line-height: 1.65;
+    color: #555555;
+    letter-spacing: 0.015em;
+    margin: 0 0 28px;
+    max-width: 680px;
+  }
+
+  /* CTA row */
+  .press-cta {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .btn-press-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 22px;
+    background: #003B44;
+    color: #FFFFFF;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+    border-radius: 4px;
+    border: 1px solid #003B44;
+    cursor: pointer;
+    transition: background .22s ease, border-color .22s ease;
+    font-family: inherit;
+    text-decoration: none;
+  }
+  .btn-press-primary:hover {
+    background: #1A8B9A;
+    border-color: #1A8B9A;
+    color: #FFFFFF;
+  }
+
+  .btn-press-ext {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 22px;
+    background: transparent;
+    color: #003B44;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+    border-radius: 4px;
+    border: 1px solid #003B44;
+    cursor: pointer;
+    transition: background .22s ease, color .22s ease;
+    text-decoration: none;
+  }
+  .btn-press-ext:hover {
+    background: #003B44;
+    color: #FFFFFF;
+  }
+
+  .ext-hint {
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    color: #999999;
+  }
+
+  /* ── Modal ── */
+  .modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 12, 17, 0.6);
+    z-index: 200;
+    overflow-y: auto;
+    padding: 48px 20px;
+  }
+  .modal-backdrop.open {
+    display: block;
+  }
+  .modal {
+    background: #FFFFFF;
+    border-radius: 8px;
+    max-width: 780px;
+    margin: 0 auto;
+    position: relative;
+    padding: 0 0 56px;
+    overflow: hidden;
+  }
+
+  /* Modal header band */
+  .modal__head {
+    background: #003B44;
+    color: #FFFFFF;
+    padding: 48px 56px 40px;
+  }
+  .modal__kicker {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #DAE9EC;
+    margin-bottom: 16px;
+  }
+  .modal__head h2 {
+    font-size: clamp(22px, 2.5vw, 32px);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.18;
+    margin: 0 0 16px;
+    color: #FFFFFF;
+  }
+  .modal__head .modal-lead {
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: rgba(218, 233, 236, 0.9);
+    letter-spacing: 0.015em;
+    max-width: 620px;
+    margin: 0;
+  }
+
+  /* Modal close */
+  .modal__close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 4px;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    transition: background .2s ease;
+    z-index: 10;
+  }
+  .modal__close:hover {
+    background: rgba(255,255,255,0.12);
+  }
+  .modal__close svg {
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    fill: none;
+  }
+
+  /* Modal body */
+  .modal__body {
+    padding: 48px 56px 0;
+  }
+  .modal__body .section-label {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #005F6A;
+    margin-bottom: 16px;
+    margin-top: 40px;
+  }
+  .modal__body .section-label:first-child {
+    margin-top: 0;
+  }
+  .modal__body h3 {
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    line-height: 1.25;
+    color: #1A1A1A;
+    margin: 0 0 14px;
+  }
+  .modal__body p {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #333333;
+    letter-spacing: 0.015em;
+    margin: 0 0 18px;
+  }
+  .modal__quote {
+    border-left: 3px solid #1A8B9A;
+    margin: 32px 0;
+    padding: 4px 0 4px 24px;
+  }
+  .modal__quote p {
+    font-size: 16.5px;
+    color: #003B44;
+    font-style: italic;
+    line-height: 1.55;
+    margin: 0 0 8px;
+  }
+  .modal__quote cite {
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    color: #888888;
+    font-style: normal;
+  }
+
+  /* About band at bottom of modal */
+  .modal__about {
+    margin: 40px 56px 0;
+    padding: 28px 32px;
+    background: #EEF5F6;
+    border-radius: 8px;
+  }
+  .modal__about h4 {
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #003B44;
+    margin: 0 0 10px;
+    font-weight: 500;
+  }
+  .modal__about p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #444444;
+    margin: 0 0 10px;
+  }
+  .modal__about p:last-child {
+    margin: 0;
+  }
+  .modal__about a {
+    color: #005F6A;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* Divider */
+  .modal__divider {
+    height: 1px;
+    background: #E5E5E5;
+    margin: 32px 0;
+  }
+
+  @media (max-width: 900px) {
+    .press-hero { padding: 120px 20px 52px; }
+    .press-body { padding: 56px 20px 80px; }
+    .press-entry {
+      grid-template-columns: 1fr;
+      gap: 28px;
+      padding: 52px 0;
+    }
+    .press-thumb {
+      aspect-ratio: 16 / 9;
+    }
+    .modal__head { padding: 40px 24px 32px; }
+    .modal__body { padding: 36px 24px 0; }
+    .modal__about { margin: 32px 24px 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header class="hdr solid">
+  <a href="index.html"><img src="assets/logo/casago-wortmarke-white.svg" alt="Casago"></a>
+  <nav>
+    <a href="index.html#wer-wir-sind">Wer wir sind</a>
+    <a href="index.html#was-uns-unterscheidet">Was uns unterscheidet</a>
+    <div class="has-dropdown">
+      <a href="index.html#geschaeftsbereiche" class="dropdown-trigger">Geschäftsbereiche <span class="caret" aria-hidden="true"></span></a>
+      <div class="dropdown" role="menu">
+        <a href="bautraeger.html" class="dropdown__item" role="menuitem">
+          <span class="dropdown__body">
+            <b>Bauträger</b>
+            <span>Bestand &amp; Neubau auf eigenes Risiko</span>
+          </span>
+        </a>
+        <a href="baubetreuung-plus.html" class="dropdown__item" role="menuitem">
+          <span class="dropdown__body">
+            <b>Baubetreuung Plus</b>
+            <span>Ihr unabhängiger Vertreter</span>
+          </span>
+        </a>
+        <a href="projektrealisierung.html" class="dropdown__item" role="menuitem">
+          <span class="dropdown__body">
+            <b>Gemeinsame Projektrealisierung</b>
+            <span>Gemeinsam Werte schaffen</span>
+          </span>
+        </a>
+        <a href="begruenung.html" class="dropdown__item" role="menuitem">
+          <span class="dropdown__body">
+            <b>Begrünung &amp; Schwammstadt</b>
+            <span>Gründach · Solar · Wassermanagement</span>
+          </span>
+        </a>
+      </div>
+    </div>
+    <a href="index.html#ansatz">Unser Ansatz</a>
+    <a href="referenzen.html">Referenzen</a>
+    <a href="index.html#kontakt">Kontakt</a>
+  </nav>
+  <a class="cta-btn" href="index.html#kontakt">Projekt anfragen</a>
+</header>
+
+<!-- ── Breadcrumb ── -->
+<nav class="breadcrumb">
+  <div class="container">
+    <a href="index.html">Start</a>
+    <span class="sep">/</span>
+    <span>Presse</span>
+  </div>
+</nav>
+
+<!-- ── Hero ── -->
+<section class="press-hero">
+  <div class="container">
+    <div class="kicker">Neuigkeiten &amp; Mitteilungen</div>
+    <h1>Presse</h1>
+  </div>
+</section>
+
+<!-- ── Content ── -->
+<main class="press-body">
+  <div class="container">
+    <div class="press-list">
+
+      <!-- Entry 1: Eigene Pressemitteilung -->
+      <article class="press-entry reveal">
+        <div class="press-thumb">
+          <img src="assets/press/fachvortrag.webp" alt="Begrünte Gebäude und Schwammstadt — Skizze">
+        </div>
+        <div class="press-content">
+          <div class="press-meta">
+            <span class="press-meta__tag">Pressemitteilung</span>
+            <div class="press-meta__sep"></div>
+            <span class="press-meta__date">27. Februar 2026</span>
+          </div>
+          <h2>Fachvortrag zu Gebäudebegrünung und Schwammstadtstrategien stößt auf großes Interesse bei Thüringer Architekten</h2>
+          <p class="lead">Fortbildungsveranstaltung der Architektenkammer Thüringen mit 100&nbsp;% Weiterempfehlungsquote — besonderes Interesse an Schwammstadtkonzepten, Begrünung im Bestand und Solargründach.</p>
+          <div class="press-cta">
+            <button class="btn-press-primary" onclick="openModal()">Pressemitteilung lesen</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Entry 2: Externer Artikel -->
+      <article class="press-entry reveal">
+        <div class="press-thumb">
+          <img src="assets/press/secalflor.webp" alt="SECALFLOR-System — Holzfasern, Kalk und natürliche Rohstoffe">
+        </div>
+        <div class="press-content">
+          <div class="press-meta">
+            <span class="press-meta__tag">CASAGO &amp; SECALFLOR</span>
+            <div class="press-meta__sep"></div>
+            <span class="press-meta__date">ingenieur.de</span>
+          </div>
+          <h2>Aus Kalk, Roggenmehl, Bentonit &amp; Holzfasern</h2>
+          <p class="lead">Fachbeitrag im Bauingenieur über das SECALFLOR-System — ein innovativer Ansatz zur nachhaltigen Gebäudebegrünung aus natürlichen Rohstoffen.</p>
+          <div class="press-cta">
+            <a class="btn-press-ext" href="https://www.ingenieur.de/fachmedien/bauingenieur/bauprodukte/aus-lehm-roggen-holzfasern/" target="_blank" rel="noopener">Artikel lesen</a>
+            <span class="ext-hint">Externer Link · ingenieur.de</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</main>
+
+<!-- ── Modal: Pressemitteilung ── -->
+<div class="modal-backdrop" id="pmModal" role="dialog" aria-modal="true" aria-label="Pressemitteilung">
+  <div class="modal">
+    <button class="modal__close" onclick="closeModal()" aria-label="Schließen">
+      <svg viewBox="0 0 16 16"><line x1="3" y1="3" x2="13" y2="13"/><line x1="13" y1="3" x2="3" y2="13"/></svg>
+    </button>
+
+    <div class="modal__head">
+      <div class="modal__kicker">Pressemitteilung · 27. Februar 2026</div>
+      <h2>Fachvortrag zu Gebäudebegrünung und Schwammstadtstrategien stößt auf großes Interesse bei Thüringer Architekten</h2>
+      <p class="modal-lead">Fortbildungsveranstaltung der Architektenkammer Thüringen mit 100&nbsp;% Weiterempfehlungsquote — besonderes Interesse an Schwammstadtkonzepten, Begrünung im Bestand und Solargründach.</p>
+    </div>
+
+    <div class="modal__body">
+
+      <p><strong>Weimar/Prutting.</strong> Am 25. Februar 2026 präsentierte die CASAGO GmbH bei der Architektenkammer Thüringen, Kammergruppe Weimar Sömmerda, einen Fachvortrag zum Thema „Gebäudebegrünung und Schwammstadtstrategien — Ausgangspunkte, Herausforderungen, Technologien, Perspektiven". 27 Architektinnen und Architekten nahmen an der Fortbildungsveranstaltung teil, die auf durchweg sehr positives Feedback stieß: Sämtliche Teilnehmer, die den Feedbackbogen abgaben, würden den Vortrag weiterempfehlen.</p>
+
+      <div class="modal__divider"></div>
+
+      <div class="section-label">Themenspektrum</div>
+      <h3>Thematische Bandbreite von Starkregen bis Solargründach</h3>
+      <p>Der Vortrag umfasste ein breites Themenspektrum: Von den Auswirkungen von Starkregenereignissen und Hitzestress auf Immobilien im Neubau und Bestand über Schwammstadtkonzepte und dezentrales Wassermanagement, die Funktionsweise und Gestaltungsmöglichkeiten von Dachbegrünungen, die Kombination von Gründach und Photovoltaik, die Vor- und Nachteile verschiedener Gründachsysteme bis hin zu Fördermöglichkeiten für Wohnungsbau, Gewerbe und Kommunen. Zudem wurden die Bedeutung von QNG- und ESG-Kriterien sowie der Einfluss verschiedener Begrünungsverfahren auf Nachhaltigkeitszertifizierungen nach DGNB erörtert.</p>
+
+      <div class="modal__divider"></div>
+
+      <div class="section-label">Feedback</div>
+      <h3>Schwammstadt, Begrünung im Bestand und Solargründach als Schwerpunktthemen</h3>
+      <p>Die Auswertung der Feedbackbögen ergab ein differenziertes Bild: Die Interessenschwerpunkte der teilnehmenden Architekten waren erwartungsgemäß breit gestreut. Besonders großes Interesse bestand an drei Themenfeldern: der Dachbegrünung im Gebäudebestand, der Kombination von Gründach und Photovoltaik sowie den Schwammstadtkonzepten mit dezentralem Wassermanagement. Das Thema Schwammstadt war für sämtliche Architekten, die den Feedbackbogen abgegeben haben, von hoher Relevanz — ein deutliches Signal, dass die Profession das Zusammenspiel von Begrünung, Wasserrückhalt und Klimaanpassung zunehmend als integrale Planungsaufgabe begreift.</p>
+
+      <div class="modal__divider"></div>
+
+      <div class="section-label">Partner</div>
+      <h3>CASAGO als Partner für Architekten und Auftraggeber</h3>
+      <p>Die CASAGO GmbH hat neben ihrer Kerntätigkeit als Bauträger, Projektentwickler und -manager einen eigenen Geschäftsbereich zur Gebäudebegrünung und Schwammstadtentwicklung aufgebaut. Der Fachvortrag griff dabei auf die interdisziplinäre Expertise des Unternehmens zurück, das Architekten und Auftraggeber in allen Planungsphasen unterstützt — von der Potenzialanalyse über Begrünungskonzepte und Fördermittelberatung bis hin zu Ausschreibung und Bauüberwachung.</p>
+
+      <div class="modal__quote">
+        <p>„Die hohe Teilnehmerzahl und das durchweg positive Feedback bestätigen, dass bei Architekten ein großer Bedarf an praxisnahen Fachinformationen zur Gebäudebegrünung besteht."</p>
+        <cite>— CASAGO GmbH</cite>
+      </div>
+
+    </div>
+
+    <div class="modal__about">
+      <h4>Über die CASAGO GmbH</h4>
+      <p>Die CASAGO GmbH mit Sitz in Prutting (Landkreis Rosenheim) ist ein interdisziplinär aufgestelltes Unternehmen für Projektentwicklung, Baubetreuung und Architekturleistungen. Unter dem Leitsatz „Planen. Umsetzen. Leben." begleitet CASAGO Bauherren und Investoren von der ersten Idee bis zum fertigen Objekt.</p>
+      <p>Am Queracker 6, 83134 Prutting · Tel.: +49 8036 908 69 86 · <a href="mailto:info@casago.de">info@casago.de</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ── Footer ── -->
+<footer class="site">
+  <div class="container">
+    <div class="foot-brand">
+      <img src="assets/logo/casago-wortmarke-white.svg" alt="Casago">
+      <div class="claim">Planen. Umsetzen. Leben.</div>
+    </div>
+    <div>
+      <h4>Geschäftsbereiche</h4>
+      <ul>
+        <li><a href="bautraeger.html">Bauträger</a></li>
+        <li><a href="baubetreuung-plus.html">Baubetreuung Plus</a></li>
+        <li><a href="begruenung.html">Begrünung</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Begrünung</h4>
+      <ul>
+        <li><a href="secalflor.html">SECALFLOR</a></li>
+        <li><a href="gruendach.html">Gründach</a></li>
+        <li><a href="gruendach.html#solar">Solargründach</a></li>
+        <li><a href="schwammstadt.html">Schwammstadt</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Unternehmen</h4>
+      <ul>
+        <li><a href="referenzen.html">Referenzen</a></li>
+        <li><a href="presse.html">Presse</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Kontakt</h4>
+      <ul>
+        <li>info@casago.de</li>
+        <li>Deutschland</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bar">
+    <div>© 2026 Casago GmbH.</div>
+    <div class="links">
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* Reveal on scroll */
+  const io = new IntersectionObserver(
+    e => e.forEach(x => { if (x.isIntersecting) { x.target.classList.add('in'); io.unobserve(x.target); } }),
+    { threshold: 0.06 }
+  );
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  /* Modal */
+  function openModal() {
+    document.getElementById('pmModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    document.getElementById('pmModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  /* Close on backdrop click */
+  document.getElementById('pmModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+  /* Close on Escape */
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
+</script>
+</body>
+</html>

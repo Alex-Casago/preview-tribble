@@ -1,0 +1,223 @@
+/* =========================================================================
+   CASAGO — Colors & Type
+   Source: brand.casago.de/colors + brand.casago.de/type (see README.md)
+   Fonts: Aeonik Pro (CoType Foundry) — Regular 400 and Medium 500 only.
+   ========================================================================= */
+
+@font-face {
+  font-family: 'Aeonik Pro';
+  src: url('fonts/AeonikPro-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Aeonik Pro';
+  src: url('fonts/AeonikPro-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* ---------- Backgrounds ---------- */
+  --brand-bg-background: #FAFAF8;    /* paper/light page bg */
+  --brand-bg-surface:    #FFFFFF;    /* cards, panels */
+  --brand-bg-dark:       #003B44;    /* footer, menu, dark surfaces */
+  --brand-bg-page-dark:  #003B44;    /* dark section bg */
+
+  /* ---------- Text (on light) ---------- */
+  --brand-text-dark:   #1A1A1A;
+  --brand-text-body:   #333333;
+  --brand-gray:        #666666;
+  --brand-gray-light:  #999999;
+  --brand-rule:        #D5D3CE;
+  --brand-paper:       #FAFAF8;
+
+  /* Semantic text tokens — built on the Aeonik Pro system above */
+  --brand-text-primary:        var(--brand-text-dark);
+  --brand-text-secondary:      var(--brand-gray);
+  --brand-text-muted:          var(--brand-gray-light);
+  --brand-text-on-dark:        #FFFFFF;
+  --brand-text-on-dark-muted:  #DAE9EC;
+
+  /* ---------- Accents ---------- */
+  --brand-cyan:             #59EDED;  /* Highlight, Kennzahlen */
+  --brand-petrol:           #005F6A;  /* Primary petrol */
+  --brand-accent-petrol:    #1A8B9A;  /* Claim, Hover, Sekundärfarbe */
+  --brand-light-bg-petrol:  #DAE9EC;  /* Info-Cards, Highlight-Boxen */
+  --brand-content-bg-petrol:#EEF5F6;  /* Akzent-Flächen, Seiten-BG */
+  --brand-dark-petrol:      #003B44;  /* Dark accent — replaces legacy Dark Teal */
+
+  /* ---------- UI ---------- */
+  --brand-ui-border:   #E5E5E5;
+  --brand-ui-active:   #353B43;
+  --brand-ui-inactive: #CAC7C6;
+
+  /* ---------- Buttons ---------- */
+  --brand-btn-background:     #FFFFFF;
+  --brand-btn-text:            #141414;
+  --brand-btn-outline-border:  #353B43;
+
+  /* ---------- Semantic aliases ---------- */
+  --fg1: var(--brand-text-primary);
+  --fg2: var(--brand-text-secondary);
+  --fg3: var(--brand-text-muted);
+  --bg1: var(--brand-bg-background);
+  --bg2: var(--brand-bg-surface);
+  --border: var(--brand-ui-border);
+  --accent: var(--brand-cyan);
+  --accent-deep: var(--brand-dark-petrol);
+  --petrol: var(--brand-petrol);
+  --petrol-accent: var(--brand-accent-petrol);
+  --petrol-bg-light: var(--brand-light-bg-petrol);
+  --petrol-bg-content: var(--brand-content-bg-petrol);
+
+  /* ---------- Type ---------- */
+  --font-sans: 'Aeonik Pro', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --fw-regular: 400;
+  --fw-medium:  500;
+
+  /* Size scale — see Typography section in README.md */
+  --fs-display:    82px;
+  --fs-heading-l:  40px;
+  --fs-heading-m:  34px;
+  --fs-heading-s:  32px;
+  --fs-title:      28px;
+  --fs-body-l:     18px;
+  --fs-body:       16px;
+  --fs-caption:    14px;
+  --fs-claim:      14px;
+
+  /* Tracking — from spec */
+  --tr-title:    -0.01em;   /* -0.28px on 28px */
+  --tr-body-l:    0.02em;   /*  0.36px on 18px */
+  --tr-body:      0.02em;   /*  0.32px on 16px */
+  --tr-caption:   0.02em;   /*  0.28px on 14px */
+  --tr-claim:     0.06em;   /*  0.84px on 14px, uppercase */
+
+  /* Radius — brand rule: never over 12px */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* Spacing (8px base) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+
+  /* Lines / borders */
+  --line: 1px solid var(--brand-ui-border);
+}
+
+/* ========== Base ========== */
+html, body {
+  background: var(--brand-bg-background);
+  color: var(--brand-text-primary);
+  font-family: var(--font-sans);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ========== Semantic elements ========== */
+.t-display {
+  font-size: var(--fs-display);
+  font-weight: var(--fw-regular);
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+}
+h1, .t-h1 {
+  font-size: var(--fs-heading-l);
+  font-weight: var(--fw-regular);
+  line-height: 1.1;
+  letter-spacing: -0.005em;
+}
+h2, .t-h2 {
+  font-size: var(--fs-heading-m);
+  font-weight: var(--fw-medium);
+  line-height: 1.15;
+}
+h3, .t-h3 {
+  font-size: var(--fs-heading-s);
+  font-weight: var(--fw-medium);
+  line-height: 1.2;
+}
+.t-title {
+  font-size: var(--fs-title);
+  font-weight: var(--fw-regular);
+  letter-spacing: var(--tr-title);
+  line-height: 1.25;
+}
+.t-body-l, .lead {
+  font-size: var(--fs-body-l);
+  font-weight: var(--fw-regular);
+  letter-spacing: var(--tr-body-l);
+  line-height: 1.55;
+}
+p, .t-body {
+  font-size: var(--fs-body);
+  font-weight: var(--fw-regular);
+  letter-spacing: var(--tr-body);
+  line-height: 1.6;
+}
+.t-caption {
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-regular);
+  letter-spacing: var(--tr-caption);
+  line-height: 1.45;
+  color: var(--brand-text-secondary);
+}
+.t-claim {
+  font-size: var(--fs-claim);
+  font-weight: var(--fw-regular);
+  letter-spacing: var(--tr-claim);
+  text-transform: uppercase;
+}
+
+/* ========== Buttons ========== */
+.btn {
+  font-family: inherit;
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--tr-body);
+  padding: 14px 24px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: opacity .15s ease, background .15s ease, color .15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  line-height: 1;
+}
+.btn-primary {
+  background: var(--brand-btn-background);
+  color: var(--brand-btn-text);
+}
+.btn-primary:hover { opacity: 0.88; }
+
+.btn-outline {
+  background: transparent;
+  color: var(--brand-btn-outline-border);
+  border-color: var(--brand-btn-outline-border);
+}
+.btn-outline:hover {
+  background: var(--brand-btn-outline-border);
+  color: var(--brand-text-on-dark);
+}
+
+.btn-dark {
+  background: var(--brand-bg-dark);
+  color: var(--brand-text-on-dark);
+}
+.btn-dark:hover { opacity: 0.9; }

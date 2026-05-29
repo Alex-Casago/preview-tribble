@@ -1,0 +1,1314 @@
+<!doctype html>
+<html lang="de" class="no-js">
+<head>
+<meta charset="utf-8">
+<script>document.documentElement.classList.remove("no-js")</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Referenzen — Casago</title>
+<link rel="stylesheet" href="colors_and_type.css">
+<link rel="stylesheet" href="shared.css?v=2">
+<style>
+  .ref-desc { margin-top: 24px; }
+  .ref-desc p {
+    font-size: 17px;
+    line-height: 1.75;
+    color: #1A1A1A;
+    margin: 0 0 13px;
+    text-wrap: pretty;
+    text-align: justify;
+    hyphens: auto;
+  }
+  .ref-desc p:last-child {
+    margin-bottom: 0;
+  }
+  .ref-desc .punch {
+    font-size: 17px;
+    line-height: 1.75;
+    color: #1A1A1A;
+    letter-spacing: normal;
+    margin-top: 0;
+  }
+  .ref-block{padding:120px 48px;border-top:1px solid #D5D3CE;}
+  .ref-block:nth-child(even){background:#FAFAF8;}
+  .ref-block .container{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:5fr 7fr;gap:72px;align-items:center;}
+  .ref-block.flip .container{grid-template-columns:7fr 5fr;}
+  .ref-block.flip .ref-text{order:2;}
+  .ref-block.flip .ref-media{order:1;}
+  .ref-media{display:grid;grid-template-columns:1fr 1fr;gap:12px;border-radius:8px;overflow:hidden;}
+  .ref-media .big{grid-column:1/3;aspect-ratio:16/9;overflow:hidden;}
+  .ref-media img{width:100%;height:100%;object-fit:cover;display:block;}
+  .ref-media .small{aspect-ratio:4/3;overflow:hidden;}
+  .ref-meta{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px;padding-top:28px;border-top:1px solid #D5D3CE;}
+  .ref-meta dt{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#005F6A;margin-bottom:6px;}
+  .ref-meta dd{margin:0 0 16px;font-size:14px;color:#1A1A1A;}
+  @media(max-width:900px){
+    .ref-block{padding:72px 20px;}
+    .ref-block .container,.ref-block.flip .container{grid-template-columns:1fr;gap:32px;}
+    .ref-block.flip .ref-text,.ref-block.flip .ref-media{order:unset;}
+  }
+
+  /* Lightbox */
+  .ref-media img{cursor:zoom-in;transition:opacity 0.2s;}
+  .ref-media img:hover{opacity:0.88;}
+
+  /* Rott Slider */
+  .rott-slider-wrap{
+    grid-column:1/3;
+    position:relative;
+    margin-top:4px;
+  }
+  .rott-slider{
+    display:flex;
+    gap:12px;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+    padding:0 48px;
+  }
+  .rott-slider::-webkit-scrollbar{display:none;}
+  .rott-slider__item{
+    flex:0 0 calc(80%);
+    scroll-snap-align:center;
+    border-radius:6px;
+    overflow:hidden;
+    aspect-ratio:16/9;
+  }
+  .rott-slider__item img{
+    width:100%;height:100%;object-fit:cover;display:block;
+    cursor:zoom-in;
+    transition:opacity 0.2s;
+  }
+  .rott-slider__item img:hover{opacity:0.88;}
+
+  /* fade edges */
+  .rott-slider-wrap::before,
+  .rott-slider-wrap::after{
+    content:'';
+    position:absolute;top:0;bottom:0;width:56px;z-index:2;pointer-events:none;
+  }
+  .rott-slider-wrap::before{
+    left:0;
+    background:linear-gradient(to right, rgba(255,255,255,0.92) 0%, transparent 100%);
+  }
+  .rott-slider-wrap::after{
+    right:0;
+    background:linear-gradient(to left, rgba(255,255,255,0.92) 0%, transparent 100%);
+  }
+  /* arrow buttons */
+  .rott-slider-btn{
+    position:absolute;top:50%;transform:translateY(-50%);
+    z-index:3;
+    width:40px;height:40px;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(255,255,255,0.9);
+    border:1px solid rgba(0,0,0,0.12);
+    border-radius:50%;
+    cursor:pointer;
+    transition:background 0.15s, opacity 0.2s;
+    font-size:16px;color:#1A1A1A;
+    box-shadow:0 2px 8px rgba(0,0,0,0.12);
+  }
+  .rott-slider-btn:hover{background:#fff;}
+  .rott-slider-btn.prev{left:10px;}
+  .rott-slider-btn.next{right:10px;}
+  .rott-slider-btn[disabled]{opacity:0.25;pointer-events:none;}
+
+  @media(max-width:900px){
+    .rott-slider-wrap::before,
+    .rott-slider-wrap::after{width:32px;}
+    .rott-slider{padding:0 28px;}
+    .rott-slider__item{flex:0 0 88%;}
+  }
+
+  #lightbox{
+    display:none;
+    position:fixed;inset:0;z-index:9999;
+    background:rgba(15,15,15,0.88);
+    align-items:center;justify-content:center;
+    padding:24px;
+  }
+  #lightbox.open{display:flex;}
+  #lightbox img{
+    max-width:min(92vw,1400px);
+    max-height:90vh;
+    object-fit:contain;
+    border-radius:4px;
+    box-shadow:0 32px 80px rgba(0,0,0,0.6);
+  }
+  #lightbox-close{
+    position:fixed;top:20px;right:24px;
+    width:40px;height:40px;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.2);
+    border-radius:50%;
+    color:#fff;font-size:20px;line-height:1;
+    cursor:pointer;
+    transition:background 0.15s;
+  }
+  #lightbox-close:hover{background:rgba(255,255,255,0.25);}
+
+  /* Portrait images — rotate + scale to fill 16:9 frame without white bars */
+  .rott-slider__item img[data-portrait],
+  .ref-media .big img[data-portrait]{
+    transform: rotate(90deg) scale(calc(16/9));
+  }
+
+  /* Lightbox portrait mode */
+  #lightbox.portrait-mode img{
+    transform: rotate(90deg);
+    max-width: 90vh;
+    max-height: min(92vw, 1300px);
+  }
+
+  /* Story Modals (Rott + Coburg) */
+  .story-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    letter-spacing: 0.06em;
+    color: #005F6A;
+    transition: opacity 0.2s;
+  }
+  .story-btn:hover { opacity: 0.65; }
+
+  #rott-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    background: rgba(10,18,22,0.82);
+    align-items: center;
+    justify-content: center;
+    padding: 32px 24px;
+    backdrop-filter: blur(2px);
+  }
+  #rott-modal.open { display: flex; }
+  #rott-modal-box {
+    background: #FAFAF8;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 680px;
+    max-height: 88vh;
+    overflow-y: auto;
+    padding: 48px 52px;
+    position: relative;
+    box-shadow: 0 32px 80px rgba(5,12,17,0.35);
+    scrollbar-width: thin;
+    scrollbar-color: #D5D3CE transparent;
+  }
+  @media(max-width:680px){
+    #rott-modal-box { padding: 32px 24px; }
+  }
+  #rott-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 1px solid #D5D3CE;
+    border-radius: 50%;
+    color: #1A1A1A;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    flex-shrink: 0;
+  }
+  #rott-modal-close:hover { background: #EFEFED; }
+
+  #neubeuern-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    background: rgba(10,18,22,0.82);
+    align-items: center;
+    justify-content: center;
+    padding: 32px 24px;
+    backdrop-filter: blur(2px);
+  }
+  #neubeuern-modal.open { display: flex; }
+  #neubeuern-modal-box {
+    background: #FAFAF8;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 680px;
+    max-height: 88vh;
+    overflow-y: auto;
+    padding: 48px 52px;
+    position: relative;
+    box-shadow: 0 32px 80px rgba(5,12,17,0.35);
+    scrollbar-width: thin;
+    scrollbar-color: #D5D3CE transparent;
+  }
+  @media(max-width:680px){
+    #neubeuern-modal-box { padding: 32px 24px; }
+  }
+  #neubeuern-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 1px solid #D5D3CE;
+    border-radius: 50%;
+    color: #1A1A1A;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    flex-shrink: 0;
+  }
+  #neubeuern-modal-close:hover { background: #EFEFED; }
+
+  #edling-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    background: rgba(10,18,22,0.82);
+    align-items: center;
+    justify-content: center;
+    padding: 32px 24px;
+    backdrop-filter: blur(2px);
+  }
+  #edling-modal.open { display: flex; }
+  #edling-modal-box {
+    background: #FAFAF8;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 680px;
+    max-height: 88vh;
+    overflow-y: auto;
+    padding: 48px 52px;
+    position: relative;
+    box-shadow: 0 32px 80px rgba(5,12,17,0.35);
+    scrollbar-width: thin;
+    scrollbar-color: #D5D3CE transparent;
+  }
+  @media(max-width:680px){
+    #edling-modal-box { padding: 32px 24px; }
+  }
+  #edling-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 1px solid #D5D3CE;
+    border-radius: 50%;
+    color: #1A1A1A;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    flex-shrink: 0;
+  }
+  #edling-modal-close:hover { background: #EFEFED; }
+
+  #aschau-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    background: rgba(10,18,22,0.82);
+    align-items: center;
+    justify-content: center;
+    padding: 32px 24px;
+    backdrop-filter: blur(2px);
+  }
+  #aschau-modal.open { display: flex; }
+  #aschau-modal-box {
+    background: #FAFAF8;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 680px;
+    max-height: 88vh;
+    overflow-y: auto;
+    padding: 48px 52px;
+    position: relative;
+    box-shadow: 0 32px 80px rgba(5,12,17,0.35);
+    scrollbar-width: thin;
+    scrollbar-color: #D5D3CE transparent;
+  }
+  @media(max-width:680px){
+    #aschau-modal-box { padding: 32px 24px; }
+  }
+  #aschau-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 1px solid #D5D3CE;
+    border-radius: 50%;
+    color: #1A1A1A;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    flex-shrink: 0;
+  }
+  #aschau-modal-close:hover { background: #EFEFED; }
+
+  #neubeuern2-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    background: rgba(10,18,22,0.82);
+    align-items: center;
+    justify-content: center;
+    padding: 32px 24px;
+    backdrop-filter: blur(2px);
+  }
+  #neubeuern2-modal.open { display: flex; }
+  #neubeuern2-modal-box {
+    background: #FAFAF8;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 680px;
+    max-height: 88vh;
+    overflow-y: auto;
+    padding: 48px 52px;
+    position: relative;
+    box-shadow: 0 32px 80px rgba(5,12,17,0.35);
+    scrollbar-width: thin;
+    scrollbar-color: #D5D3CE transparent;
+  }
+  @media(max-width:680px){
+    #neubeuern2-modal-box { padding: 32px 24px; }
+  }
+  #neubeuern2-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 1px solid #D5D3CE;
+    border-radius: 50%;
+    color: #1A1A1A;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    flex-shrink: 0;
+  }
+  #neubeuern2-modal-close:hover { background: #EFEFED; }
+
+  #coburg-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    background: rgba(10,18,22,0.82);
+    align-items: center;
+    justify-content: center;
+    padding: 32px 24px;
+    backdrop-filter: blur(2px);
+  }
+  #coburg-modal.open { display: flex; }
+  #coburg-modal-box {
+    background: #FAFAF8;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 680px;
+    max-height: 88vh;
+    overflow-y: auto;
+    padding: 48px 52px;
+    position: relative;
+    box-shadow: 0 32px 80px rgba(5,12,17,0.35);
+    scrollbar-width: thin;
+    scrollbar-color: #D5D3CE transparent;
+  }
+  @media(max-width:680px){
+    #coburg-modal-box { padding: 32px 24px; }
+  }
+  #coburg-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 1px solid #D5D3CE;
+    border-radius: 50%;
+    color: #1A1A1A;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    flex-shrink: 0;
+  }
+  #coburg-modal-close:hover { background: #EFEFED; }
+  .coburg-modal-kicker {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #005F6A;
+    margin: 0 0 12px;
+  }
+  .coburg-modal-title {
+    font-size: 28px;
+    line-height: 1.2;
+    color: #1A1A1A;
+    margin: 0 0 28px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #D5D3CE;
+  }
+  .coburg-modal-body h4 {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #005F6A;
+    margin: 28px 0 8px;
+    font-weight: 500;
+  }
+  .coburg-modal-body p {
+    font-size: 15px;
+    line-height: 1.75;
+    color: #3C3C3A;
+    margin: 0 0 14px;
+    text-wrap: pretty;
+    text-align: justify;
+    hyphens: auto;
+  }
+  .coburg-modal-body p:last-child { margin-bottom: 0; }
+</style>
+</head>
+<body>
+
+<header class="hdr solid">
+  <a href="index.html"><img src="assets/logo/casago-wortmarke-white.svg" alt="Casago"></a>
+  <nav>
+    <a href="index.html#wer-wir-sind">Wer wir sind</a>
+    <a href="index.html#was-uns-unterscheidet">Was uns unterscheidet</a>
+    <div class="has-dropdown">
+      <a href="index.html#geschaeftsbereiche" class="dropdown-trigger">Geschäftsbereiche <span class="caret" aria-hidden="true"></span></a>
+      <div class="dropdown" role="menu">
+        <a href="bautraeger.html" class="dropdown__item" role="menuitem">
+          <span class="dropdown__body">
+            <b>Bauträger</b>
+            <span>Bestand &amp; Neubau auf eigenes Risiko</span>
+          </span>
+        </a>
+        <a href="baubetreuung-plus.html" class="dropdown__item" role="menuitem">
+          <span class="dropdown__body">
+            <b>Baubetreuung Plus</b>
+            <span>Ihr unabhängiger Vertreter</span>
+          </span>
+        </a>
+        <a href="projektrealisierung.html" class="dropdown__item" role="menuitem">
+          <span class="dropdown__body">
+            <b>Gemeinsame Projektrealisierung</b>
+            <span>Gemeinsam Werte schaffen</span>
+          </span>
+        </a>
+        <a href="begruenung.html" class="dropdown__item" role="menuitem">
+          <span class="dropdown__body">
+            <b>Begrünung &amp; Schwammstadt</b>
+            <span>Gründach · Solar · Wassermanagement</span>
+          </span>
+        </a>
+      </div>
+    </div>
+    <a href="index.html#ansatz">Unser Ansatz</a>
+    <a href="referenzen.html" class="active">Referenzen</a>
+    <a href="index.html#kontakt">Kontakt</a>
+  </nav>
+  <a class="cta-btn" href="index.html#kontakt">Projekt anfragen</a>
+</header>
+
+<nav class="breadcrumb">
+  <div class="container"><a href="index.html">Start</a><span class="sep">/</span><span>Referenzen</span></div>
+</nav>
+
+<section class="sub-hero" style="min-height:460px;">
+  <div class="sub-hero__bg"><img src="assets/images/project-green-roofs-aerial.webp" alt=""></div>
+  <div class="sub-hero__veil"></div>
+  <div class="container">
+    <div class="kicker">Referenzen</div>
+    <h1>Was wir gebaut haben,<br><em>spricht für sich.</em></h1>
+    <p class="lead">Vom 500-jährigen Fachwerkhaus bis zum Gewerbeneubau mit Gründach. Vier Projekte, die zeigen, was wir unter ganzheitlich verstehen.</p>
+  </div>
+</section>
+
+<!-- NEUBEUERN -->
+<section class="ref-block" id="neubeuern">
+  <div class="container">
+    <div class="ref-text reveal">
+      <div class="kicker">Sanierung Bestand · 2022</div>
+      <h2 class="section-title" style="font-size:42px;">Hollingerhaus<br>Neubeuern.</h2>
+      <div class="ref-desc">
+        <p>Ein rund 400 Jahre altes Bauernhaus — versteckt hinter Vegetation, seit Jahren leerstehend.</p>
+        <p>Durch den vollständigen Neuaufbau im historischen Bestand, kombiniert mit Wärmepumpe, PV-Anlage und Fußbodenheizung, unterschreitet das Gebäude heute den Energiebedarf eines herkömmlichen Neubaus (KfW 85).</p>
+        <p>Drei Wohnungen mit eigenen Eingängen, eigenen Gärten und Terrassen — modernes Wohnen mit dem Charme von vier Jahrhunderten.</p>
+      </div>
+
+      <button class="story-btn" id="neubeuern-story-open">
+        → Vollständige Geschichte lesen
+      </button>
+
+      <dl class="ref-meta">
+        <div><dt>Baujahr</dt><dd>17. Jahrhundert</dd></div>
+        <div><dt>Energiestandard</dt><dd>KfW 85</dd></div>
+        <div><dt>Besonderheiten</dt><dd>Originale Holztüren · Dachstuhl</dd></div>
+        <div><dt>Rolle Casago</dt><dd>Bauträger</dd></div>
+      </dl>
+    </div>
+    <div class="ref-media reveal">
+      <div class="big"><img src="uploads/thumbs/neubeuern_lead.webp" data-full="uploads/Neubeuern_lead.webp" alt="Hollingerhaus Neubeuern"></div>
+      <div class="rott-slider-wrap">
+        <button class="rott-slider-btn prev" aria-label="Zurück" id="neubeuern-prev">&#8592;</button>
+        <div class="rott-slider" id="neubeuern-slider">
+          <div class="rott-slider__item"><img src="uploads/thumbs/neubeuern_ausgangszustand_1.webp" data-full="uploads/Neubeuern_Ausgangszustand 1.webp" alt="Neubeuern – Ausgangszustand 1" data-portrait></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/neubeuern_ausgangszustand_2.webp" data-full="uploads/Neubeuern_Ausgangszustand 2.webp" alt="Neubeuern – Ausgangszustand 2" data-portrait></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/neubeuern_sanierungsphase_1.webp" data-full="uploads/Neubeuern_Sanierungsphase 1.webp" alt="Neubeuern – Sanierungsphase 1"></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/neubeuern_sanierungsphase_2.webp" data-full="uploads/Neubeuern_Sanierungsphase 2.webp" alt="Neubeuern – Sanierungsphase 2"></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/neubeuern_2.webp" data-full="uploads/Neubeuern (2).webp" alt="Neubeuern – Ansicht 1"></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/neubeuern_11.webp" data-full="uploads/Neubeuern (11).webp" alt="Neubeuern – Ansicht 2"></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/neubeuern_14.webp" data-full="uploads/Neubeuern (14).webp" alt="Neubeuern – Ansicht 3"></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/neubeuern_3.webp" data-full="uploads/Neubeuern (3).webp" alt="Neubeuern – Ansicht 4"></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/neubeuern_4.webp" data-full="uploads/Neubeuern (4).webp" alt="Neubeuern – Ansicht 5"></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/neubeuern_8.webp" data-full="uploads/Neubeuern (8).webp" alt="Neubeuern – Ansicht 6"></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/neubeuern_10.webp" data-full="uploads/Neubeuern (10).webp" alt="Neubeuern – Ansicht 7"></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/neubeuern_13.webp" data-full="uploads/Neubeuern (13).webp" alt="Neubeuern – Ansicht 8"></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/neubeuern_15.webp" data-full="uploads/Neubeuern (15).webp" alt="Neubeuern – Ansicht 9"></div>
+        </div>
+        <button class="rott-slider-btn next" aria-label="Weiter" id="neubeuern-next">&#8594;</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROTT -->
+<section class="ref-block flip" id="rott">
+  <div class="container">
+    <div class="ref-media reveal">
+      <div class="big"><img src="uploads/thumbs/geschaeftsbereich.webp" data-full="uploads/Geschäftsbereich Baubetreuung Plus.webp" alt="Firmengebäude Rott am Inn"></div>
+      <div class="rott-slider-wrap">
+        <button class="rott-slider-btn prev" aria-label="Zurück" id="rott-prev">&#8592;</button>
+        <div class="rott-slider" id="rott-slider">
+          <div class="rott-slider__item"><img src="uploads/thumbs/rott_bauphase_1.webp" data-full="uploads/Rott_Bauphase 1.webp" alt="Rott am Inn – Bauphase 1"></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/rott_bauphase_2.webp" data-full="uploads/Rott_Bauphase 2.webp" alt="Rott am Inn – Bauphase 2"></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/rott_slider_1.webp" data-full="assets/images/rott-slider-1.webp" alt="Rott am Inn – Ansicht 1"></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/rott_slider_2.webp" data-full="assets/images/rott-slider-2.webp" alt="Rott am Inn – Ansicht 2"></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/rott_slider_3.webp" data-full="assets/images/rott-slider-3.webp" alt="Rott am Inn – Ansicht 3"></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/rott_slider_4.webp" data-full="assets/images/rott-slider-4.webp" alt="Rott am Inn – Ansicht 4"></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/rott_slider_5.webp" data-full="assets/images/rott-slider-5.webp" alt="Rott am Inn – Ansicht 5"></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/rott_slider_6.webp" data-full="assets/images/rott-slider-6.webp" alt="Rott am Inn – Ansicht 6"></div>
+        </div>
+        <button class="rott-slider-btn next" aria-label="Weiter" id="rott-next">&#8594;</button>
+      </div>
+    </div>
+    <div class="ref-text reveal">
+      <div class="kicker">Neubau Gewerbe · 2024</div>
+      <h2 class="section-title" style="font-size:42px;">Firmengebäude<br>Rott am Inn.</h2>
+      <div class="ref-desc">
+        <p>Ein modernes Firmengebäude, das sich unaufdringlich in die bayerische Landschaft fügt: Arbeitsräume mit 170-Grad-Bergpanorama, Gründach in verschiedenen Varianten — vom Solargründach bis zum markanten Tonnendach — und ein durchdachtes Energiekonzept mit Wärmepumpen, Batteriespeicher und betonkernaktivierter Bodenplatte.</p>
+        <p>Damit sich der Auftraggeber auf die Expansion seiner Firma konzentrieren konnte, wurden in insgesamt 43 Entscheidungsvorlagen alle wesentlichen Aspekte und Optionen erläutert und konkrete Empfehlungen ausgesprochen. Damit war unser Auftraggeber vollständig in alle wichtigen Entscheidungen eingebunden, ohne laufend auf der Baustelle präsent sein zu müssen. Laufendes Reporting rundete die Betreuung ab.</p>
+        <p>Fertiggestellt in 11½ Monaten, rund 10 % unter Budget.</p>
+      </div>
+
+      <button class="story-btn" id="rott-story-open">
+        → Vollständige Geschichte lesen
+      </button>
+
+      <dl class="ref-meta">
+        <div><dt>Bauzeit</dt><dd>11½ Monate</dd></div>
+        <div><dt>Kostenrahmen</dt><dd>–10 % unterschritten</dd></div>
+        <div><dt>Besonderheiten</dt><dd>Extensiv-Gründach · PV · Holzfassade</dd></div>
+        <div><dt>Rolle Casago</dt><dd>Baubetreuung Plus · Projektentwicklung · Projektmanagement</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- COBURG -->
+<section class="ref-block" id="coburg">
+  <div class="container">
+    <div class="ref-text reveal">
+      <div class="kicker">Sanierung Denkmal · 2025</div>
+      <h2 class="section-title" style="font-size:42px;">Fachwerkhaus<br>Coburg.</h2>
+      <div class="ref-desc">
+        <p>Nach drei Jahren gescheiterter Bautätigkeit eines Generalübernehmers übernahmen wir ein Sanierungsprojekt in Coburg — ohne durchgerechnete Statik, ohne Ausführungsplanung, ohne Zeit.</p>
+        <p>Was folgte, war eine Operation am offenen Herzen: parallele Planung und Bau, Abstützung von 500 Jahre altem Fachwerk und die Umstellung auf CO₂-freie Fernwärme.</p>
+        <p>Das Ergebnis: 10 Eigentumswohnungen, jede mit einem individuellen Grundriss — barrierefrei, mit Lift, im Energieeffizienzhaus Standard 85 — mitten in Coburg.</p>
+      </div>
+
+      <button class="story-btn" id="coburg-story-open">
+        → Vollständige Geschichte lesen
+      </button>
+
+      <dl class="ref-meta">
+        <div><dt>Objektalter</dt><dd>~ 500 Jahre · Denkmal</dd></div>
+        <div><dt>Einheiten</dt><dd>10 Wohnungen</dd></div>
+        <div><dt>Energiestandard</dt><dd>KfW 85 · Fernwärme (CO₂-frei)</dd></div>
+        <div><dt>Fördermittel</dt><dd>KfW · erhöhte Abschreibung</dd></div>
+        <div><dt>Rolle Casago</dt><dd>Projektmanagement</dd></div>
+      </dl>
+    </div>
+    <div class="ref-media reveal">
+      <div class="big"><img src="uploads/thumbs/coburg_lead.webp" data-full="uploads/Coburg_lead.webp" alt="Fachwerkhaus Coburg" data-portrait></div>
+      <div class="rott-slider-wrap">
+        <button class="rott-slider-btn prev" aria-label="Zurück" id="coburg-prev">&#8592;</button>
+        <div class="rott-slider" id="coburg-slider">
+          <div class="rott-slider__item"><img src="uploads/thumbs/coburg_ausgangszustand_1.webp" data-full="uploads/Coburg Ausgangszustand 1.webp" alt="Coburg – Ausgangszustand 1"></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/coburg_ausgangszustand_2.webp" data-full="uploads/Coburg Ausgangszustand 2.webp" alt="Coburg – Ausgangszustand 2"></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/coburg_ausgangszustand_3.webp" data-full="uploads/Coburg Ausgangszustand 3.webp" alt="Coburg – Ausgangszustand 3"></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/coburg_sanierungsphase_1.webp" data-full="uploads/Coburg Sanierungsphase_1.webp" alt="Coburg – Sanierungsphase 1"></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/coburg_sanierungsphase_2.webp" data-full="uploads/Coburg Sanierungsphase_2.webp" alt="Coburg – Sanierungsphase 2"></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/coburg_sanierungsphase_3.webp" data-full="uploads/Coburg Sanierungsphase_3.webp" alt="Coburg – Sanierungsphase 3"></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/coburg_1.webp" data-full="uploads/Coburg (1).webp" alt="Coburg – Ansicht 1" data-portrait></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/coburg_eingang.webp" data-full="uploads/Coburg_Eingang.webp" alt="Coburg – Eingang"></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/coburg_3.webp" data-full="uploads/Coburg (3).webp" alt="Coburg – Ansicht 2" data-portrait></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/coburg_4.webp" data-full="uploads/Coburg (4).webp" alt="Coburg – Ansicht 3" data-portrait></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/coburg_5.webp" data-full="uploads/Coburg (5).webp" alt="Coburg – Ansicht 4" data-portrait></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/coburg_6.webp" data-full="uploads/Coburg (6).webp" alt="Coburg – Ansicht 5" data-portrait></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/coburg_7.webp" data-full="uploads/Coburg (7).webp" alt="Coburg – Ansicht 6" data-portrait></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/coburg_8.webp" data-full="uploads/Coburg (8).webp" alt="Coburg – Ansicht 7" data-portrait></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/coburg_9.webp" data-full="uploads/Coburg (9).webp" alt="Coburg – Ansicht 8" data-portrait></div>
+        </div>
+        <button class="rott-slider-btn next" aria-label="Weiter" id="coburg-next">&#8594;</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ASCHAU -->
+<section class="ref-block flip" id="aschau">
+  <div class="container">
+    <div class="ref-media reveal">
+      <div class="big"><img src="uploads/thumbs/aschau_main.webp" data-full="uploads/Aschau_Visualisierungen neu_Main.webp" alt="Zweifamilienhaus Aschau im Chiemgau – Visualisierung Hauptansicht"></div>
+      <div class="rott-slider-wrap">
+        <button class="rott-slider-btn prev" aria-label="Zurück" id="aschau-prev">&#8592;</button>
+        <div class="rott-slider" id="aschau-slider">
+          <div class="rott-slider__item"><img src="uploads/thumbs/img_7838.webp" data-full="uploads/IMG_7838.webp" alt="Aschau – Bestand vor der Sanierung"></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/aschau_1.webp" data-full="uploads/Aschau_Visualisierungen neu_1.webp" alt="Aschau – Visualisierung Ansicht 1"></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/aschau_2.webp" data-full="uploads/Aschau_Visualisierungen neu_2-8f28192c.webp" alt="Aschau – Visualisierung Ansicht 2"></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/aschau_3.webp" data-full="uploads/Aschau_Visualisierungen neu_3.webp" alt="Aschau – Visualisierung Ansicht 3"></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/aschau_4.webp" data-full="uploads/Aschau_Visualisierungen neu_4.webp" alt="Aschau – Visualisierung Ansicht 4"></div>
+        </div>
+        <button class="rott-slider-btn next" aria-label="Weiter" id="aschau-next">&#8594;</button>
+      </div>
+    </div>
+    <div class="ref-text reveal">
+      <div class="kicker">Baubetreuung · 2026</div>
+      <h2 class="section-title" style="font-size:42px;">Zweifamilienhaus<br>Aschau im Chiemgau.</h2>
+      <div class="ref-desc">
+        <p>Abriss oder Sanierung? Nach intensiver Prüfung von Baurecht, Kosten und Fördermitteln fiel die Entscheidung klar: durchgreifende Sanierung mit Verdopplung der Wohnfläche durch Aufstockung.</p>
+        <p>Das Ergebnis ist ein Effizienzhaus 55 mit Wärmepumpe, PV, Speicher und Gründach — mit Blick auf die Kirche von Aschau und die Kampenwand.</p>
+        <p class="punch">Optimierte Fördermittel leisten dabei einen wesentlichen Finanzierungsbeitrag.</p>
+      </div>
+
+      <button class="story-btn" id="aschau-story-open">
+        → Vollständige Geschichte lesen
+      </button>
+
+      <dl class="ref-meta">
+        <div><dt>Maßnahme</dt><dd>Sanierung mit Aufstockung</dd></div>
+        <div><dt>Energiestandard</dt><dd>Effizienzhaus 55</dd></div>
+        <div><dt>Technik</dt><dd>WP · PV · Speicher · Gründach</dd></div>
+        <div style="grid-column:1/-1;"><dt>Rolle Casago</dt><dd>Projektentwicklung · Projektmanagement · Baubetreuung Plus</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- EDLING -->
+<section class="ref-block" id="edling">
+  <div class="container">
+    <div class="ref-text reveal">
+      <div class="kicker">Neubau Wohnen · in Planung</div>
+      <h2 class="section-title" style="font-size:42px;">Mehrfamilienhaus<br>Edling.</h2>
+      <div class="ref-desc">
+        <p>Fünf Eigentumswohnungen und sechs Ferienwohnungen mit einem durchdachten Möblierungskonzept, das maximale Flexibilität bietet.</p>
+        <p>Großzügige Balkone, Terrassen und Sitzfenster sorgen für hohen Wohnkomfort — Wärmepumpe, PV-Anlage und Gründach für Zukunftssicherheit.</p>
+        <p>Ein formschönes Gebäude, das Wohnqualität und Klimabewusstsein verbindet.</p>
+      </div>
+
+      <button class="story-btn" id="edling-story-open">
+        → Vollständige Geschichte lesen
+      </button>
+
+      <dl class="ref-meta">
+        <div><dt>Einheiten</dt><dd>5 ETW · 6 FeWo</dd></div>
+        <div><dt>Energie</dt><dd>WP · PV · KfW 40</dd></div>
+        <div><dt>Außenraum</dt><dd>Gründach · Versickerung</dd></div>
+        <div><dt>Rolle Casago</dt><dd>Bauträger</dd></div>
+      </dl>
+    </div>
+    <div class="ref-media reveal">
+      <div class="big"><img src="uploads/thumbs/eding_main.webp" data-full="uploads/Eding_Visualisierungen neu_Main-64578b90-2957e5bb.webp" alt="Mehrfamilienhaus Edling – Visualisierung"></div>
+      <div class="rott-slider-wrap">
+        <button class="rott-slider-btn prev" aria-label="Zurück" id="edling-prev">&#8592;</button>
+        <div class="rott-slider" id="edling-slider">
+          <div class="rott-slider__item"><img src="uploads/thumbs/eding_1.webp" data-full="uploads/Eding_Visualisierungen neu_1-b6135ae2.webp" alt="Edling – Visualisierung 1"></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/eding_2.webp" data-full="uploads/Eding_Visualisierungen neu_2-1c181dba.webp" alt="Edling – Visualisierung 2"></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/eding_3.webp" data-full="uploads/Eding_Visualisierungen neu_3-4fb59e19.webp" alt="Edling – Visualisierung 3"></div>
+          <div class="rott-slider__item"><img src="uploads/thumbs/eding_4.webp" data-full="uploads/Eding_Visualisierungen neu_4.webp" alt="Edling – Visualisierung 4"></div>
+        </div>
+        <button class="rott-slider-btn next" aria-label="Weiter" id="edling-next">&#8594;</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEUBEUERN II -->
+<section class="ref-block flip" id="neubeuern2">
+  <div class="container">
+    <div class="ref-media reveal">
+      <div class="big"><img src="uploads/thumbs/neubeuern_ii_main.webp" data-full="uploads/Neubeuern II_Main_.webp" alt="Mehrfamilienhaus Neubeuern II – Hauptansicht"></div>
+      <div class="rott-slider-wrap">
+        <button class="rott-slider-btn prev" aria-label="Zurück" id="neubeuern2-prev">&#8592;</button>
+        <div class="rott-slider" id="neubeuern2-slider">
+          <div class="rott-slider__item"><img src="uploads/thumbs/neubeuern_ii_1.webp" data-full="uploads/Neubeuern II (1).webp" alt="Neubeuern II – Außenansicht"></div>
+        </div>
+        <button class="rott-slider-btn next" aria-label="Weiter" id="neubeuern2-next">&#8594;</button>
+      </div>
+    </div>
+    <div class="ref-text reveal">
+      <div class="kicker">Gemeinsame Projektrealisierung · in Entwicklung</div>
+      <h2 class="section-title" style="font-size:42px;">Mehrfamilienhaus<br>Neubeuern II.</h2>
+      <div class="ref-desc">
+        <p>Nach mehrjähriger Planung stoppte der Auftraggeber sein Mehrfamilienhaus-Projekt — die Kostenschätzung seines bisherigen Architekten war schlicht zu hoch. Mit CASAGO kam die Wende: Vier Gebäudetypen entwickelt, zwei besondere Varianten mit maximaler Flexibilität bei den Wohnungsgrößen weiterverfolgt.</p>
+        <p>Gründach, eigenständiges Design und QNG-Standard sorgen dafür, dass Käufer von höheren Förderkrediten und besonderen Abschreibungsmöglichkeiten profitieren.</p>
+        <p>So wird aus einer festgefahrenen Situation ein wirtschaftlich und gestalterisch überzeugendes Ergebnis.</p>
+      </div>
+
+      <button class="story-btn" id="neubeuern2-story-open">
+        → Vollständige Geschichte lesen
+      </button>
+
+      <dl class="ref-meta">
+        <div><dt>Energiestandard</dt><dd>QNG-Standard</dd></div>
+        <div><dt>Besonderheiten</dt><dd>Gründach · eigenständiges Design</dd></div>
+        <div style="grid-column:1/-1;"><dt>Rolle Casago</dt><dd>Projektentwicklung · Projektmanagement · HOAI 1–9 · Vermarktung</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="container reveal">
+    <h2>Wird Ihr Projekt<br>die nächste Referenz?</h2>
+    <div class="btn-row">
+      <a class="btn-white" href="index.html#kontakt">Projekt anfragen</a>
+      <a class="btn-ghost" href="begruenung.html">Begrünung ansehen</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="container">
+    <div class="foot-brand"><img src="assets/logo/casago-wortmarke-white.svg" alt=""><div class="claim">Planen. Umsetzen. Leben.</div></div>
+    <div><h4>Geschäftsbereiche</h4><ul><li><a href="bautraeger.html">Bauträger</a></li><li><a href="baubetreuung-plus.html">Baubetreuung Plus</a></li><li><a href="begruenung.html">Begrünung</a></li></ul></div>
+    <div><h4>Begrünung</h4><ul><li><a href="secalflor.html">SECALFLOR</a></li><li><a href="gruendach.html">Gründach</a></li><li><a href="gruendach.html#solar">Solargründach</a></li><li><a href="schwammstadt.html">Schwammstadt</a></li></ul></div>
+    <div><h4>Unternehmen</h4><ul><li><a href="referenzen.html">Referenzen</a></li><li><a href="presse.html">Presse</a></li></ul></div>
+    <div><h4>Kontakt</h4><ul><li>info@casago.de</li><li>Deutschland</li></ul></div>
+  </div>
+  <div class="foot-bar"><div>© 2026 Casago GmbH.</div><div class="links"><a href="impressum.html">Impressum</a><a href="#">Datenschutz</a></div></div>
+</footer>
+
+<!-- Neubeuern II Story Modal -->
+<div id="neubeuern2-modal" role="dialog" aria-modal="true" aria-label="Mehrfamilienhaus Neubeuern II — Vollständige Geschichte">
+  <div id="neubeuern2-modal-box">
+    <button id="neubeuern2-modal-close" aria-label="Schließen">&#x2715;</button>
+    <p class="coburg-modal-kicker">Gemeinsame Projektrealisierung · in Entwicklung</p>
+    <h2 class="coburg-modal-title">Mehrfamilienhaus Neubeuern II —<br>die vollständige Geschichte.</h2>
+    <div class="coburg-modal-body">
+      <p>Anstatt Projektstopp besonders gelungenes Design bei deutlich reduzierten Kosten. Das ist Projektentwicklung!</p>
+      <p>Unser Auftraggeber hatte nach der Bereitstellung der Kostenschätzung seines bisherigen Architekten Anfang 2026 seine Planung für ein Mehrfamilienhaus nach mehrjähriger Entwicklung gestoppt und sich daraufhin für eine gemeinsame Projektrealisierung mit der Casago GmbH entschieden. Nach Prüfung des Baurechtes, der bisherigen Planung, Bodenuntersuchungen etc. haben wir vier verschiedene Gebäudetypen entwickelt.</p>
+      <p>Die ursprünglich favorisierte Planung wurde in Abstimmung mit dem Grundstückseigentümer aus Vermarktungsgesichtspunkten eingestellt. Für zwei Gebäudetypen wurde nach Entwicklung von Lösungen für die Stellplätze die Planung forciert. Entstanden sind zwei besondere Objektvarianten mit einer maximalen Flexibilität bei den möglichen Größen der Wohnungen.</p>
+
+      <h4>Planungsstand und Vermarktung</h4>
+      <p>Diese Planung befindet sich aktuell in der Abstimmung mit dem Städteplaner. Mit grundsätzlicher Genehmigung der Planung wird bereits mit der Vorvermarktung begonnen und die endgültigen Wohnungsgrößen mit interessierten Käufern abgestimmt.</p>
+
+      <h4>Design und Nachhaltigkeit</h4>
+      <p>Das vorgesehene Gründach rundet die besondere Designsprache unserer Architektin ab und trägt durch ein modernes, eigenständiges Design mit eigener Identität zu einer – noch – positiveren Wahrnehmung des Objektes bei. Vorgesehen ist darüber hinaus ein energieeffizientes Gebäude mit QNG-Standard. Damit können Käufer höhere Förderkredite und besondere Abschreibungsmöglichkeiten nutzen.</p>
+
+      <h4>Fazit</h4>
+      <p>Projektentwicklung at its best. Und ein hoch zufriedener Umsetzungspartner. Eine solch intensive Projektentwicklung war ihm noch nicht bekannt.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Aschau Story Modal -->
+<div id="aschau-modal" role="dialog" aria-modal="true" aria-label="Baubetreuung Aschau — Vollständige Geschichte">
+  <div id="aschau-modal-box">
+    <button id="aschau-modal-close" aria-label="Schließen">&#x2715;</button>
+    <p class="coburg-modal-kicker">Baubetreuung · 2026</p>
+    <h2 class="coburg-modal-title">Baubetreuung Aschau —<br>Vom Problemgebäude zum Traumdomizil.</h2>
+    <div class="coburg-modal-body">
+      <p>Ein heute zum Freund gewordener, im Ausland lebender Auftraggeber hatte im Jahre 2023 ein Gebäude erworben. Lange Zeit schwankte er zwischen Wiederverkauf, Sanierung und Abriss.</p>
+      <p>Nach intensiver Prüfung des Baurechts und mehreren Gesprächen mit Gemeinde und Genehmigungsbehörde konnten wir für unseren Auftraggeber eine Planung entwickeln, bei der die bisherige Wohnfläche durch Aufstockung und weitere Maßnahmen mehr als verdoppelt werden konnte.</p>
+      <p>Die Frage Abriss und Neubau oder Sanierung wurde nach Kostenermittlung und Prüfung möglicher Fördermittel zugunsten einer durchgreifenden Sanierung geklärt.</p>
+
+      <h4>Das Ergebnis</h4>
+      <p>Trotz einer erst Anfang Februar 2026 erteilten Baugenehmigung wird durch konsequentes Projektmanagement, guter Ausführungsplanung und intensiver Zusammenarbeit mit den ausführenden Firmen bereits im Sommer 2026 unser Auftraggeber seinen ersten Urlaub in dem dann bis auf die Außenanlagen fertigem Gebäude verbringen können.</p>
+      <p>Das besonders schöne Objekt fügt sich durch das Gründach wohltuend in die Umgebung ein und verschafft durch die geschaffenen Sichtachsen unserem Auftraggeber ein Domizil mit besonders hohem Wohnwert und wunderbaren Ausblicken auf die Kirche von Aschau im Chiemgau sowie die Kampenwand.</p>
+      <p>Zukunftssicher durch einen Energieeffizienzhausstandard 55 inklusive Wärmepumpe, PV und Speicher.</p>
+      <p>Ebenfalls stolz sind wir darauf, dass wir die Fördermittel so optimieren konnten, dass diese einen wesentlichen Finanzierungsbeitrag darstellen.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Bildvorschau">
+  <button id="lightbox-close" aria-label="Schließen">&#x2715;</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<!-- Coburg Story Modal -->
+<div id="coburg-modal" role="dialog" aria-modal="true" aria-label="Fachwerkhaus Coburg — Vollständige Geschichte">
+  <div id="coburg-modal-box">
+    <button id="coburg-modal-close" aria-label="Schließen">&#x2715;</button>
+    <p class="coburg-modal-kicker">Sanierung Denkmal · 2025</p>
+    <h2 class="coburg-modal-title">Fachwerkhaus Coburg —<br>die vollständige Geschichte.</h2>
+    <div class="coburg-modal-body">
+      <p>Dieses Projekt war das bisher anspruchsvollste Vorhaben und hat alle vorhandenen Kompetenzen in unterschiedlichsten Bereichen gefordert. Ein von der Eigentümergemeinschaft beauftragter Generalübernehmer war nach rund drei Jahren „Bautätigkeit" noch immer weit von dem Abschluss der Kellerarbeiten entfernt und wurde daher im November 2022 fristlos gekündigt. Nur auf Grund der freundschaftlichen Beziehung zu einzelnen Eigentümern haben wir die Baubetreuung des Projektes Mitte Dezember 2022 übernommen.</p>
+
+      <h4>Einige ausgewählte Herausforderungen</h4>
+      <p>Mit der Übernahme haben wir festgestellt, dass es weder eine durchgerechnete Statik noch eine Ausführungsplanung gab. Das vorhandene Konzept hätte zudem sicher nicht die Brandschutzanforderungen sowie des Schallschutzes erfüllt.</p>
+
+      <h4>Sanierungsgebiet und „Operation am offenen Herzen"</h4>
+      <p>Das Gebäude lag in einem Sanierungsgebiet. Die Eigentümergemeinschaft hatte daher mit dem Sanierungsträger der Stadt Coburg eine Sanierungsvereinbarung abgeschlossen. Nur mit Fertigstellung innerhalb der Laufzeit der Sanierungsvereinbarung können die einzelnen Eigentümer die erhöhten Abschreibungen nutzen.</p>
+      <p>Durch den bereits entstandenen Zeitverzug war es nicht möglich, zuerst die Statik und Ausführungsplanung zu erstellen. Wir mussten daher parallel zur Erstellung der Ausführungsplanung und der Statik die Baumaßnahmen fortführen. Eine „Operation am offenen Herzen".</p>
+      <p>Durch die Ausführungsplanung wurde deutlich, dass zur Erfüllung aller Brandschutzvorschriften und der Realisierung der Wohnungen wie gekauft eine umfassende Tektur zur Genehmigung eingereicht werden musste. Im Oktober 2023 wurde diese – wie beantragt – erteilt.</p>
+
+      <h4>Fördermittel und Abschreibung</h4>
+      <p>Die Sanierungsvereinbarung konnte – trotz Aufhebung der Sanierungssatzung – in Gesprächen mit dem Sanierungsträger und durch Unterstützung der Stadt verlängert werden. Das Objekt konnte somit innerhalb der (verlängerten) Laufzeit fertiggestellt werden.</p>
+      <p>Es konnte in Gesprächen mit der KfW sichergestellt werden, dass die im Sommer 2019 (!) beantragten und bis Sommer 2022 befristeten Fördermittel im Sommer 2024 – wie beantragt – ausbezahlt wurden. Zusätzlich konnten weitere Fördermittel generiert werden. Auch hier erfolgte die Auszahlung in der beantragten Höhe.</p>
+      <p>Durch die Fertigstellung innerhalb der (verlängerten) Laufzeit der Sanierungsvereinbarung können die einzelnen Eigentümer die erhöhten Abschreibungen nutzen.</p>
+
+      <h4>Energiekonzept, Wärmeversorgung</h4>
+      <p>Das Energiekonzept des fristlos gekündigten Generalübernehmers sah die Aufstellung eines BHKW im Gebäude vor. Das angeschaffte BHKW erfüllte auf Grund des Zeitverzugs und zwischenzeitlich neu in Kraft getretener Richtlinien nicht mehr die Anschlussvoraussetzungen.</p>
+      <p>Obwohl es anfänglich unmöglich schien, ist es uns dennoch gelungen, einen Ausbau der Fernwärme für dieses Projekt zu erreichen. Besonders erfreulich: die Wärme wird durch die Nutzung der Abwärme des Müllheizkraftwerkes erzeugt und ist somit CO₂-frei.</p>
+
+      <h4>Bauschäden</h4>
+      <p>Erschwerend kam hinzu, dass zwei Außenwände vollständig abgetragen und nach Errichtung eines neuen Fundamentes neu errichtet werden mussten. Eine Außenwand hatte zwischen dem oberen und unteren Bereich eine Abweichung von rund 60 Zentimetern. Diese Arbeiten konnte nur mit der Abstützung des rund fünfhundert Jahre alten Fachwerkes mittels Baumstämme erfolgen.</p>
+
+      <h4>Eigentümergemeinschaft</h4>
+      <p>Obwohl ein dem fristlos gekündigten Generalübernehmer sehr nahestehender Eigentümer seine Verpflichtungen nicht mehr erfüllen konnte und eine Erbengemeinschaft die anfallenden Baukosten nicht tragen konnte, konnte mit den weiteren Eigentümern das Projekt bis zur Fertigstellung vorangetrieben werden.</p>
+
+      <h4>Was ist entstanden?</h4>
+      <p>In einer zentralen Lage von Coburg sind heute in einem Energieeffizienzhaus Standard 85 zehn barrierefreie Eigentumswohnungen, jede mit einem individuellen Grundriss, inklusive Lift entstanden. Jede Wohnung hat einen eigenen Balkon bzw. Terrasse.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Rott Story Modal -->
+<div id="rott-modal" role="dialog" aria-modal="true" aria-label="Firmengebäude Rott am Inn — Vollständige Geschichte">
+  <div id="rott-modal-box">
+    <button id="rott-modal-close" aria-label="Schließen">&#x2715;</button>
+    <p class="coburg-modal-kicker">Neubau Gewerbe · 2024</p>
+    <h2 class="coburg-modal-title">Firmengebäude Rott am Inn —<br>die vollständige Geschichte.</h2>
+    <div class="coburg-modal-body">
+      <p>Unser Auftraggeber benötigte auf Grund der starken Expansion seiner Firma dringend ein deutlich größeres Firmengebäude. Parallel zum Erwerb eines Grundstückes wurden wir mit der Konzeption des Gebäudes beauftragt.</p>
+
+      <h4>Einbeziehung des Bauherrn</h4>
+      <p>Damit sich der Auftraggeber auf die Expansion seiner Firma konzentrieren konnte, wurden in insgesamt 43 Entscheidungsvorlagen alle wesentlichen Aspekte und Optionen erläutert und konkrete Empfehlungen ausgesprochen. Damit war unser Auftraggeber vollständig in alle wichtigen Entscheidungen eingebunden, ohne laufend auf der Baustelle präsent sein zu müssen. Laufendes Reporting rundete die Betreuung ab.</p>
+
+      <h4>Zielsetzung, Konzeption und Realisierung</h4>
+      <p>Bayerische Dörfer, Wiesen, Felder, Auen vor der Kulisse der imposanten Alpenkette — ein modernes funktionales Firmengebäude zu schaffen, das sich unaufdringlich in diese malerische Landschaft fügt und dennoch seinen ganz eigenen Charakter bewahrt, war Anspruch und Ziel bei dem 2024 fertiggestellten Bau in Rott am Inn.</p>
+      <p>Bei der Planung des Gebäudes erfolgte die Ausrichtung der Räumlichkeiten so, dass das 170-Grad-Bergpanorama möglichst optimal aus allen südseitigen Räumen wahrgenommen werden kann. Die Arbeitsräume wurden Richtung Süden und die funktionalen Räume Richtung Norden ausgerichtet.</p>
+
+      <h4>Gründach und Ökologie</h4>
+      <p>Ein wesentliches Gestaltungselement ist das Gründach, das auf den verschiedenen Bereichen des Baues in unterschiedlichster Weise wiederkehrt: Sei es auf der großzügigen Terrasse, als Solargründach auf den Garagen oder als Tonnendach auf dem markanten Haupttrakt.</p>
+      <p>Insgesamt wurde besonderer Wert auf die Realisierung eines ökologischen Gebäudes mit einem geringen Wärmebedarf und einer möglichst hohen Stromerzeugung zur Abdeckung des eigenen Strombedarfs gelegt. Zum Erreichen dieses Zieles wurde eine betonkernaktivierte Bodenplatte, innengedämmte Betonfertigteilwände, ein Holzständerwerk im Dachgeschoss, zwei effiziente Luft-Wärme-Pumpen, Pufferspeicherung sowie Batteriespeicher kombiniert.</p>
+      <p>Trotz der Ausrichtung der Arbeitsräume Richtung Süden inklusive einer fast durchgängigen Glasfront im Dachgeschoss reicht die Kombination aus Gründach und Nutzung der Fußbodenheizung zur Kühlung in den Sommermonaten aus. Auf den Einbau einer teuren Klimaanlage konnte verzichtet werden.</p>
+
+      <h4>Besondere Herausforderungen</h4>
+      <p>Eine besondere Herausforderung waren die Zeitvorgaben. Mit dem Bürgermeister der Gemeinde Rott am Inn konnte eine Lösung gefunden werden, mit der die Bauarbeiten parallel zur Erschließung des neuen Gewerbegebietes begonnen werden konnten.</p>
+      <p>Obwohl im laufenden Baubetrieb eine weitere Tektur von dem Auftraggeber gewünscht wurde, konnte das Projekt mit einer Nettobauzeit von nur 11½ Monaten bis auf kleinere Restarbeiten mängelfrei übergeben werden. Der ursprüngliche Kostenrahmen wurde — trotz der zusätzlichen Bauherrenwünsche — um rund 10 % unterschritten.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Neubeuern Story Modal -->
+<div id="neubeuern-modal" role="dialog" aria-modal="true" aria-label="Hollingerhaus Neubeuern — Vollständige Geschichte">
+  <div id="neubeuern-modal-box">
+    <button id="neubeuern-modal-close" aria-label="Schließen">&#x2715;</button>
+    <p class="coburg-modal-kicker">Sanierung Bestand · 2022</p>
+    <h2 class="coburg-modal-title">Hollingerhaus Neubeuern —<br>die vollständige Geschichte.</h2>
+    <div class="coburg-modal-body">
+      <p>Sanierung eines rund 400 Jahre alten, seit Jahren leerstehenden innerstädtisch gelegenen Bauernhauses in Neubeuern. Im Jahre 2019 wurden wir auf das „Hollingerhaus", einem Bauernhaus aus dem 17. Jahrhundert in der Rosenheimer Straße 5, Marktgemeinde Neubeuern, aufmerksam.</p>
+      <p>Gut versteckt von der Vegetation wurde das Gebäude bisher selbst von in Neubeuern aufgewachsenen Bürgern kaum wahrgenommen.</p>
+      <p>Das Objekt stand über mehrere Jahre leer. Die Bausubstanz war entsprechend schlecht. Es waren zum Teil keine Decken mehr vorhanden oder bestanden nur aus Dielen. Vorhandene Balkone waren nicht begehbar. Die enge Bebauung und nicht vorhandene Brandmauern bei einem vor rund 80 Jahren angebauten Gebäude stellten besondere Anforderungen beim Brandschutz dar.</p>
+      <p>Behutsam und im laufenden Dialog mit der früheren Eigentümerfamilie wurde ein Konzept zur Sanierung des Objektes entwickelt. Oberstes Ziel war dabei, den besonderen Charme des Gebäudes zu erhalten und mit zukunftsgerichtetem Wohnen zu kombinieren.</p>
+
+      <h4>Sanierungskonzept</h4>
+      <p>Um den angestrebten Wohnkomfort sicher zu erreichen, haben wir uns bei der Entwicklung des Sanierungskonzeptes für eine umfassende Kernsanierung entschieden. Dies bedeutet, dass das Gebäude mit Ausnahme der tragenden Wände komplett entkernt und nachfolgend unter Berücksichtigung der statischen Vorgaben und des Brandschutzes ein vollständiger Neuaufbau stattfand.</p>
+      <p>So wurden z. B. über alle Wohnebenen neue Decken eingezogen. Dies erlaubte in Verbindung mit der Anhebung des Kniestockes und der Errichtung eines neuen Dachstuhls über alle Wohnebenen „neue“ Deckenhöhen sowie die Schaffung effizienter Grundrisse und gewährleistete gleichzeitig ausreichenden Schallschutz zu den Nachbarwohnungen.</p>
+      <p>Alle sanitären Einrichtungen, Ver- und Entsorgungsleitungen sowie die gesamte Elektroinstallation und Regenfallrohre wurden vollständig neu errichtet.</p>
+
+      <h4>Energiekonzept</h4>
+      <p>Der Energiebedarf sowie die Frage, welche Energieträger zur Wärmeerzeugung eingesetzt werden, wird in der Zukunft ein besonders herausragender Faktor bei der Bewertung von Immobilien darstellen. Spätestens mit Einführung der CO₂-Abgaben auf fossile Energieträger hat die Politik eindrucksvoll unterstrichen, dass durch Verteuerung klimaschädlichen Erdöls und Erdgases ein Umbau künftiger Wärmeversorgung stattfinden wird.</p>
+      <p>Um hier für die Käufer eine zukunftssichere Immobilie zu schaffen, beinhaltete das Kernsanierungskonzept alle Maßnahmen zur Erfüllung eines Niedrigenergiehauses Standard KfW 85. Dies bedeutet, dass mit Abschluss der Arbeiten der Energiebedarf dieses 400 Jahre alten Gebäudes niedriger ist als bei einem herkömmlichen Neubau aus dem selben Jahr.</p>
+      <p>Dieses Ziel wurde erreicht durch die Kombination aus Wärmedämmung, Einbau energiesparender Fenster sowie einer Kombination aus Luft-Wärme-Pumpe und PV-Modulen inklusive eines Speichers zur bestmöglichen Nutzung des auf dem neuen Dach selbst erzeugten Stroms. Für eine möglichst effiziente Nutzung der so erzeugten Wärme wurde in allen Wohnungen eine Fußbodenheizung eingebaut.</p>
+
+      <h4>Garten und Zugänge zu den Wohnungen</h4>
+      <p>Die Pandemie hat die Wichtigkeit des Wohnens noch mehr verdeutlicht. Daher hat jede Wohnung einen eigenen Gartenbereich inklusive je einer mindestens 15 m² großen Terrasse.</p>
+      <p>Bei der Planung des Projektes war es uns wichtig, dass jeder Bewohner möglichst sein „eigenes“ Reich erhält. Zugleich möglichst wenig „Begegnungsfläche“ vorhanden ist. Zum Erreichen dieser Ziele wurde auf ein gemeinsames Treppenhaus verzichtet. Jede Wohnung verfügt über einen eigenen Eingang.</p>
+      <p>Es sind insgesamt drei Wohnungen mit einer Wohnfläche zwischen 60 m² bis ca. 166 m² und individuellen Grundrissen mit hoher Flächeneffizienz entstanden. Die Baumaßnahmen begannen im April 2021. Die Übergabe des Objektes erfolgte im Dezember 2022.</p>
+
+      <h4>Weitere Besonderheiten</h4>
+      <p>Errichtung des neuen Dachs unter Berücksichtigung des Brandschutzes zu dem angebauten Gebäude. Bei den Baumaßnahmen wurden alte, hochmarode Leitungen entdeckt, die von den umliegenden Gebäuden zur Entwässerung des Regenwassers genutzt wurden — es wurde eine gute Lösung mit den Nachbarn gefunden, obwohl kein Leitungsrecht bestand und Schäden an dem Gebäude entstanden. Errichtung eines neuen Kellers inklusive vorhergehender Fundamentverstärkung der Wand.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Edling Story Modal -->
+<div id="edling-modal" role="dialog" aria-modal="true" aria-label="Mehrfamilienhaus Edling — Vollständige Geschichte">
+  <div id="edling-modal-box">
+    <button id="edling-modal-close" aria-label="Schließen">&#x2715;</button>
+    <p class="coburg-modal-kicker">Neubau Wohnen · in Planung</p>
+    <h2 class="coburg-modal-title">Mehrfamilienhaus Edling —<br>die vollständige Geschichte.</h2>
+    <div class="coburg-modal-body">
+      <p>Unser neuestes Projekt: Für dieses Grundstück hatten die früheren Eigentümer eine Bebauung vorgesehen, die unter heutigen Marktgegebenheiten nicht mehr umsetzbar sein dürfte. Nach intensiven Überlegungen wurde das Grundstück erworben und die bisherige Planung durch unser neues Konzept ersetzt.</p>
+      <p>Dieses Konzept sieht fünf Eigentumswohnungen sowie sechs Ferienwohnungen vor. Für alle Wohnungen wird ein Möblierungsprogramm mit angeboten, das eine hohe Flexibilität bei der Nutzung der Wohnungen bietet. Dadurch ist es z. B. möglich, eine 2-Zimmer-Wohnung durch diese Möblierung wie eine 3-Zimmer-Wohnung zu nutzen.</p>
+
+      <h4>Konzept und Wohnwert</h4>
+      <p>Konsequent setzen wir auch bei diesem Projekt auf einen besonders hohen Wohnwert, z. B. in Form großzügiger Balkone und Terrassen und Sitzfenster, sowie einer hohen Zukunftssicherheit durch einen hervorragenden Energieeffizienzhausstandard, Wärmeversorgung mittels Wärmepumpe und PV.</p>
+      <p>Das formschöne Gebäude wird durch das wiederum vorgesehene Gründach sich positiv auf das Klima im und um das Gebäude auswirken und zu einer positiven Wahrnehmung des neuen Objektes beitragen.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  const io = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) { x.target.classList.add('in'); io.unobserve(x.target); } }), { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Lightbox
+  const lb    = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lightbox-img');
+  const lbClose = document.getElementById('lightbox-close');
+
+  function openLightbox(img) {
+    // Use data-full for a dedicated lightbox src if provided, else fall back to src
+    lbImg.src = img.dataset.full || img.src;
+    lbImg.alt = img.alt;
+    // Portrait images display naturally in the lightbox (object-fit:contain handles it)
+    if ('portrait' in img.dataset) {
+      lb.classList.add('portrait-mode');
+    } else {
+      lb.classList.remove('portrait-mode');
+    }
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lb.classList.remove('open', 'portrait-mode');
+    document.body.style.overflow = '';
+  }
+
+  // Wire up ALL images inside .ref-media (big hero + all slider items)
+  document.querySelectorAll('.ref-media img').forEach(img => {
+    img.addEventListener('click', () => openLightbox(img));
+  });
+
+  lbClose.addEventListener('click', closeLightbox);
+  lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+  // Rott Slider
+  const rottSlider = document.getElementById('rott-slider');
+  const rottPrev   = document.getElementById('rott-prev');
+  const rottNext   = document.getElementById('rott-next');
+
+  function rottScrollBy(dir) {
+    const itemW = rottSlider.querySelector('.rott-slider__item').offsetWidth + 12;
+    rottSlider.scrollBy({ left: dir * itemW, behavior: 'smooth' });
+  }
+
+  function rottUpdateButtons() {
+    const maxScroll = rottSlider.scrollWidth - rottSlider.clientWidth;
+    rottPrev.disabled = rottSlider.scrollLeft <= 2;
+    rottNext.disabled = rottSlider.scrollLeft >= maxScroll - 2;
+  }
+
+  rottPrev.addEventListener('click', () => rottScrollBy(-1));
+  rottNext.addEventListener('click', () => rottScrollBy(1));
+  rottSlider.addEventListener('scroll', rottUpdateButtons, { passive: true });
+  rottUpdateButtons();
+
+  // Coburg Slider
+  const coburgSlider = document.getElementById('coburg-slider');
+  const coburgPrev   = document.getElementById('coburg-prev');
+  const coburgNext   = document.getElementById('coburg-next');
+
+  function coburgScrollBy(dir) {
+    const itemW = coburgSlider.querySelector('.rott-slider__item').offsetWidth + 12;
+    coburgSlider.scrollBy({ left: dir * itemW, behavior: 'smooth' });
+  }
+
+  function coburgUpdateButtons() {
+    const maxScroll = coburgSlider.scrollWidth - coburgSlider.clientWidth;
+    coburgPrev.disabled = coburgSlider.scrollLeft <= 2;
+    coburgNext.disabled = coburgSlider.scrollLeft >= maxScroll - 2;
+  }
+
+  coburgPrev.addEventListener('click', () => coburgScrollBy(-1));
+  coburgNext.addEventListener('click', () => coburgScrollBy(1));
+  coburgSlider.addEventListener('scroll', coburgUpdateButtons, { passive: true });
+  coburgUpdateButtons();
+
+  // Neubeuern Slider
+  const neubeuernSlider = document.getElementById('neubeuern-slider');
+  const neubeuernPrev   = document.getElementById('neubeuern-prev');
+  const neubeuernNext   = document.getElementById('neubeuern-next');
+
+  function neubeuernScrollBy(dir) {
+    const itemW = neubeuernSlider.querySelector('.rott-slider__item').offsetWidth + 12;
+    neubeuernSlider.scrollBy({ left: dir * itemW, behavior: 'smooth' });
+  }
+
+  function neubeuernUpdateButtons() {
+    const maxScroll = neubeuernSlider.scrollWidth - neubeuernSlider.clientWidth;
+    neubeuernPrev.disabled = neubeuernSlider.scrollLeft <= 2;
+    neubeuernNext.disabled = neubeuernSlider.scrollLeft >= maxScroll - 2;
+  }
+
+  neubeuernPrev.addEventListener('click', () => neubeuernScrollBy(-1));
+  neubeuernNext.addEventListener('click', () => neubeuernScrollBy(1));
+  neubeuernSlider.addEventListener('scroll', neubeuernUpdateButtons, { passive: true });
+  neubeuernUpdateButtons();
+
+  // Edling Slider
+  const edlingSlider = document.getElementById('edling-slider');
+  const edlingPrev   = document.getElementById('edling-prev');
+  const edlingNext   = document.getElementById('edling-next');
+
+  function edlingScrollBy(dir) {
+    const itemW = edlingSlider.querySelector('.rott-slider__item').offsetWidth + 12;
+    edlingSlider.scrollBy({ left: dir * itemW, behavior: 'smooth' });
+  }
+
+  function edlingUpdateButtons() {
+    const maxScroll = edlingSlider.scrollWidth - edlingSlider.clientWidth;
+    edlingPrev.disabled = edlingSlider.scrollLeft <= 2;
+    edlingNext.disabled = edlingSlider.scrollLeft >= maxScroll - 2;
+  }
+
+  edlingPrev.addEventListener('click', () => edlingScrollBy(-1));
+  edlingNext.addEventListener('click', () => edlingScrollBy(1));
+  edlingSlider.addEventListener('scroll', edlingUpdateButtons, { passive: true });
+  edlingUpdateButtons();
+
+  // Coburg Story Modal
+  const coburgModal     = document.getElementById('coburg-modal');
+  const coburgModalOpen = document.getElementById('coburg-story-open');
+  const coburgModalClose= document.getElementById('coburg-modal-close');
+
+  function openCoburgModal() {
+    coburgModal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    coburgModalClose.focus();
+  }
+  function closeCoburgModal() {
+    coburgModal.classList.remove('open');
+    document.body.style.overflow = '';
+    coburgModalOpen.focus();
+  }
+
+  coburgModalOpen.addEventListener('click', openCoburgModal);
+  coburgModalClose.addEventListener('click', closeCoburgModal);
+  coburgModal.addEventListener('click', e => { if (e.target === coburgModal) closeCoburgModal(); });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && coburgModal.classList.contains('open')) closeCoburgModal();
+  });
+
+  // Rott Story Modal
+  const rottModal      = document.getElementById('rott-modal');
+  const rottModalOpen  = document.getElementById('rott-story-open');
+  const rottModalClose = document.getElementById('rott-modal-close');
+
+  function openRottModal() {
+    rottModal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    rottModalClose.focus();
+  }
+  function closeRottModal() {
+    rottModal.classList.remove('open');
+    document.body.style.overflow = '';
+    rottModalOpen.focus();
+  }
+
+  rottModalOpen.addEventListener('click', openRottModal);
+  rottModalClose.addEventListener('click', closeRottModal);
+  rottModal.addEventListener('click', e => { if (e.target === rottModal) closeRottModal(); });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && rottModal.classList.contains('open')) closeRottModal();
+  });
+
+  // Neubeuern Story Modal
+  const neubeuernModal      = document.getElementById('neubeuern-modal');
+  const neubeuernModalOpen  = document.getElementById('neubeuern-story-open');
+  const neubeuernModalClose = document.getElementById('neubeuern-modal-close');
+
+  function openNeubeuernModal() {
+    neubeuernModal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    neubeuernModalClose.focus();
+  }
+  function closeNeubeuernModal() {
+    neubeuernModal.classList.remove('open');
+    document.body.style.overflow = '';
+    neubeuernModalOpen.focus();
+  }
+
+  neubeuernModalOpen.addEventListener('click', openNeubeuernModal);
+  neubeuernModalClose.addEventListener('click', closeNeubeuernModal);
+  neubeuernModal.addEventListener('click', e => { if (e.target === neubeuernModal) closeNeubeuernModal(); });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && neubeuernModal.classList.contains('open')) closeNeubeuernModal();
+  });
+
+  // Edling Story Modal
+  const edlingModal2      = document.getElementById('edling-modal');
+  const edlingModalOpen  = document.getElementById('edling-story-open');
+  const edlingModalClose = document.getElementById('edling-modal-close');
+
+  function openEdlingModal() {
+    edlingModal2.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    edlingModalClose.focus();
+  }
+  function closeEdlingModal() {
+    edlingModal2.classList.remove('open');
+    document.body.style.overflow = '';
+    edlingModalOpen.focus();
+  }
+
+  edlingModalOpen.addEventListener('click', openEdlingModal);
+  edlingModalClose.addEventListener('click', closeEdlingModal);
+  edlingModal2.addEventListener('click', e => { if (e.target === edlingModal2) closeEdlingModal(); });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && edlingModal2.classList.contains('open')) closeEdlingModal();
+  });
+
+  // Aschau Slider
+  const aschauSlider = document.getElementById('aschau-slider');
+  const aschauPrev   = document.getElementById('aschau-prev');
+  const aschauNext   = document.getElementById('aschau-next');
+
+  function aschauScrollBy(dir) {
+    const itemW = aschauSlider.querySelector('.rott-slider__item').offsetWidth + 12;
+    aschauSlider.scrollBy({ left: dir * itemW, behavior: 'smooth' });
+  }
+
+  function aschauUpdateButtons() {
+    const maxScroll = aschauSlider.scrollWidth - aschauSlider.clientWidth;
+    aschauPrev.disabled = aschauSlider.scrollLeft <= 2;
+    aschauNext.disabled = aschauSlider.scrollLeft >= maxScroll - 2;
+  }
+
+  aschauPrev.addEventListener('click', () => aschauScrollBy(-1));
+  aschauNext.addEventListener('click', () => aschauScrollBy(1));
+  aschauSlider.addEventListener('scroll', aschauUpdateButtons, { passive: true });
+  aschauUpdateButtons();
+
+  // Aschau Story Modal
+  const aschauModal      = document.getElementById('aschau-modal');
+  const aschauModalOpen  = document.getElementById('aschau-story-open');
+  const aschauModalClose = document.getElementById('aschau-modal-close');
+
+  function openAschauModal() {
+    aschauModal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    aschauModalClose.focus();
+  }
+  function closeAschauModal() {
+    aschauModal.classList.remove('open');
+    document.body.style.overflow = '';
+    aschauModalOpen.focus();
+  }
+
+  aschauModalOpen.addEventListener('click', openAschauModal);
+  aschauModalClose.addEventListener('click', closeAschauModal);
+  aschauModal.addEventListener('click', e => { if (e.target === aschauModal) closeAschauModal(); });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && aschauModal.classList.contains('open')) closeAschauModal();
+  });
+
+  // Neubeuern II Slider
+  const neubeuern2Slider = document.getElementById('neubeuern2-slider');
+  const neubeuern2Prev   = document.getElementById('neubeuern2-prev');
+  const neubeuern2Next   = document.getElementById('neubeuern2-next');
+
+  function neubeuern2ScrollBy(dir) {
+    const itemW = neubeuern2Slider.querySelector('.rott-slider__item').offsetWidth + 12;
+    neubeuern2Slider.scrollBy({ left: dir * itemW, behavior: 'smooth' });
+  }
+
+  function neubeuern2UpdateButtons() {
+    const maxScroll = neubeuern2Slider.scrollWidth - neubeuern2Slider.clientWidth;
+    neubeuern2Prev.disabled = neubeuern2Slider.scrollLeft <= 2;
+    neubeuern2Next.disabled = neubeuern2Slider.scrollLeft >= maxScroll - 2;
+  }
+
+  neubeuern2Prev.addEventListener('click', () => neubeuern2ScrollBy(-1));
+  neubeuern2Next.addEventListener('click', () => neubeuern2ScrollBy(1));
+  neubeuern2Slider.addEventListener('scroll', neubeuern2UpdateButtons, { passive: true });
+  neubeuern2UpdateButtons();
+
+  // Neubeuern II Story Modal
+  const neubeuern2Modal      = document.getElementById('neubeuern2-modal');
+  const neubeuern2ModalOpen  = document.getElementById('neubeuern2-story-open');
+  const neubeuern2ModalClose = document.getElementById('neubeuern2-modal-close');
+
+  function openNeubeuern2Modal() {
+    neubeuern2Modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    neubeuern2ModalClose.focus();
+  }
+  function closeNeubeuern2Modal() {
+    neubeuern2Modal.classList.remove('open');
+    document.body.style.overflow = '';
+    neubeuern2ModalOpen.focus();
+  }
+
+  neubeuern2ModalOpen.addEventListener('click', openNeubeuern2Modal);
+  neubeuern2ModalClose.addEventListener('click', closeNeubeuern2Modal);
+  neubeuern2Modal.addEventListener('click', e => { if (e.target === neubeuern2Modal) closeNeubeuern2Modal(); });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && neubeuern2Modal.classList.contains('open')) closeNeubeuern2Modal();
+  });
+
+  // (Slider-Bilder werden bereits durch den .ref-media img-Handler oben abgedeckt)
+</script>
+</body>
+</html>

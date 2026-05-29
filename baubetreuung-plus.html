@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="de" class="no-js">
+<head>
+<meta charset="utf-8">
+<script>document.documentElement.classList.remove("no-js")</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Baubetreuung Plus — Casago</title>
+<link rel="stylesheet" href="colors_and_type.css">
+<link rel="stylesheet" href="shared.css?v=2">
+<style>
+  /* Wider lead in hero so long sentence breaks cleanly */
+  .sub-hero p.lead{max-width:820px;text-wrap:pretty;}
+
+  /* "Passt das zu Ihnen?" card grid */
+  .fit-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:56px;}
+  .fit-card{background:#FFFFFF;border:1px solid #E5E5E5;border-radius:8px;padding:26px 28px 28px;display:flex;gap:18px;align-items:flex-start;transition:border-color .3s ease,box-shadow .3s ease;}
+  .fit-card:hover{background:#EEF5F6;border-color:#005F6A;box-shadow:0 4px 20px rgba(0,59,68,0.07);}
+  .fit-check{flex:none;width:22px;height:22px;border-radius:4px;background:#003B44;position:relative;margin-top:2px;}
+  .fit-check::after{content:"";position:absolute;left:6px;top:3px;width:6px;height:11px;border-right:2px solid #DAE9EC;border-bottom:2px solid #DAE9EC;transform:rotate(40deg);}
+  .fit-card b{display:block;font-size:15px;font-weight:500;color:#003B44;letter-spacing:-0.005em;margin-bottom:5px;line-height:1.3;}
+  .fit-card p{font-size:14px;color:#555555;line-height:1.55;margin:0;letter-spacing:0.01em;}
+  @media(max-width:900px){.fit-grid{grid-template-columns:1fr;}}
+
+  /* Benefit-Kacheln (wie Bauträger — Unser Ansatz) */
+  .benefits{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:64px;}
+  .benefit{padding:40px 36px 44px;background:#EEF5F6;border-radius:8px;border-bottom:3px solid #005F6A;transition:box-shadow .3s ease,transform .3s ease;}
+  .benefit:hover{box-shadow:0 8px 28px rgba(0,95,106,.09);transform:translateY(-3px);}
+  .benefit__label{font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:#005F6A;font-weight:500;margin-bottom:16px;}
+  .benefit h3{font-size:20px;font-weight:500;letter-spacing:-0.01em;line-height:1.25;margin:0 0 14px;color:#1A1A1A;}
+  .benefit p{font-size:16px;color:#444;line-height:1.7;margin:0;}
+  @media(max-width:960px){.benefits{grid-template-columns:1fr 1fr;}}
+  @media(max-width:600px){.benefits{grid-template-columns:1fr;}}
+
+  /* Compare table — warmer, besser lesbar */
+  .compare{
+    display:grid;
+    grid-template-columns:1.5fr 1fr 1fr 1.15fr;
+    margin-top:56px;
+    border-radius:10px;
+    overflow:hidden;
+    border:1px solid #D8D5CF;
+    background:#FFFFFF;
+    box-shadow:0 4px 24px rgba(0,59,68,0.08);
+    font-size:15px;
+  }
+  .compare > div{
+    padding:20px 26px;
+    border-bottom:1px solid #ECEAE6;
+    border-right:1px solid #ECEAE6;
+    line-height:1.55;
+    display:flex;
+    align-items:center;
+  }
+  .compare > div:nth-child(4n){border-right:none;}
+
+  /* Spalten-Header */
+  .compare .head{
+    background:#F5F3EF;
+    color:#1A1A1A;
+    font-size:15px;
+    font-weight:500;
+    letter-spacing:-0.01em;
+    padding:24px 26px 20px;
+    border-bottom:2px solid #D8D5CF;
+    border-right:1px solid #D8D5CF;
+    align-items:flex-end;
+  }
+  .compare .head:first-child{
+    background:transparent;
+    border-right:1px solid #D8D5CF;
+  }
+  .compare .head.hi{
+    background:#EEF5F6;
+    color:#003B44;
+    font-weight:500;
+    font-size:16px;
+    letter-spacing:-0.015em;
+    border-top:3px solid #005F6A;
+    padding-top:21px;
+    border-right:none;
+    border-bottom:2px solid #D8D5CF;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:6px;
+  }
+  .compare .head.hi .badge{
+    font-size:10px;
+    font-weight:500;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:#005F6A;
+    background:#D4E9EC;
+    padding:3px 8px;
+    border-radius:20px;
+    order:-1;
+  }
+
+  /* Zeilen-Labels */
+  .compare .lbl{
+    background:#FAFAF8;
+    color:#888;
+    font-size:13px;
+    font-weight:400;
+    text-transform:none;
+    letter-spacing:0.03em;
+    border-right:2px solid #ECEAE6;
+  }
+
+  /* Hervorgehobene Spalte */
+  .compare .hi-col{
+    background:#EEF5F6;
+    border-right:none;
+  }
+
+  /* Positiv */
+  .compare .chk{color:#1A5C63;font-weight:400;}
+  .compare .hi-col.chk{color:#003B44;font-weight:500;letter-spacing:-0.01em;}
+
+  /* Negativ / neutral */
+  .compare .no{color:#AAA;}
+
+  /* Zebra-Streifen für gerade Datenzeilen */
+  .compare .lbl:nth-child(8n+5),
+  .compare > div:nth-child(8n+6),
+  .compare > div:nth-child(8n+7),
+  .compare > div:nth-child(8n+8){background-color:#F7F6F3;}
+  .compare .hi-col:nth-child(8n+8){background:#E5F0F2;}
+
+  @media(max-width:900px){
+    .compare{grid-template-columns:1fr;}
+    .compare > div{border-right:none;}
+    .compare .head.hi{border-top:none;border-left:3px solid #005F6A;padding-top:20px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hdr solid">
+  <a href="index.html"><img src="assets/logo/casago-wortmarke-white.svg" alt="Casago"></a>
+  <nav>
+    <a href="index.html#wer-wir-sind">Wer wir sind</a>
+    <a href="index.html#was-uns-unterscheidet">Was uns unterscheidet</a>
+    <div class="has-dropdown">
+      <a href="index.html#geschaeftsbereiche" class="dropdown-trigger active">Geschäftsbereiche <span class="caret" aria-hidden="true"></span></a>
+      <div class="dropdown" role="menu">
+        <a href="bautraeger.html" class="dropdown__item" role="menuitem">
+          <span class="dropdown__body">
+            <b>Bauträger</b>
+            <span>Bestand &amp; Neubau auf eigenes Risiko</span>
+          </span>
+        </a>
+        <a href="baubetreuung-plus.html" class="dropdown__item" role="menuitem">
+          <span class="dropdown__body">
+            <b>Baubetreuung Plus</b>
+            <span>Ihr unabhängiger Vertreter</span>
+          </span>
+        </a>
+        <a href="projektrealisierung.html" class="dropdown__item" role="menuitem">
+          <span class="dropdown__body">
+            <b>Gemeinsame Projektrealisierung</b>
+            <span>Gemeinsam Werte schaffen</span>
+          </span>
+        </a>
+        <a href="begruenung.html" class="dropdown__item" role="menuitem">
+          <span class="dropdown__body">
+            <b>Begrünung &amp; Schwammstadt</b>
+            <span>Gründach · Solar · Wassermanagement</span>
+          </span>
+        </a>
+      </div>
+    </div>
+    <a href="index.html#ansatz">Unser Ansatz</a>
+    <a href="referenzen.html">Referenzen</a>
+    <a href="index.html#kontakt">Kontakt</a>
+  </nav>
+  <a class="cta-btn" href="index.html#kontakt">Projekt anfragen</a>
+</header>
+
+<nav class="breadcrumb">
+  <div class="container"><a href="index.html">Start</a><span class="sep">/</span><span>Baubetreuung Plus</span></div>
+</nav>
+
+<section class="sub-hero">
+  <div class="sub-hero__bg"><img src="assets/images/baubetreuung-hero.webp" alt=""></div>
+  <div class="sub-hero__veil"></div>
+  <div class="container">
+    <div class="kicker">Geschäftsbereich 02</div>
+    <h1>Baubetreuung Plus —<br><em>von der ersten Idee<br>zum fertigen Projekt.</em></h1>
+    <p class="lead">Eine echte Alternative zu Bauträger und Generalübernehmer: Sie bleiben Bauherr, wir sind Ihr Vertreter. Maximaler Einfluss — ohne eigene Ressourcen für Zeit, Kompetenzen oder Erfahrung einbringen zu müssen.</p>
+  </div>
+</section>
+
+<!-- DIE IDEE -->
+<section class="section">
+  <div class="container">
+    <div class="kicker reveal">Die Idee</div>
+    <h2 class="section-title reveal">Ihr Vertreter.<br>Ausschließlich in Ihrem Sinne.</h2>
+    <div class="split-row reveal" style="margin-top:72px;">
+      <div class="prose">
+        <p class="-intro">Mit „Baubetreuung Plus" eröffnen wir Bauherren eine echte Alternative zu den bekannten Marktmodellen. Anstelle eines Erwerbs vom Bauträger oder einer Vergabe an einen Generalübernehmer sichern Sie mit uns als Ihrem Vertreter größtmöglichen Einfluss auf Ihr Projekt.</p>
+        <p>Wir erstellen <strong>Entscheidungsvorlagen</strong> zu allen wesentlichen Festlegungen bei Bauausführung und Auftragsvergaben. Durch unsere Projektsteuerungstools haben Sie zu jedem Zeitpunkt Ein- und Überblick in allen Phasen der Projektrealisierung.</p>
+        <p>Als Ihr Vertreter sind Interessenkonflikte ausgeschlossen. Wir sind ausschließlich in Ihrem Sinne tätig — <strong>unabhängig, transparent</strong>, konsequent auf Qualität und Wirtschaftlichkeit ausgerichtet.</p>
+      </div>
+      <div class="split-img"><img src="assets/images/dachstuhl-bestand.webp" alt=""><div class="tag">Entscheidung Nr. 27</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- VERGLEICH -->
+<section class="band">
+  <div class="container">
+    <div class="kicker reveal">Die drei Wege</div>
+    <h2 class="section-title reveal">Was unterscheidet<br>Baubetreuung Plus?</h2>
+    <div class="compare reveal">
+      <div class="head"></div>
+      <div class="head">Bauträger-Kauf</div>
+      <div class="head">Generalübernehmer</div>
+      <div class="head hi"><span class="badge">Unser Modell</span>Baubetreuung Plus</div>
+
+      <div class="lbl">Einfluss auf Planung</div>
+      <div class="no">Gering</div>
+      <div class="no">Mittel</div>
+      <div class="hi-col chk">Maximal — Sie entscheiden.</div>
+
+      <div class="lbl">Interessenlage</div>
+      <div class="no">Bauträger profitiert vom Verkauf</div>
+      <div class="no">GÜ profitiert von Pauschale</div>
+      <div class="hi-col chk">100 % auf Ihrer Seite</div>
+
+      <div class="lbl">Vergabeform</div>
+      <div class="no">Festpreis-Paket</div>
+      <div class="no">Ein Ansprechpartner</div>
+      <div class="hi-col chk">Einzelvergabe pro Gewerk</div>
+
+      <div class="lbl">Kostentransparenz</div>
+      <div class="no">Kaufpreis als Blackbox</div>
+      <div class="no">Eingeschränkt</div>
+      <div class="hi-col chk">Offene Bücher</div>
+
+      <div class="lbl">Eigener Zeitaufwand</div>
+      <div class="chk">Gering</div>
+      <div class="chk">Mittel</div>
+      <div class="hi-col chk">Gering — wir koordinieren.</div>
+
+      <div class="lbl">Eigene Fachkompetenz nötig</div>
+      <div class="chk">Nein</div>
+      <div class="no">Empfohlen</div>
+      <div class="hi-col chk">Nicht erforderlich</div>
+    </div>
+  </div>
+</section>
+
+<!-- LEISTUNGSPHASEN -->
+<section class="section">
+  <div class="container">
+    <div class="kicker reveal">Aus einer Hand</div>
+    <h2 class="section-title reveal">Alle Phasen —<br>ohne Bruchstellen.</h2>
+    <p class="section-lead reveal" style="margin-top:24px;">Unser Angebot geht deutlich über die klassische kaufmännische oder technische Baubetreuung hinaus. Wir begleiten alle Phasen und verzahnen Projektentwicklung, Planung, Vergabe und Überwachung — so vermeiden wir häufige Störquellen und unnötige Kosten.</p>
+
+    <div class="benefits reveal">
+      <div class="benefit">
+        <div class="benefit__label">Phase 01</div>
+        <h3>Projektentwicklung</h3>
+        <p>Baurechtliche Prüfung, Fördermittel, Vermarktungspotentiale, Begleitung bei Bank- und Steuergesprächen.</p>
+      </div>
+      <div class="benefit">
+        <div class="benefit__label">Phase 02</div>
+        <h3>Planung</h3>
+        <p>Nahtlose Übergabe an Genehmigungs- und Ausführungsplanung, Leistungsverzeichnisse, Abstimmung aller Fachplaner.</p>
+      </div>
+      <div class="benefit">
+        <div class="benefit__label">Phase 03</div>
+        <h3>Vergabe &amp; Ausführung</h3>
+        <p>Einzelvergabe statt Generalübernehmer. Beste Anbieter pro Gewerk. Örtliche Bauleitung durch unser Team.</p>
+      </div>
+      <div class="benefit">
+        <div class="benefit__label">Phase 04</div>
+        <h3>Kaufmännisch &amp; Vermarktung</h3>
+        <p>Liquiditätssteuerung, Rechnungsfreigabe, Abnahme und Mängelbeseitigung. Auf Wunsch: Vermarktung durch unsere Partnergesellschaft.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ZITAT / VERSPRECHEN -->
+<section class="band dark">
+  <div class="container">
+    <div class="split-row reveal">
+      <div>
+        <div class="kicker" style="color:#DAE9EC;">Unser Versprechen</div>
+        <h3 style="font-size:40px;color:#FFF;">Ein Projektsteuerungs-Cockpit,<br>das Bauherren verstehen.</h3>
+        <p style="color:rgba(248,248,247,0.82);font-size:17px;line-height:1.7;">Unsere Auftraggeber werden über klar strukturierte Entscheidungsvorlagen in jede wesentliche Festlegung eingebunden — ohne in operativem Klein-Klein unterzugehen.</p>
+        <p style="color:rgba(248,248,247,0.82);font-size:17px;line-height:1.7;margin-top:18px;">Damit sich der Auftraggeber beispielsweise beim Firmengebäude in Rott am Inn auf die Expansion seiner Firma konzentrieren konnte, wurden in insgesamt <strong style="color:#DAE9EC;">43 Entscheidungsvorlagen</strong> alle wesentlichen Aspekte und Optionen erläutert und konkrete Empfehlungen ausgesprochen. Damit war unser Auftraggeber vollständig in alle wichtigen Entscheidungen eingebunden, ohne laufend auf der Baustelle präsent sein zu müssen. Laufendes Reporting rundete die Betreuung ab.</p>
+      </div>
+      <div class="split-img"><img src="assets/images/baubetreuung-hero.webp" alt=""><div class="tag">Ein Auszug</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- WANN PASST ES -->
+<section class="section">
+  <div class="container">
+    <div class="kicker reveal">Passt das zu Ihnen?</div>
+    <h2 class="section-title reveal">Baubetreuung Plus<br>ist das Richtige, wenn …</h2>
+    <div class="fit-grid reveal">
+
+      <div class="fit-card">
+        <span class="fit-check" aria-hidden="true"></span>
+        <div>
+          <b>Sie Bauherr bleiben wollen</b>
+          <p>Maximalen Einfluss behalten — auf jede wesentliche Entscheidung, ohne operativ einzutauchen.</p>
+        </div>
+      </div>
+
+      <div class="fit-card">
+        <span class="fit-check" aria-hidden="true"></span>
+        <div>
+          <b>Keine echte Einflussnahme beim Bauträger</b>
+          <p>Sie spüren, dass Bauträger-Modelle Ihnen kaum Mitsprache lassen — und das unbefriedigend ist.</p>
+        </div>
+      </div>
+
+      <div class="fit-card">
+        <span class="fit-check" aria-hidden="true"></span>
+        <div>
+          <b>Keine Zeit und/oder keine ausreichende Fachkompetenz</b>
+          <p>Sie können ein Projekt nicht selbst steuern — wir übernehmen Koordination, Planung und Überwachung für Sie.</p>
+        </div>
+      </div>
+
+      <div class="fit-card">
+        <span class="fit-check" aria-hidden="true"></span>
+        <div>
+          <b>Offene Bücher und Reporting</b>
+          <p>Transparente Kostenentwicklung und nachvollziehbare Abrechnungen sind Ihnen genauso wichtig wie ein laufendes Reporting an Ihren Steuerberater und Ihre Bank.</p>
+        </div>
+      </div>
+
+      <div class="fit-card">
+        <span class="fit-check" aria-hidden="true"></span>
+        <div>
+          <b>Alles aus einer Hand — von Planung bis Abnahme</b>
+          <p>Kein Bruch zwischen Phasen, kein Koordinationsaufwand zwischen verschiedenen Partnern.</p>
+        </div>
+      </div>
+
+      <div class="fit-card">
+        <span class="fit-check" aria-hidden="true"></span>
+        <div>
+          <b>Immobilie sanieren oder erweitern</b>
+          <p>Wo viele unklare Faktoren bestehen und Erfahrung im Umgang mit Bestand zählt.</p>
+        </div>
+      </div>
+
+      <div class="fit-card">
+        <span class="fit-check" aria-hidden="true"></span>
+        <div>
+          <b>Grundstück entwickeln</b>
+          <p>Mit besonderen baurechtlichen oder technischen Voraussetzungen, die spezifisches Know-how erfordern.</p>
+        </div>
+      </div>
+
+      <div class="fit-card">
+        <span class="fit-check" aria-hidden="true"></span>
+        <div>
+          <b>Fördermittel maximal ausschöpfen</b>
+          <p>KfW, BAFA, kommunale Programme — wir kennen die Möglichkeiten und begleiten die Antragstellung.</p>
+        </div>
+      </div>
+
+      <div class="fit-card">
+        <span class="fit-check" aria-hidden="true"></span>
+        <div>
+          <b>Schlechte Erfahrungen mit Vorprojekten</b>
+          <p>Etwa mit Generalübernehmern, die Kosten- oder Qualitätszusagen nicht eingehalten haben.</p>
+        </div>
+      </div>
+
+      <div class="fit-card">
+        <span class="fit-check" aria-hidden="true"></span>
+        <div>
+          <b>Einen Partner suchen, dem Sie wirklich vertrauen</b>
+          <p>Der ausschließlich in Ihrem Sinne handelt — ohne eigene Margen auf Vergaben, ohne Interessenkonflikte.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="container reveal">
+    <h2>Reden wir über<br>Ihre konkrete Situation.</h2>
+    <p>In einem ersten Gespräch klären wir, ob Baubetreuung Plus zu Ihrem Projekt passt — und wie der nächste Schritt aussehen kann.</p>
+    <div class="btn-row">
+      <a class="btn-white" href="index.html#kontakt">Erstgespräch vereinbaren</a>
+      <a class="btn-ghost" href="referenzen.html">Referenzen ansehen</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="container">
+    <div class="foot-brand"><img src="assets/logo/casago-wortmarke-white.svg" alt=""><div class="claim">Planen. Umsetzen. Leben.</div></div>
+    <div><h4>Geschäftsbereiche</h4><ul><li><a href="bautraeger.html">Bauträger</a></li><li><a href="baubetreuung-plus.html">Baubetreuung Plus</a></li><li><a href="begruenung.html">Begrünung</a></li></ul></div>
+    <div><h4>Begrünung</h4><ul><li><a href="secalflor.html">SECALFLOR</a></li><li><a href="gruendach.html">Gründach</a></li><li><a href="gruendach.html#solar">Solargründach</a></li><li><a href="schwammstadt.html">Schwammstadt</a></li></ul></div>
+    <div><h4>Unternehmen</h4><ul><li><a href="referenzen.html">Referenzen</a></li><li><a href="presse.html">Presse</a></li></ul></div>
+    <div><h4>Kontakt</h4><ul><li>info@casago.de</li><li>Deutschland</li></ul></div>
+  </div>
+  <div class="foot-bar"><div>© 2026 Casago GmbH.</div><div class="links"><a href="impressum.html">Impressum</a><a href="#">Datenschutz</a></div></div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) { x.target.classList.add('in'); io.unobserve(x.target); } }), { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>

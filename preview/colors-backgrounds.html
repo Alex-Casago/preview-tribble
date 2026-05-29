@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html,body{margin:0;padding:0;background:var(--brand-bg-background);}
+  .wrap{padding:28px 32px;}
+  .row{display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
+  .sw{border-radius:8px; overflow:hidden; border:1px solid var(--brand-ui-border);}
+  .chip{height:86px;}
+  .meta{padding:10px 12px; background:var(--brand-bg-surface); font-size:12px; line-height:1.4;}
+  .name{font-weight:500; color:var(--brand-text-primary);}
+  .hex{color:var(--brand-text-secondary); font-variant-numeric:tabular-nums; letter-spacing:0.02em; text-transform:uppercase;}
+</style>
+</head><body>
+<div class="wrap">
+  <div class="row">
+    <div class="sw"><div class="chip" style="background:#F8F8F7"></div><div class="meta"><div class="name">Background</div><div class="hex">#F8F8F7</div></div></div>
+    <div class="sw"><div class="chip" style="background:#FFFFFF; border-bottom:1px solid var(--brand-ui-border)"></div><div class="meta"><div class="name">Surface</div><div class="hex">#FFFFFF</div></div></div>
+    <div class="sw"><div class="chip" style="background:#20252B"></div><div class="meta"><div class="name">Dark</div><div class="hex">#20252B</div></div></div>
+    <div class="sw"><div class="chip" style="background:#050C11"></div><div class="meta"><div class="name">Page Dark</div><div class="hex">#050C11</div></div></div>
+  </div>
+</div>
+</body></html>

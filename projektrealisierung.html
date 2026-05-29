@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="de" class="no-js">
+<head>
+<meta charset="utf-8">
+<script>document.documentElement.classList.remove("no-js")</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gemeinsame Projektrealisierung — Casago</title>
+<link rel="stylesheet" href="colors_and_type.css">
+<link rel="stylesheet" href="shared.css?v=2">
+<style>
+  /* ── Dilemma-Karten ── */
+  .dilemma-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:56px;}
+  .dilemma-card{
+    background:#FFFFFF;
+    border:1px solid #D5D3CE;
+    border-top:3px solid #005F6A;
+    border-radius:8px;
+    padding:40px 36px 44px;
+    transition:border-color .3s ease,box-shadow .3s ease,transform .3s ease;
+  }
+  .dilemma-card:hover{
+    border-top-color:#1A8B9A;
+    box-shadow:0 8px 28px rgba(0,95,106,.09);
+    transform:translateY(-3px);
+  }
+  .dilemma-card h3{
+    font-size:22px;
+    font-weight:500;
+    letter-spacing:-0.01em;
+    line-height:1.25;
+    margin:0 0 16px;
+    color:#1A1A1A;
+  }
+  .dilemma-card p{
+    font-size:17px;
+    color:#444;
+    line-height:1.7;
+    margin:0;
+  }
+
+  /* ── Grundmodell-Schritte ── */
+  .steps{display:flex;flex-direction:column;gap:0;margin-top:56px;}
+  .step{display:grid;grid-template-columns:72px 1fr;gap:0 36px;padding:40px 0;border-bottom:1px solid #D5D3CE;position:relative;}
+  .step:last-child{border-bottom:none;}
+  .step__num{
+    font-size:13px;
+    letter-spacing:0.14em;
+    color:#005F6A;
+    text-transform:uppercase;
+    font-weight:500;
+    padding-top:6px;
+  }
+  .step__body h3{font-size:24px;font-weight:500;letter-spacing:-0.01em;margin:0 0 12px;color:#1A1A1A;}
+  .step__body p{font-size:17px;color:#444;line-height:1.7;margin:0;}
+
+  /* ── Vorteile ── */
+  .benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px;}
+  .benefit{
+    padding:40px 36px 44px;
+    background:#EEF5F6;
+    border-radius:8px;
+    border-bottom:3px solid #005F6A;
+  }
+  .benefit__label{
+    font-size:13px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:#005F6A;
+    font-weight:500;
+    margin-bottom:16px;
+  }
+  .benefit h3{font-size:22px;font-weight:500;letter-spacing:-0.01em;margin:0 0 14px;color:#1A1A1A;}
+  .benefit p{font-size:17px;color:#444;line-height:1.7;margin:0;}
+
+  /* ── Für-wen ── */
+  .fuerwen-title{font-size:28px;font-weight:500;letter-spacing:-0.01em;color:#1A1A1A;margin:72px 0 0;}
+
+  .fuerwen-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:32px;}
+  .fuerwen-card{
+    background:#FFFFFF;
+    border:1px solid #D5D3CE;
+    border-radius:8px;
+    padding:40px 40px 44px;
+    transition:border-color .3s ease,box-shadow .3s ease,transform .3s ease;
+  }
+  .fuerwen-card:hover{
+    background:#EEF5F6;
+    border-color:#005F6A;
+    box-shadow:0 4px 20px rgba(0,59,68,0.07);
+  }
+  .fuerwen-label{
+    font-size:13px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:#005F6A;
+    font-weight:500;
+    margin-bottom:18px;
+    display:block;
+  }
+  .fuerwen-card h4{
+    font-size:22px;
+    font-weight:500;
+    letter-spacing:-0.01em;
+    line-height:1.25;
+    margin:0 0 14px;
+    color:#1A1A1A;
+  }
+  .fuerwen-card p{font-size:17px;color:#444;line-height:1.7;margin:0;}
+
+  /* Textfluss */
+  .sub-hero p.lead{max-width:900px;}
+  .prose p.-intro{max-width:none;}
+
+  @media(max-width:960px){
+    .dilemma-grid{grid-template-columns:1fr;}
+    .benefits{grid-template-columns:1fr;}
+    .fuerwen-grid{grid-template-columns:1fr;}
+    .step{grid-template-columns:1fr;}
+    .step__num{margin-bottom:8px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hdr solid">
+  <a href="index.html"><img src="assets/logo/casago-wortmarke-white.svg" alt="Casago"></a>
+  <nav>
+    <a href="index.html#wer-wir-sind">Wer wir sind</a>
+    <a href="index.html#was-uns-unterscheidet">Was uns unterscheidet</a>
+    <div class="has-dropdown">
+      <a href="index.html#geschaeftsbereiche" class="dropdown-trigger active">Geschäftsbereiche <span class="caret" aria-hidden="true"></span></a>
+      <div class="dropdown" role="menu">
+        <a href="bautraeger.html" class="dropdown__item" role="menuitem">
+          <span class="dropdown__body">
+            <b>Bauträger</b>
+            <span>Bestand &amp; Neubau auf eigenes Risiko</span>
+          </span>
+        </a>
+        <a href="baubetreuung-plus.html" class="dropdown__item" role="menuitem">
+          <span class="dropdown__body">
+            <b>Baubetreuung Plus</b>
+            <span>Ihr unabhängiger Vertreter</span>
+          </span>
+        </a>
+        <a href="projektrealisierung.html" class="dropdown__item" role="menuitem">
+          <span class="dropdown__body">
+            <b>Gemeinsame Projektrealisierung</b>
+            <span>Gemeinsam Werte schaffen</span>
+          </span>
+        </a>
+        <a href="begruenung.html" class="dropdown__item" role="menuitem">
+          <span class="dropdown__body">
+            <b>Begrünung &amp; Schwammstadt</b>
+            <span>Gründach · Solar · Wassermanagement</span>
+          </span>
+        </a>
+      </div>
+    </div>
+    <a href="index.html#ansatz">Unser Ansatz</a>
+    <a href="referenzen.html">Referenzen</a>
+    <a href="index.html#kontakt">Kontakt</a>
+  </nav>
+  <a class="cta-btn" href="index.html#kontakt">Projekt anfragen</a>
+</header>
+
+<nav class="breadcrumb">
+  <div class="container"><a href="index.html">Start</a><span class="sep">/</span><span>Gemeinsame Projektrealisierung</span></div>
+</nav>
+
+<section class="sub-hero">
+  <div class="sub-hero__bg"><img src="uploads/Gemeinsame Projektrealisierung_Hintergrund.webp" alt=""></div>
+  <div class="sub-hero__veil"></div>
+  <div class="container">
+    <div class="kicker">Geschäftsbereich 03</div>
+    <h1>Gemeinsame<br><em>Projektrealisierung.</em></h1>
+    <p class="lead">Profitieren Sie unmittelbar von unserem Know-how — und realisieren Sie gemeinsam mit uns einen finanziellen Mehrwert. Ein Grundmodell, das sich an Ihre persönliche Situation anpassen lässt.</p>
+  </div>
+</section>
+
+<!-- DIE AUSGANGSLAGE -->
+<section class="section" id="marktdilemma">
+  <div class="container">
+    <div class="kicker reveal">Die Ausgangslage</div>
+    <h2 class="section-title reveal">Sie besitzen etwas Wertvolles.<br>Aber der Markt zeigt es nicht.</h2>
+    <div class="prose reveal" style="margin-top:40px;max-width:860px;">
+      <p class="-intro">Viele Eigentümer stehen vor derselben Situation: Das Grundstück oder die Immobilie ist mehr wert als der aktuelle Marktpreis hergibt. Aber die Entwicklung zum Objekt mit echtem Potenzial erfordert Kompetenzen, die kaum jemand von sich selbst erwarten kann.</p>
+    </div>
+    <div class="dilemma-grid reveal">
+      <div class="dilemma-card">
+        <h3>Der Verkaufspreis enttäuscht</h3>
+        <p>Der Markt bewertet Ihr Grundstück oder Bestandsobjekt nicht so, wie Sie es sich vorstellen. Zu Recht – denn sein wahres Potenzial ist noch nicht realisiert.</p>
+      </div>
+      <div class="dilemma-card">
+        <h3>Die Entwicklung überfordert</h3>
+        <p>Ein Projekt zu entwickeln, zu planen, zu genehmigen, zu finanzieren und zu vermarkten – das ist ein Vollzeit-Beruf. Einer, den wir haben.</p>
+      </div>
+      <div class="dilemma-card">
+        <h3>Der klassische Weg ist teuer</h3>
+        <p>Architekten, Projektmanager, GU, Makler – jeder nimmt seine Marge. Am Ende bleibt weniger, als Ihr Objekt eigentlich wert ist.</p>
+      </div>
+    </div>
+    <h3 class="fuerwen-title reveal">Für wen ist die gemeinsame Projektrealisierung geeignet?</h3>
+    <div class="fuerwen-grid reveal">
+      <div class="fuerwen-card">
+        <div class="fuerwen-label">Eigentümer ohne Verkaufszufriedenheit</div>
+        <p>Ihr Grundstück oder Ihre Immobilie bringt am Markt nicht, was sie verdient. Sie ahnen, dass mehr möglich wäre – wenn jemand es entwickelt.</p>
+      </div>
+      <div class="fuerwen-card">
+        <div class="fuerwen-label">Erben und Nachfolger</div>
+        <p>Geerbte Immobilien oder Grundstücke mit ungenutztem Potenzial. Keine eigene Baukompetenz, aber das Objekt soll zu seinem wahren Wert kommen.</p>
+      </div>
+      <div class="fuerwen-card">
+        <div class="fuerwen-label">Gewerbliche Eigentümer</div>
+        <p>Betriebe mit Nachfolgethemen, nicht mehr benötigten Flächen oder Objekten, die durch Entwicklung aufgewertet werden können.</p>
+      </div>
+      <div class="fuerwen-card">
+        <div class="fuerwen-label">Eigentümer ohne Liquidität</div>
+        <p>Das Objekt ist das Kapital. CASAGO bringt die Leistung – und optional vermitteln wir Investoren für die Vorfinanzierung.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DAS GRUNDMODELL -->
+<section class="band" id="grundmodell">
+  <div class="container">
+    <div class="kicker reveal">Unser Ansatz</div>
+    <h2 class="section-title reveal">Ein Grundmodell —<br>flexibel auf Sie zugeschnitten.</h2>
+    <div class="prose reveal" style="margin-top:32px;max-width:800px;">
+      <p>Auf Grund dieser Rahmenbedingungen haben wir ein Konzept für die gemeinsame Realisierung von Bestands- und Neubauprojekten entwickelt, bei dem Sie unmittelbar von unserem Wissen und Know-how profitieren und damit einen finanziellen Mehrwert realisieren können.</p>
+    </div>
+    <div class="steps reveal">
+      <div class="step">
+        <div class="step__num">01</div>
+        <div class="step__body">
+          <h3>Kennenlernen &amp; Vertrauen aufbauen</h3>
+          <p>In gemeinsamen Gesprächen stellen wir fest, ob das notwendige wechselseitige Vertrauen und ein wertschätzendes Miteinander vorhanden ist — die Basis für jeden gemeinsamen Projekterfolg.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step__num">02</div>
+        <div class="step__body">
+          <h3>Situation &amp; Erwartungen klären</h3>
+          <p>Wir analysieren Ihre persönliche Situation, Ihr Grundstück oder Objekt sowie Ihre Erwartungshaltung. Daraus leiten wir ab, wie eine gemeinsame Projektrealisierung konkret aussehen kann.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step__num">03</div>
+        <div class="step__body">
+          <h3>Modell individuell anpassen</h3>
+          <p>Das Grundmodell wird auf Ihre persönliche Situation zugeschnitten. Ob Bestand oder Neubau, Teilrealisierung oder vollständige Partnerschaft — wir entwickeln gemeinsam die passende Struktur.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step__num">04</div>
+        <div class="step__body">
+          <h3>Gemeinsame Umsetzung</h3>
+          <p>Sie profitieren von unserem jahrzehntelangen Know-how in Projektentwicklung, Finanzierung, Planung und Umsetzung — und realisieren damit einen finanziellen Mehrwert, der alleine nicht möglich wäre.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VORTEILE -->
+<section class="section" id="vorteile" style="background:#FAFAF8;">
+  <div class="container">
+    <div class="kicker reveal">Was Sie gewinnen</div>
+    <h2 class="section-title reveal">Ihr Mehrwert<br>durch Partnerschaft.</h2>
+    <div class="benefits reveal">
+      <div class="benefit">
+        <div class="benefit__label">Know-how</div>
+        <h3>Erfahrung, die zählt</h3>
+        <p>Ein interdisziplinäres Team aus Projektentwicklern, Finanzierungs- und Vermarktungsprofis, Architekten und Bauleitern — unmittelbar für Sie.</p>
+      </div>
+      <div class="benefit">
+        <div class="benefit__label">Finanziell</div>
+        <h3>Mehrwert realisieren</h3>
+        <p>Durch unser Netzwerk, unsere Verhandlungsstärke und tiefes Marktverständnis heben wir Potentiale, die für Einzelne nicht zugänglich wären.</p>
+      </div>
+      <div class="benefit">
+        <div class="benefit__label">Partnerschaftlich</div>
+        <h3>Auf Augenhöhe</h3>
+        <p>Wir arbeiten nur dann zusammen, wenn wechselseitiges Vertrauen und ein wertschätzendes Miteinander vorhanden ist. Kein Projekt ohne diese Grundlage.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ZITAT -->
+<section class="band dark">
+  <div class="container">
+    <div class="split-row reveal">
+      <div>
+        <div class="kicker" style="color:#DAE9EC;">Unser Grundsatz</div>
+        <h3 style="font-size:38px;color:#FFF;line-height:1.2;">Nicht „Ihr" Projekt.<br>Unser gemeinsames.</h3>
+        <p style="color:rgba(248,248,247,0.82);font-size:17px;line-height:1.7;margin-top:20px;">Weil wir mit Herzblut Projekte realisieren und durch eigene Projekte alle damit verbundenen Herausforderungen selbst kennen, unterscheiden wir nicht nach „unserem" und „Ihrem" Projekt.</p>
+        <p style="color:rgba(248,248,247,0.82);font-size:17px;line-height:1.7;margin-top:18px;">In gemeinsamen Gesprächen stellen wir fest, welche Vorteile eine Partnerschaft für Sie bedeutet — und ob das notwendige Vertrauen auf beiden Seiten vorhanden ist.</p>
+      </div>
+      <div class="split-img"><img src="uploads/Gemeinsame Projektrealisierung_Unser Grundsatz.webp" alt="Gemeinsames Projekt"></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-band" id="kontakt">
+  <div class="container reveal">
+    <div class="kicker" style="color:#DAE9EC;">Erste Schritte</div>
+    <h2>Lassen Sie uns gemeinsam<br>herausfinden, was möglich ist.</h2>
+    <p>In einem ersten unverbindlichen Gespräch klären wir, ob und wie eine gemeinsame Projektrealisierung für Sie sinnvoll sein könnte.</p>
+    <div class="btn-row">
+      <a class="btn-white" href="index.html#kontakt">Gespräch vereinbaren</a>
+      <a class="btn-ghost" href="referenzen.html">Referenzen ansehen</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="container">
+    <div class="foot-brand"><img src="assets/logo/casago-wortmarke-white.svg" alt=""><div class="claim">Planen. Umsetzen. Leben.</div></div>
+    <div><h4>Geschäftsbereiche</h4><ul>
+      <li><a href="bautraeger.html">Bauträger</a></li>
+      <li><a href="baubetreuung-plus.html">Baubetreuung Plus</a></li>
+      <li><a href="projektrealisierung.html">Gemeinsame Projektrealisierung</a></li>
+      <li><a href="begruenung.html">Begrünung</a></li>
+    </ul></div>
+    <div><h4>Begrünung</h4><ul>
+      <li><a href="secalflor.html">SECALFLOR-System</a></li>
+      <li><a href="gruendach.html">Gründach</a></li>
+      <li><a href="gruendach.html#solar">Solargründach</a></li>
+      <li><a href="schwammstadt.html">Schwammstadt</a></li>
+    </ul></div>
+    <div><h4>Unternehmen</h4><ul><li><a href="referenzen.html">Referenzen</a></li><li><a href="presse.html">Presse</a></li></ul></div>
+    <div><h4>Kontakt</h4><ul>
+      <li>info@casago.de</li>
+      <li>Deutschland</li>
+      </ul></div>
+  </div>
+  <div class="foot-bar"><div>© 2026 Casago GmbH. Alle Rechte vorbehalten.</div><div class="links"><a href="impressum.html">Impressum</a><a href="#">Datenschutz</a></div></div>
+</footer>
+
+<script>
+  const hdr = document.getElementById('hdr') || document.querySelector('.hdr');
+  const io = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) { x.target.classList.add('in'); io.unobserve(x.target); } }), { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>

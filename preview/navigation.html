@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html,body{margin:0;padding:0;background:var(--brand-bg-dark);}
+  /* Werte aus shared.css .hdr — weiße Links auf Petrol, Hell-Petrol für aktiv/hover */
+  .wrap{padding:18px 32px; display:flex; align-items:center; justify-content:space-between;}
+  .logo img{height:22px; display:block;}
+  nav{display:flex; gap:32px;}
+  nav a{color:#FFFFFF; opacity:0.85; text-decoration:none; font-size:14px; letter-spacing:0.02em; transition:opacity .2s ease, color .2s ease;}
+  nav a:hover,nav a.active{opacity:1; color:#DAE9EC;}
+  .cta{background:rgba(0,59,68,0.55); border:1px solid rgba(255,255,255,0.9); color:#FFFFFF; padding:10px 18px; border-radius:4px; font-size:13px; letter-spacing:0.04em; font-weight:500; transition:background .2s, border-color .2s;}
+  .cta:hover{background:#1A8B9A; border-color:#1A8B9A;}
+</style></head><body>
+<div class="wrap">
+  <div class="logo"><img src="../assets/logo/casago-wortmarke-white.svg" alt=""></div>
+  <nav>
+    <a href="#" class="active">Leistungen</a>
+    <a href="#">Projekte</a>
+    <a href="#">Über uns</a>
+    <a href="#">Kontakt</a>
+  </nav>
+  <button class="cta">Projekt anfragen</button>
+</div>
+</body></html>

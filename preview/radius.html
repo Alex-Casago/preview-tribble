@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html,body{margin:0;padding:0;background:var(--brand-bg-background);}
+  .wrap{padding:32px 40px; display:flex; gap:40px; align-items:flex-end;}
+  .r{display:flex; flex-direction:column; gap:10px; align-items:center;}
+  .box{width:110px; height:80px; background:var(--brand-bg-surface); border:1px solid var(--brand-ui-border);}
+  .lbl{font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--brand-text-secondary);}
+  .lbl b{display:block; color:var(--brand-text-primary); font-weight:500; font-size:13px; letter-spacing:0; text-transform:none; margin-bottom:2px;}
+  .bad{opacity:0.45;}
+</style></head><body>
+<div class="wrap">
+  <div class="r"><div class="box" style="border-radius:4px"></div><div class="lbl"><b>Small</b>4 px</div></div>
+  <div class="r"><div class="box" style="border-radius:8px"></div><div class="lbl"><b>Default</b>8 px</div></div>
+  <div class="r"><div class="box" style="border-radius:12px"></div><div class="lbl"><b>Large</b>12 px · max</div></div>
+  <div class="r bad"><div class="box" style="border-radius:20px; border-style:dashed"></div><div class="lbl"><b>✕ 20 px</b>verspielt</div></div>
+</div>
+</body></html>

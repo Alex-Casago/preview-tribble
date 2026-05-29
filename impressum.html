@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="de" class="no-js">
+<head>
+<meta charset="utf-8">
+<script>document.documentElement.classList.remove("no-js")</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Impressum — Casago</title>
+<link rel="stylesheet" href="colors_and_type.css">
+<link rel="stylesheet" href="shared.css?v=2">
+<style>
+  /* ── Impressum-spezifische Stile ── */
+  .impr-hero {
+    background: #003B44;
+    color: #FFFFFF;
+    padding: 148px 48px 72px;
+  }
+  .impr-hero .container {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .impr-hero .kicker {
+    color: #DAE9EC;
+    margin-bottom: 20px;
+  }
+  .impr-hero h1 {
+    font-size: clamp(38px, 4.5vw, 64px);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.06;
+    margin: 0;
+    color: #FFFFFF;
+  }
+
+  /* ── Content area ── */
+  .impr-body {
+    padding: 96px 48px 120px;
+    background: #FAFAF8;
+  }
+  .impr-body .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 0 96px;
+    align-items: start;
+  }
+
+  /* Sidebar (sticky label column) */
+  .impr-sidebar {
+    position: sticky;
+    top: 80px;
+  }
+  .impr-sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border-left: 1px solid #E5E5E5;
+  }
+  .impr-sidebar nav a {
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    color: #666666;
+    padding: 10px 0 10px 20px;
+    border-left: 2px solid transparent;
+    margin-left: -1px;
+    transition: color .2s ease, border-color .2s ease;
+    line-height: 1.4;
+  }
+  .impr-sidebar nav a:hover,
+  .impr-sidebar nav a.active {
+    color: #003B44;
+    border-left-color: #005F6A;
+  }
+
+  /* Content sections */
+  .impr-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .impr-section {
+    padding: 56px 0;
+    border-bottom: 1px solid #E5E5E5;
+  }
+  .impr-section:first-child {
+    padding-top: 0;
+  }
+  .impr-section:last-child {
+    border-bottom: none;
+  }
+
+  .impr-section__label {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #005F6A;
+    margin-bottom: 24px;
+  }
+
+  .impr-section h2 {
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    line-height: 1.2;
+    margin: 0 0 28px;
+    color: #1A1A1A;
+  }
+
+  /* Field rows */
+  .impr-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .impr-field {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 16px;
+    padding: 14px 0;
+    border-top: 1px solid #E5E5E5;
+    align-items: baseline;
+  }
+  .impr-field:first-child {
+    border-top: none;
+  }
+  .impr-field__key {
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    color: #666666;
+    line-height: 1.5;
+  }
+  .impr-field__val {
+    font-size: 15px;
+    letter-spacing: 0.015em;
+    color: #1A1A1A;
+    line-height: 1.55;
+  }
+  .impr-field__val a {
+    color: #005F6A;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .impr-field__val a:hover {
+    color: #1A8B9A;
+  }
+
+  /* Prose block */
+  .impr-prose {
+    font-size: 15px;
+    letter-spacing: 0.015em;
+    line-height: 1.65;
+    color: #333333;
+    max-width: 600px;
+  }
+  .impr-prose a {
+    color: #005F6A;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .impr-prose a:hover { color: #1A8B9A; }
+
+  /* Erlaubnisse */
+  .impr-erlaubnisse {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 4px;
+  }
+  .impr-erlaubnis {
+    background: #EEF5F6;
+    border-radius: 8px;
+    padding: 20px 24px;
+  }
+  .impr-erlaubnis__basis {
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: #005F6A;
+    margin-bottom: 6px;
+  }
+  .impr-erlaubnis__name {
+    font-size: 17px;
+    font-weight: 500;
+    color: #003B44;
+    letter-spacing: -0.005em;
+  }
+
+  /* Sprachen pills */
+  .lang-pills {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+  .lang-pill {
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    padding: 5px 12px;
+    background: #EEF5F6;
+    color: #003B44;
+    border-radius: 999px;
+  }
+
+  @media (max-width: 900px) {
+    .impr-hero { padding: 120px 20px 52px; }
+    .impr-body { padding: 56px 20px 80px; }
+    .impr-body .container {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    .impr-sidebar { display: none; }
+    .impr-field { grid-template-columns: 1fr; gap: 4px; }
+    .impr-field__key { font-size: 12px; color: #999999; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header class="hdr solid">
+  <a href="index.html"><img src="assets/logo/casago-wortmarke-white.svg" alt="Casago"></a>
+  <nav>
+    <a href="index.html#wer-wir-sind">Wer wir sind</a>
+    <a href="index.html#was-uns-unterscheidet">Was uns unterscheidet</a>
+    <div class="has-dropdown">
+      <a href="index.html#geschaeftsbereiche" class="dropdown-trigger">Geschäftsbereiche <span class="caret" aria-hidden="true"></span></a>
+      <div class="dropdown" role="menu">
+        <a href="bautraeger.html" class="dropdown__item" role="menuitem">
+          <span class="dropdown__body">
+            <b>Bauträger</b>
+            <span>Bestand &amp; Neubau auf eigenes Risiko</span>
+          </span>
+        </a>
+        <a href="baubetreuung-plus.html" class="dropdown__item" role="menuitem">
+          <span class="dropdown__body">
+            <b>Baubetreuung Plus</b>
+            <span>Ihr unabhängiger Vertreter</span>
+          </span>
+        </a>
+        <a href="projektrealisierung.html" class="dropdown__item" role="menuitem">
+          <span class="dropdown__body">
+            <b>Gemeinsame Projektrealisierung</b>
+            <span>Gemeinsam Werte schaffen</span>
+          </span>
+        </a>
+        <a href="begruenung.html" class="dropdown__item" role="menuitem">
+          <span class="dropdown__body">
+            <b>Begrünung &amp; Schwammstadt</b>
+            <span>Gründach · Solar · Wassermanagement</span>
+          </span>
+        </a>
+      </div>
+    </div>
+    <a href="index.html#ansatz">Unser Ansatz</a>
+    <a href="referenzen.html">Referenzen</a>
+    <a href="index.html#kontakt">Kontakt</a>
+  </nav>
+  <a class="cta-btn" href="index.html#kontakt">Projekt anfragen</a>
+</header>
+
+<!-- ── Breadcrumb ── -->
+<nav class="breadcrumb">
+  <div class="container">
+    <a href="index.html">Start</a>
+    <span class="sep">/</span>
+    <span>Impressum</span>
+  </div>
+</nav>
+
+<!-- ── Hero ── -->
+<section class="impr-hero">
+  <div class="container">
+    <div class="kicker">Rechtliches</div>
+    <h1>Impressum</h1>
+  </div>
+</section>
+
+<!-- ── Body ── -->
+<main class="impr-body">
+  <div class="container">
+
+    <!-- Sidebar Nav -->
+    <aside class="impr-sidebar">
+      <nav>
+        <a href="#angaben">Angaben gemäß § 5 TMG</a>
+        <a href="#kontakt">Kontakt</a>
+        <a href="#ustid">Umsatzsteuer-ID</a>
+        <a href="#redaktion">Redaktionell Verantwortlich</a>
+        <a href="#eu">EU-Streitschlichtung</a>
+        <a href="#vsbg">Verbraucherstreitbeilegung</a>
+        <a href="#dsa">Zentrale Kontaktstelle (DSA)</a>
+        <a href="#erlaubnisse">Erlaubnisse nach GewO</a>
+        <a href="#aufsicht">Aufsichtsbehörde</a>
+      </nav>
+    </aside>
+
+    <!-- Sections -->
+    <div class="impr-sections">
+
+      <!-- 1. Angaben -->
+      <section class="impr-section reveal" id="angaben">
+        <div class="impr-section__label">§ 5 TMG</div>
+        <h2>Angaben gemäß § 5 TMG</h2>
+        <div class="impr-fields">
+          <div class="impr-field">
+            <span class="impr-field__key">Unternehmen</span>
+            <span class="impr-field__val">Casago GmbH</span>
+          </div>
+          <div class="impr-field">
+            <span class="impr-field__key">Adresse</span>
+            <span class="impr-field__val">Am Queracker 6<br>D-83134 Prutting</span>
+          </div>
+          <div class="impr-field">
+            <span class="impr-field__key">Handelsregister</span>
+            <span class="impr-field__val">HRB 29265</span>
+          </div>
+          <div class="impr-field">
+            <span class="impr-field__key">Registergericht</span>
+            <span class="impr-field__val">Amtsgericht Traunstein</span>
+          </div>
+          <div class="impr-field">
+            <span class="impr-field__key">Vertreten durch</span>
+            <span class="impr-field__val">Fred Fröhlich</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Kontakt -->
+      <section class="impr-section reveal" id="kontakt">
+        <div class="impr-section__label">Erreichbarkeit</div>
+        <h2>Kontakt</h2>
+        <div class="impr-fields">
+          <div class="impr-field">
+            <span class="impr-field__key">Telefon</span>
+            <span class="impr-field__val"><a href="tel:+4980369086986">+49 8036 – 908 69 86</a></span>
+          </div>
+          <div class="impr-field">
+            <span class="impr-field__key">Telefax</span>
+            <span class="impr-field__val">+49 8036 – 908 65 29</span>
+          </div>
+          <div class="impr-field">
+            <span class="impr-field__key">E-Mail</span>
+            <span class="impr-field__val"><a href="mailto:info@casago.de">info@casago.de</a></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. USt-ID -->
+      <section class="impr-section reveal" id="ustid">
+        <div class="impr-section__label">Steuerrecht</div>
+        <h2>Umsatzsteuer-Identifikationsnummer</h2>
+        <div class="impr-fields">
+          <div class="impr-field">
+            <span class="impr-field__key">Grundlage</span>
+            <span class="impr-field__val">§ 27 a Umsatzsteuergesetz</span>
+          </div>
+          <div class="impr-field">
+            <span class="impr-field__key">USt-IdNr.</span>
+            <span class="impr-field__val">DE 34 29 43 719</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Redaktion -->
+      <section class="impr-section reveal" id="redaktion">
+        <div class="impr-section__label">Inhalt</div>
+        <h2>Redaktionell Verantwortlich</h2>
+        <div class="impr-fields">
+          <div class="impr-field">
+            <span class="impr-field__key">Verantwortliche Person</span>
+            <span class="impr-field__val">Fred Fröhlich</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. EU-Streit -->
+      <section class="impr-section reveal" id="eu">
+        <div class="impr-section__label">Online-Streitbeilegung</div>
+        <h2>EU-Streitschlichtung</h2>
+        <p class="impr-prose">
+          Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:
+          <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener">ec.europa.eu/consumers/odr</a>.<br><br>
+          Unsere E-Mail-Adresse finden Sie oben im Impressum.
+        </p>
+      </section>
+
+      <!-- 6. VSBG -->
+      <section class="impr-section reveal" id="vsbg">
+        <div class="impr-section__label">VSBG</div>
+        <h2>Verbraucherstreitbeilegung</h2>
+        <p class="impr-prose">
+          Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.
+        </p>
+      </section>
+
+      <!-- 7. DSA -->
+      <section class="impr-section reveal" id="dsa">
+        <div class="impr-section__label">Digital Services Act</div>
+        <h2>Zentrale Kontaktstelle nach DSA</h2>
+        <p class="impr-prose" style="margin-bottom:28px;">
+          Gemäß Art. 11, 12 DSA (Verordnung (EU) 2022/265) benennen wir folgende zentrale Kontaktstelle:
+        </p>
+        <div class="impr-fields">
+          <div class="impr-field">
+            <span class="impr-field__key">E-Mail</span>
+            <span class="impr-field__val"><a href="mailto:info@casago.de">info@casago.de</a></span>
+          </div>
+          <div class="impr-field">
+            <span class="impr-field__key">Telefon</span>
+            <span class="impr-field__val"><a href="tel:+4980369086986">+49 8036 – 908 69 86</a></span>
+          </div>
+          <div class="impr-field">
+            <span class="impr-field__key">Sprachen</span>
+            <span class="impr-field__val">
+              <div class="lang-pills">
+                <span class="lang-pill">Deutsch</span>
+                <span class="lang-pill">Englisch</span>
+              </div>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. Erlaubnisse -->
+      <section class="impr-section reveal" id="erlaubnisse">
+        <div class="impr-section__label">Gewerberecht</div>
+        <h2>Erlaubnisse gemäß Gewerbeordnung</h2>
+        <div class="impr-erlaubnisse">
+          <div class="impr-erlaubnis">
+            <div class="impr-erlaubnis__basis">§ 34c Abs. 1 Satz 1 Nr. 3a GewO</div>
+            <div class="impr-erlaubnis__name">Bauträger</div>
+          </div>
+          <div class="impr-erlaubnis">
+            <div class="impr-erlaubnis__basis">§ 34c Abs. 1 Satz 1 Nr. 3b GewO</div>
+            <div class="impr-erlaubnis__name">Baubetreuer</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 9. Aufsicht -->
+      <section class="impr-section reveal" id="aufsicht">
+        <div class="impr-section__label">Aufsicht</div>
+        <h2>Aufsichtsbehörde</h2>
+        <div class="impr-fields">
+          <div class="impr-field">
+            <span class="impr-field__key">Behörde</span>
+            <span class="impr-field__val">Industrie- und Handelskammer für<br>München und Oberbayern</span>
+          </div>
+          <div class="impr-field">
+            <span class="impr-field__key">Adresse</span>
+            <span class="impr-field__val">Max-Joseph-Str. 2<br>80333 München</span>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<!-- ── Footer ── -->
+<footer class="site">
+  <div class="container">
+    <div class="foot-brand">
+      <img src="assets/logo/casago-wortmarke-white.svg" alt="Casago">
+      <div class="claim">Planen. Umsetzen. Leben.</div>
+    </div>
+    <div>
+      <h4>Geschäftsbereiche</h4>
+      <ul>
+        <li><a href="bautraeger.html">Bauträger</a></li>
+        <li><a href="baubetreuung-plus.html">Baubetreuung Plus</a></li>
+        <li><a href="begruenung.html">Begrünung</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Begrünung</h4>
+      <ul>
+        <li><a href="secalflor.html">SECALFLOR</a></li>
+        <li><a href="gruendach.html">Gründach</a></li>
+        <li><a href="gruendach.html#solar">Solargründach</a></li>
+        <li><a href="schwammstadt.html">Schwammstadt</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Unternehmen</h4>
+      <ul>
+        <li><a href="referenzen.html">Referenzen</a></li>
+        <li><a href="presse.html">Presse</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Kontakt</h4>
+      <ul>
+        <li>info@casago.de</li>
+        <li>Deutschland</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bar">
+    <div>© 2026 Casago GmbH.</div>
+    <div class="links">
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* Reveal on scroll */
+  const io = new IntersectionObserver(
+    e => e.forEach(x => { if (x.isIntersecting) { x.target.classList.add('in'); io.unobserve(x.target); } }),
+    { threshold: 0.08 }
+  );
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  /* Active sidebar link on scroll */
+  const sections = document.querySelectorAll('.impr-section');
+  const navLinks = document.querySelectorAll('.impr-sidebar nav a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector('.impr-sidebar nav a[href="#' + entry.target.id + '"]');
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

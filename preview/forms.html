@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html,body{margin:0;padding:0;background:var(--brand-bg-background);}
+  .wrap{padding:32px; display:flex; flex-direction:column; gap:14px; max-width:420px;}
+  label{font-size:12px; color:var(--brand-text-secondary); letter-spacing:0.04em; text-transform:uppercase; margin-bottom:6px; display:block;}
+  .field{display:flex; flex-direction:column;}
+  input,textarea{font-family:inherit; font-size:16px; letter-spacing:0.02em; color:#353B43; background:#FFF; border:1px solid #E5E5E5; border-radius:4px; padding:12px 14px; outline:none;}
+  input:focus{border-color:#353B43;}
+  .row{display:flex; gap:12px;}
+  .row .field{flex:1;}
+</style></head><body>
+<div class="wrap">
+  <div class="row">
+    <div class="field"><label>Vorname</label><input value="Anna"></div>
+    <div class="field"><label>Nachname</label><input value="Bauherr"></div>
+  </div>
+  <div class="field"><label>Projekt</label><input placeholder="Worum geht es?"></div>
+</div>
+</body></html>

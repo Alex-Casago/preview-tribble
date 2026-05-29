@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html,body{margin:0;padding:0;background:var(--brand-bg-dark);}
+  /* Live-Hero: vollflächiges Foto + Petrol-Schleier, zentriert (siehe index.html .hero) */
+  .wrap{position:relative; min-height:360px; display:flex; align-items:center; justify-content:center; overflow:hidden; background:#003B44;}
+  .bg{position:absolute; inset:0; z-index:0;}
+  .bg img{width:100%; height:100%; object-fit:cover; display:block;}
+  .veil{position:absolute; inset:0; z-index:1; background:linear-gradient(180deg, rgba(0,59,68,0.55) 0%, rgba(0,59,68,0.30) 45%, rgba(0,59,68,0.85) 100%);}
+  .content{position:relative; z-index:2; text-align:center; color:#FFFFFF; max-width:760px; padding:48px 40px;}
+  .sub{font-size:13px; letter-spacing:0.1em; text-transform:uppercase; color:#DAE9EC; margin:0 0 18px;}
+  .h{font-size:46px; line-height:1.08; letter-spacing:-0.02em; color:#FFFFFF; margin:0; font-weight:400;}
+  .h em{font-style:italic; color:#DAE9EC;}
+  .meta{margin-top:34px; display:flex; gap:28px; justify-content:center; font-size:13px; letter-spacing:0.1em; text-transform:uppercase; color:rgba(248,248,247,0.7);}
+  .meta b{color:#FFFFFF; font-weight:500;}
+  .logo{position:absolute; bottom:22px; right:30px; z-index:2;}
+  .logo img{height:20px;}
+</style></head><body>
+<div class="wrap">
+  <div class="bg"><img src="../assets/images/bautraeger-hero.webp" alt=""></div>
+  <div class="veil"></div>
+  <div class="content">
+    <p class="sub">Planen. Umsetzen. Leben.</p>
+    <h1 class="h">Wir schaffen Lebensräume, <em>die Bestand haben.</em></h1>
+    <div class="meta"><span><b>360°</b></span><span><b>Aus einer Hand</b></span><span><b>Ein Team, eine Verantwortung</b></span></div>
+  </div>
+  <div class="logo"><img src="../assets/logo/casago-wortmarke-white.svg" alt=""></div>
+</div>
+</body></html>

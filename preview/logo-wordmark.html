@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html,body{margin:0;padding:0;background:var(--brand-bg-background);}
+  .card{padding:28px 32px; min-height:120px; display:flex; align-items:center;}
+  .logos{display:grid; grid-template-columns:1fr 1fr; gap:0;}
+  .tile{height:150px; display:flex; align-items:center; justify-content:center; padding:24px;}
+  .tile img{height:40px; width:auto; display:block;}
+  .light{background:var(--brand-bg-background);}
+  .surface{background:var(--brand-bg-surface); border-right:1px solid var(--brand-ui-border);}
+  .dark{background:var(--brand-bg-dark);}
+  .page-dark{background:var(--brand-bg-page-dark);}
+  .label{position:absolute; bottom:10px; left:16px; font-size:11px; letter-spacing:0.06em; text-transform:uppercase; color:var(--brand-text-secondary);}
+  .dark .label,.page-dark .label{color:var(--brand-text-on-dark-muted);}
+  .tile{position:relative;}
+</style>
+</head><body>
+<div class="logos">
+  <div class="tile light">   <img src="../assets/logo/casago-wortmarke-anthrazit.svg" alt=""><span class="label">Anthrazit · on bg</span></div>
+  <div class="tile surface"> <img src="../assets/logo/casago-wortmarke-black.svg" alt=""><span class="label">Black · on surface</span></div>
+  <div class="tile dark">    <img src="../assets/logo/casago-wortmarke-white.svg" alt=""><span class="label">White · on dark</span></div>
+  <div class="tile page-dark"><img src="../assets/logo/casago-wortmarke-outline.svg" alt=""><span class="label">Outline · on page-dark</span></div>
+</div>
+</body></html>

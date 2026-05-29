@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="de" class="no-js">
+<head>
+<meta charset="utf-8">
+<script>document.documentElement.classList.remove("no-js")</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bauträger — Casago</title>
+<link rel="stylesheet" href="colors_and_type.css">
+<link rel="stylesheet" href="shared.css?v=2">
+<style>
+  /* ── Unser Ansatz — Benefit-Kacheln (wie projektrealisierung) ── */
+  .benefits{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:64px;}
+  .benefit{padding:40px 36px 44px;background:#EEF5F6;border-radius:8px;border-bottom:3px solid #005F6A;transition:box-shadow .3s ease,transform .3s ease;}
+  .benefit:hover{box-shadow:0 8px 28px rgba(0,95,106,.09);transform:translateY(-3px);}
+  .benefit__label{font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:#005F6A;font-weight:500;margin-bottom:16px;}
+  .benefit h3{font-size:20px;font-weight:500;letter-spacing:-0.01em;line-height:1.25;margin:0 0 14px;color:#1A1A1A;}
+  .benefit p{font-size:16px;color:#444;line-height:1.7;margin:0;}
+
+  /* ── Aus einer Hand — Step-Stil (wie projektrealisierung) ── */
+  .steps{display:flex;flex-direction:column;gap:0;list-style:none;padding:0;margin:0;counter-reset:unset;}
+  .step{display:grid;grid-template-columns:72px 1fr;gap:0 36px;padding:40px 0;border-bottom:1px solid #D5D3CE;}
+  .step:last-child{border-bottom:none;}
+  .step__num{font-size:13px;letter-spacing:0.14em;color:#005F6A;text-transform:uppercase;font-weight:500;padding-top:6px;}
+  .step__body h3{font-size:24px;font-weight:500;letter-spacing:-0.01em;margin:0 0 12px;color:#1A1A1A;}
+  .step__body p{font-size:17px;color:#444;line-height:1.7;margin:0;}
+
+  /* ── Gemeinsame Projektrealisierung — Dark Tiles ── */
+  .gpr-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;min-width:0;}
+  .gpr-tile{
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.10);
+    border-top:2px solid rgba(218,233,236,0.30);
+    border-radius:8px;
+    padding:40px 36px 44px;
+    transition:background .3s ease, border-color .3s ease, border-top-color .3s ease;
+  }
+  .gpr-tile:hover{
+    background:rgba(255,255,255,0.10);
+    border-color:rgba(255,255,255,0.18);
+    border-top-color:rgba(218,233,236,0.65);
+  }
+  .gpr-tile__num{
+    font-size:12px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:#DAE9EC;
+    font-weight:500;
+    margin-bottom:20px;
+  }
+  .gpr-tile__title{
+    font-size:20px;
+    font-weight:500;
+    color:#FFFFFF;
+    letter-spacing:-0.01em;
+    line-height:1.2;
+    margin:0 0 14px;
+  }
+  .gpr-tile__body{
+    font-size:16px;
+    color:rgba(248,248,247,0.72);
+    line-height:1.7;
+    margin:0;
+    text-align:left;
+  }
+
+  /* ── Referenzen-Teaser: Schwarzweiß wie auf der Landingpage ── */
+  .teaser{filter:grayscale(1);transition:filter .7s cubic-bezier(.4,0,.2,1),transform .35s ease,border-color .35s ease;}
+  .teaser:hover{filter:grayscale(0);}
+  .teaser__img{aspect-ratio:4/5;}
+
+  @media(max-width:960px){
+    .benefits{grid-template-columns:1fr 1fr;}
+    .step{grid-template-columns:1fr;}
+    .step__num{margin-bottom:8px;}
+  }
+  @media(max-width:600px){
+    .gpr-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hdr solid">
+  <a href="index.html"><img src="assets/logo/casago-wortmarke-white.svg" alt="Casago"></a>
+  <nav>
+    <a href="index.html#wer-wir-sind">Wer wir sind</a>
+    <a href="index.html#was-uns-unterscheidet">Was uns unterscheidet</a>
+    <div class="has-dropdown">
+      <a href="index.html#geschaeftsbereiche" class="dropdown-trigger active">Geschäftsbereiche <span class="caret" aria-hidden="true"></span></a>
+      <div class="dropdown" role="menu">
+        <a href="bautraeger.html" class="dropdown__item" role="menuitem">
+          <span class="dropdown__body">
+            <b>Bauträger</b>
+            <span>Bestand &amp; Neubau auf eigenes Risiko</span>
+          </span>
+        </a>
+        <a href="baubetreuung-plus.html" class="dropdown__item" role="menuitem">
+          <span class="dropdown__body">
+            <b>Baubetreuung Plus</b>
+            <span>Ihr unabhängiger Vertreter</span>
+          </span>
+        </a>
+        <a href="projektrealisierung.html" class="dropdown__item" role="menuitem">
+          <span class="dropdown__body">
+            <b>Gemeinsame Projektrealisierung</b>
+            <span>Gemeinsam Werte schaffen</span>
+          </span>
+        </a>
+        <a href="begruenung.html" class="dropdown__item" role="menuitem">
+          <span class="dropdown__body">
+            <b>Begrünung &amp; Schwammstadt</b>
+            <span>Gründach · Solar · Wassermanagement</span>
+          </span>
+        </a>
+      </div>
+    </div>
+    <a href="index.html#ansatz">Unser Ansatz</a>
+    <a href="referenzen.html">Referenzen</a>
+    <a href="index.html#kontakt">Kontakt</a>
+  </nav>
+  <a class="cta-btn" href="index.html#kontakt">Projekt anfragen</a>
+</header>
+
+<nav class="breadcrumb">
+  <div class="container"><a href="index.html">Start</a><span class="sep">/</span><span>Bauträger</span></div>
+</nav>
+
+<section class="sub-hero">
+  <div class="sub-hero__bg"><img src="assets/images/bautraeger-hero.webp" alt=""></div>
+  <div class="sub-hero__veil"></div>
+  <div class="container">
+    <div class="kicker">Geschäftsbereich 01</div>
+    <h1>Bauträger —<br><em>auf eigenes Risiko,<br>mit vollem Anspruch.</em></h1>
+    <p class="lead" style="max-width:none;">Ausgewählte Bestands- und Neubauprojekte, die wir als Bauträger selbst realisieren. Qualität, Flächeneffizienz und Zukunftssicherheit — konsequent in einem Haus vereint.</p>
+  </div>
+</section>
+
+<!-- SELBSTVERSTÄNDNIS -->
+<section class="section">
+  <div class="container">
+    <div class="kicker reveal">Unser Selbstverständnis</div>
+    <h2 class="section-title reveal">Lebenswerte Räume schaffen —<br>mit eigenem Einsatz.</h2>
+    <div class="split-row reveal" style="margin-top:72px;">
+      <div class="prose">
+        <p class="-intro">Als Bauträger realisieren wir auf eigenes Risiko ausgewählte Bestands- und Neubauprojekte. Aus dieser Tätigkeit wissen wir um die Wichtigkeit, lebenswerte Räume zum Leben und Arbeiten zu schaffen und dabei die Faktoren <strong>Qualität, Flächeneffizienz und Zukunftssicherheit</strong> zu vereinen.</p>
+        <p>Wir decken Neubauten im Bereich Wohnen und Gewerbe bis hin zur besonders anspruchsvollen Sanierung historischer und denkmalgeschützter Gebäude ab. Von der ersten Konzept-Skizze bis zur Übergabe liegt alles in einer Hand — und in der Verantwortung eines Teams.</p>
+        <p>Egal ob groß oder klein, ob gewerblich oder privat: <strong>es muss etwas Besonderes entstehen.</strong> Individuell und nicht „von der Stange".</p>
+      </div>
+      <div class="split-img"><img src="assets/images/rott-front.webp" alt=""><div class="tag">Referenz Rott am Inn</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 360-GRAD -->
+<section class="section" style="background:#FAFAF8;">
+  <div class="container">
+    <div class="kicker reveal">Unser Ansatz</div>
+    <h2 class="section-title reveal">Der 360-Grad-Blick —<br>vom ersten Strich an.</h2>
+    <p class="section-lead reveal" style="margin-top:24px;max-width:none;">Bereits bei der Konzeption bilden wir ein interdisziplinäres Team aus Projektentwicklern, Finanzierungs- und Vermarktungsprofis, Architekten, Ingenieuren und Bauleitern. Mit dem in Jahrzehnten gewachsenen Wissen dieses Teams fließen Fördermittel, Vermarktungspotentiale und langfristige Entwicklungen von Gesellschaft und Umwelt genauso ein wie Flächeneffizienz, Energieverbrauch und die Wahrnehmung der Immobilie durch ihre künftigen Nutzer.</p>
+
+    <div class="benefits reveal">
+      <div class="benefit">
+        <div class="benefit__label">Harte Faktoren</div>
+        <h3>Flächeneffizienz &amp; Energie.</h3>
+        <p>Jeder Quadratmeter zählt. Energie- und Unterhaltungskosten werden von Beginn an mitgedacht.</p>
+      </div>
+      <div class="benefit">
+        <div class="benefit__label">Weiche Faktoren</div>
+        <h3>Wahrnehmung &amp; Wohnwert.</h3>
+        <p>Wie wirkt das Gebäude auf Nutzer und Nachbarn? Ein Faktor, der oft über Erfolg entscheidet.</p>
+      </div>
+      <div class="benefit">
+        <div class="benefit__label">Förderung</div>
+        <h3>Fördermittel optimieren.</h3>
+        <p>KfW, BAFA, kommunale Programme — wir prüfen und schöpfen aus, was rechtlich möglich ist.</p>
+      </div>
+      <div class="benefit">
+        <div class="benefit__label">Zukunft</div>
+        <h3>Werthaltigkeit auf Dauer.</h3>
+        <p>CO²-Preise ab 2027, Energiestandards, Mobilitätswandel — wir planen für das Jahr 2040, nicht für 2025.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LEISTUNGEN -->
+<section class="section">
+  <div class="container">
+    <div class="kicker reveal">Aus einer Hand</div>
+    <h2 class="section-title reveal">Ein Team,<br>ein Projektverlauf.</h2>
+    <div class="split-row reveal" style="margin-top:72px;">
+      <div>
+        <div class="steps">
+          <div class="step">
+            <div class="step__num">01</div>
+            <div class="step__body">
+              <h3>Projektentwicklung</h3>
+              <p>Prüfung baurechtlicher Rahmenbedingungen, Fördermittel, Vermarktungspotentiale; Abstimmung mit Steuerberatern und Banken.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step__num">02</div>
+            <div class="step__body">
+              <h3>Planung</h3>
+              <p>Genehmigungsplanung, Ausführungsplanung, Leistungsverzeichnisse — mit Liebe zum Detail und Blick auf den Preis.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step__num">03</div>
+            <div class="step__body">
+              <h3>Vergabe &amp; Ausführung</h3>
+              <p>Einzelvergabe statt Generalübernahme — pro Gewerk der beste Anbieter. Örtliche Bauleitung durch unser Team.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step__num">04</div>
+            <div class="step__body">
+              <h3>Abnahme &amp; Vermarktung</h3>
+              <p>Mängelbeseitigung, kaufmännische Abwicklung und — auf Wunsch — Vermarktung durch unsere Partnergesellschaft.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="split-img"><img src="assets/images/Handwerkerstolz.webp" alt=""><div class="tag">Ausführung</div></div>
+    </div>
+    <div class="pullquote reveal" style="margin-top:40px;max-width:none;">Durch Bündelung aller wesentlichen Bereiche in einem Casago-Team werden viele mögliche Konflikte, Bruchstellen und Informationsdefizite von vornherein ausgeschlossen.</div>
+  </div>
+</section>
+
+<!-- GEMEINSAME PROJEKTE -->
+<section class="band dark" style="padding-top:112px;padding-bottom:112px;">
+  <div class="container">
+    <div class="kicker reveal" style="color:#DAE9EC;margin-bottom:36px;">Gemeinsame Projektrealisierung</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;">
+
+      <!-- Left: heading + prose + link -->
+      <div>
+        <h2 class="section-title reveal" style="color:#FFF;margin:0 0 36px;">Wenn der Markt hakt —<br>gemeinsam vorangehen.</h2>
+        <p class="reveal" style="color:rgba(248,248,247,0.82);font-size:20px;line-height:1.7;margin:0 0 24px;text-align:justify;hyphens:auto;">Gestiegene Zinsen und hohe Baukosten haben den Markt verändert. Für Grundstückseigentümer, die verkaufen wollen, und für Käufer, die bauen möchten, entsteht dadurch ein Dilemma — Preise und Finanzierbarkeit passen oft nicht zusammen.</p>
+        <p class="reveal" style="color:rgba(248,248,247,0.82);font-size:20px;line-height:1.7;margin:0 0 36px;text-align:justify;hyphens:auto;">Für genau diese Situation haben wir ein <strong style="color:#DAE9EC;font-weight:500;">Grundmodell zur gemeinsamen Realisierung</strong> von Bestands- und Neubauprojekten entwickelt. Sie profitieren unmittelbar von unserem Know-how — das Modell passen wir an Ihre Situation und Erwartungshaltung an.</p>
+        <a href="projektrealisierung.html" class="reveal" style="display:inline-flex;align-items:center;gap:10px;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:#DAE9EC;transition:color .2s;">
+          Gemeinsame Realisierung entdecken
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+
+      <!-- Right: 2×2 tile grid — top-edge aligns with h2 top -->
+      <div class="gpr-grid reveal">
+
+        <div class="gpr-tile">
+          <div class="gpr-tile__num">01</div>
+          <h3 class="gpr-tile__title">Individuell zugeschnitten</h3>
+          <p class="gpr-tile__body">Das Grundmodell passen wir auf Ihre persönliche Situation und Erwartungshaltung an — kein Standard, sondern Ihre Lösung.</p>
+        </div>
+
+        <div class="gpr-tile">
+          <div class="gpr-tile__num">02</div>
+          <h3 class="gpr-tile__title">Know-how &amp; Netzwerk</h3>
+          <p class="gpr-tile__body">Direkter Zugriff auf unser interdisziplinäres Team und bewährte Partner aus Jahrzehnten gemeinsamer Projektarbeit.</p>
+        </div>
+
+        <div class="gpr-tile">
+          <div class="gpr-tile__num">03</div>
+          <h3 class="gpr-tile__title">Wirtschaftlicher Mehrwert</h3>
+          <p class="gpr-tile__body">Sie realisieren mehr, als es der klassische Vermarktungsweg ermöglichen würde — messbar und nachvollziehbar.</p>
+        </div>
+
+        <div class="gpr-tile">
+          <div class="gpr-tile__num">04</div>
+          <h3 class="gpr-tile__title">Vertrauen als Basis</h3>
+          <p class="gpr-tile__body">Wir arbeiten nur dort, wo wechselseitiges Vertrauen und ein wertschätzendes Miteinander vorhanden sind.</p>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- REFERENZEN-TEASER -->
+<section class="section">
+  <div class="container">
+    <div class="fields-head reveal" style="display:flex;justify-content:space-between;align-items:flex-end;gap:32px;flex-wrap:wrap;margin-bottom:56px;">
+      <div>
+        <div class="kicker">Ausgewählte Referenzen</div>
+        <h2 class="section-title">Bauen ist Beweisführung.</h2>
+      </div>
+      <a class="teaser__more" href="referenzen.html">Alle Referenzen</a>
+    </div>
+    <div class="teaser-grid reveal">
+      <a class="teaser" href="referenzen.html#rott">
+        <div class="teaser__img"><img src="uploads/thumbs/rott.webp" alt="Firmengebäude Rott am Inn"></div>
+        <div class="teaser__body"><div class="teaser__kicker">Neubau Gewerbe · 2024</div><h3 class="teaser__title">Firmengebäude Rott am Inn</h3><p>11½ Monate Bauzeit. –10 % unter Kostenrahmen. Mit Gründach und PV.</p><span class="teaser__more">Zum Projekt</span></div>
+      </a>
+      <a class="teaser" href="referenzen.html#coburg">
+        <div class="teaser__img"><img src="uploads/thumbs/coburg.webp" alt="Fachwerkhaus Coburg"></div>
+        <div class="teaser__body"><div class="teaser__kicker">Sanierung Denkmal · 2024</div><h3 class="teaser__title">Fachwerkhaus Coburg</h3><p>500 Jahre altes Fachwerkhaus, KfW 85, 10 Wohnungen mit Lift.</p><span class="teaser__more">Zum Projekt</span></div>
+      </a>
+      <a class="teaser" href="referenzen.html#neubeuern">
+        <div class="teaser__img"><img src="uploads/thumbs/neubeuern.webp" alt="Hollingerhaus Neubeuern"></div>
+        <div class="teaser__body"><div class="teaser__kicker">Sanierung · 2022</div><h3 class="teaser__title">Hollingerhaus Neubeuern</h3><p>Bauernhaus aus dem 17. Jahrhundert, drei Wohnungen, KfW 85.</p><span class="teaser__more">Zum Projekt</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="container reveal">
+    <h2>Sie haben ein Grundstück?<br>Oder eine Immobilie zum Entwickeln?</h2>
+    <p>Lassen Sie uns gemeinsam prüfen, was möglich ist — auf eigenes Risiko, im Joint Venture oder über Baubetreuung Plus.</p>
+    <div class="btn-row">
+      <a class="btn-white" href="index.html#kontakt">Erstgespräch vereinbaren</a>
+      <a class="btn-ghost" href="baubetreuung-plus.html">Baubetreuung Plus vergleichen</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="container">
+    <div class="foot-brand"><img src="assets/logo/casago-wortmarke-white.svg" alt=""><div class="claim">Planen. Umsetzen. Leben.</div></div>
+    <div><h4>Geschäftsbereiche</h4><ul><li><a href="bautraeger.html">Bauträger</a></li><li><a href="baubetreuung-plus.html">Baubetreuung Plus</a></li><li><a href="begruenung.html">Begrünung</a></li></ul></div>
+    <div><h4>Begrünung</h4><ul><li><a href="secalflor.html">SECALFLOR</a></li><li><a href="gruendach.html">Gründach</a></li><li><a href="gruendach.html#solar">Solargründach</a></li><li><a href="schwammstadt.html">Schwammstadt</a></li></ul></div>
+    <div><h4>Unternehmen</h4><ul><li><a href="referenzen.html">Referenzen</a></li><li><a href="presse.html">Presse</a></li></ul></div>
+    <div><h4>Kontakt</h4><ul><li>info@casago.de</li><li>Deutschland</li></ul></div>
+  </div>
+  <div class="foot-bar"><div>© 2026 Casago GmbH.</div><div class="links"><a href="impressum.html">Impressum</a><a href="#">Datenschutz</a></div></div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) { x.target.classList.add('in'); io.unobserve(x.target); } }), { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>

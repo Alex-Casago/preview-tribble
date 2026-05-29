@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html,body{margin:0;padding:0;background:var(--brand-bg-background);}
+  .wrap{padding:36px 40px; display:grid; grid-template-columns:repeat(3,1fr); gap:28px;}
+  .card{background:#FFF; border-radius:8px; padding:24px; min-height:110px; display:flex; align-items:flex-end;}
+  .lbl{font-size:11px; color:var(--brand-text-secondary); text-transform:uppercase; letter-spacing:0.06em;}
+  .lbl b{display:block; color:var(--brand-text-primary); font-size:13px; letter-spacing:0; text-transform:none; font-weight:500; margin-bottom:2px;}
+  .c1{border:1px solid var(--brand-ui-border);}
+  .c2{box-shadow:0 1px 2px rgba(5,12,17,0.04), 0 8px 24px rgba(5,12,17,0.06);}
+  .c3{border:1px solid var(--brand-ui-border); box-shadow:0 1px 2px rgba(5,12,17,0.04), 0 8px 24px rgba(5,12,17,0.06); opacity:0.4;}
+</style></head><body>
+<div class="wrap">
+  <div class="card c1"><div class="lbl"><b>Flat</b>1px border</div></div>
+  <div class="card c2"><div class="lbl"><b>Lifted</b>soft shadow</div></div>
+  <div class="card c3"><div class="lbl"><b>✕ Both</b>never combine</div></div>
+</div>
+</body></html>

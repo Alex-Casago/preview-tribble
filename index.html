@@ -1,0 +1,787 @@
+<!doctype html>
+<html lang="de" class="no-js">
+<head>
+<meta charset="utf-8">
+<script>document.documentElement.classList.remove("no-js")</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Casago — Planen. Umsetzen. Leben.</title>
+<link rel="stylesheet" href="colors_and_type.css">
+<link rel="stylesheet" href="shared.css?v=2">
+<style>
+  /* ===== Hero ===== */
+  .hero{position:relative;height:100vh;min-height:720px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#003B44;}
+  .hero__bg{position:absolute;inset:0;z-index:0;}
+  .hero__bg video,.hero__bg img{width:100%;height:100%;object-fit:cover;display:block;}
+  .hero__veil{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,59,68,0.55) 0%, rgba(0,59,68,0.30) 45%, rgba(0,59,68,0.85) 100%);}
+  /* hero__content is split into two parts:
+     .hero__title-block  → flex-centered in the hero (the bit the user wants at visual center)
+     .hero__actions      → sits below the title-block with its own spacing                  */
+  .hero__content{position:relative;z-index:2;text-align:center;color:#FFFFFF;max-width:1040px;padding:0 32px;display:flex;flex-direction:column;align-items:center;}
+  .hero__title-block{display:flex;flex-direction:column;align-items:center;}
+  .hero__sub{font-size:15px;letter-spacing:0.1em;text-transform:uppercase;color:#DAE9EC;margin-bottom:20px;opacity:0;animation:fadeUp 1s ease .2s forwards;}
+  .hero__title{font-size:clamp(32px,4vw,60px);font-weight:400;letter-spacing:-0.02em;line-height:1.08;margin:0;opacity:0;animation:fadeUp 1s ease .4s forwards;}
+  .hero__title em{font-style:italic;color:#DAE9EC;}
+
+  /* ===== Rotating phrase ===== */
+  /* Wrap height is locked to the largest phrase (set in JS) so nothing below shifts. */
+  /* padding-bottom gives descenders (g, p, j) room so they aren't clipped by overflow:hidden. */
+  /* line-height auf der Rotate-Zeile großzügiger als beim Titel (1.02), damit Descender (g, ü, j) Platz haben. */
+  .hero__rotate-wrap{display:block;position:relative;overflow:hidden;line-height:1.18;padding-bottom:0.08em;}
+  .hero__phrase{display:block;font-style:italic;color:#DAE9EC;white-space:normal;position:absolute;top:0;left:0;right:0;line-height:1.18;opacity:0;transform:translateY(44px);transition:opacity .55s cubic-bezier(.4,0,.2,1), transform .55s cubic-bezier(.4,0,.2,1);}
+  .hero__phrase.active{opacity:1;transform:translateY(0);}
+  .hero__phrase.exit{opacity:0;transform:translateY(-44px);}
+  .hero__phrase-sizer{display:block;visibility:hidden;font-style:italic;white-space:normal;line-height:1.18;pointer-events:none;}
+
+  /* Action group: meta + button stay together as one stable block, decoupled from the rotating slogan above. */
+  .hero__actions{margin-top:72px;display:flex;flex-direction:column;align-items:center;gap:24px;opacity:0;animation:fadeUp 1s ease .6s forwards;}
+  .hero__meta{display:flex;gap:32px;justify-content:center;font-size:15px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(248,248,247,0.7);}
+  .hero__meta b{color:#FFFFFF;font-weight:500;}
+  .hero__btn{margin-top:8px;}
+  .btn-hero{display:inline-flex;align-items:center;gap:12px;padding:18px 32px;background:#FFFFFF;color:#003B44;font-size:14px;letter-spacing:0.1em;text-transform:uppercase;font-weight:500;border-radius:4px;transition:all .25s ease;}
+  .btn-hero:hover{background:#DAE9EC;}
+  .btn-hero .arrow{display:inline-block;width:14px;height:1px;background:currentColor;position:relative;transition:width .25s ease;}
+  .btn-hero .arrow::after{content:"";position:absolute;right:0;top:-3px;width:7px;height:7px;border-top:1px solid currentColor;border-right:1px solid currentColor;transform:rotate(45deg);}
+  .btn-hero:hover .arrow{width:22px;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+  /* ===== Header dropdown ===== */
+  .has-dropdown{position:relative;display:inline-flex;align-items:center;}
+  .dropdown-trigger{display:inline-flex;align-items:center;gap:8px;cursor:pointer;}
+  .caret{display:inline-block;width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translate(-2px,-2px);transition:transform .25s ease;opacity:.75;}
+  .has-dropdown:hover .caret,.has-dropdown:focus-within .caret{transform:rotate(225deg) translate(-2px,-2px);opacity:1;}
+  .dropdown{position:absolute;top:100%;left:50%;transform:translate(-50%,8px);min-width:340px;padding:10px;background:rgba(0,59,68,0.96);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,0.08);border-radius:8px;box-shadow:0 24px 48px rgba(0,0,0,0.28);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .22s ease, transform .28s cubic-bezier(.2,0,0,1), visibility 0s linear .22s;z-index:60;display:flex;flex-direction:column;gap:2px;}
+  /* Hover-Bridge, damit der Cursor zwischen Trigger und Panel nicht "abreißt" */
+  .dropdown::before{content:"";position:absolute;top:-12px;left:0;right:0;height:12px;}
+  .has-dropdown:hover .dropdown,.has-dropdown:focus-within .dropdown{opacity:1;visibility:visible;pointer-events:auto;transform:translate(-50%,4px);transition-delay:0s;}
+  /* Nach Klick auf den Trigger: Menü zwangsweise einklappen, bis der Cursor das Element verlässt */
+  .has-dropdown.dismissed .dropdown{opacity:0 !important;visibility:hidden !important;pointer-events:none !important;transform:translate(-50%,8px) !important;}
+  .dropdown__item{display:flex;align-items:flex-start;gap:14px;padding:14px 16px;border-radius:6px;color:#FFFFFF !important;opacity:1 !important;transition:background .2s ease;}
+  .dropdown__item:hover{background:rgba(255,255,255,0.07);}
+  .dropdown__num{font-size:11px;letter-spacing:0.14em;color:#DAE9EC;padding-top:3px;font-variant-numeric:tabular-nums;min-width:22px;}
+  .dropdown__body{display:flex;flex-direction:column;gap:3px;}
+  .dropdown__body b{font-size:14.5px;font-weight:500;letter-spacing:-0.005em;color:#FFFFFF;}
+  .dropdown__body span{font-size:12.5px;color:rgba(248,248,247,0.65);letter-spacing:0.015em;}
+
+  /* ===== Geschäftsbereiche — three big editorial tiles ===== */
+  .fields{background:#FAFAF8;}
+  .fields-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:72px;gap:32px;flex-wrap:wrap;}
+  .fields-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .field{position:relative;display:block;border-radius:8px;overflow:hidden;aspect-ratio:3/4;background:#003B44;cursor:pointer;filter:grayscale(1);transition:filter .7s cubic-bezier(.4,0,.2,1);}
+  .field:hover{filter:grayscale(0);}
+  .field img{width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,0,0,1);opacity:0.9;}
+  .field:hover img{transform:scale(1.04);}
+  /* Kräftiger Verlauf für gute Lesbarkeit im S/W-Zustand */
+  .field__veil{position:absolute;inset:0;background:linear-gradient(180deg,transparent 15%,rgba(0,12,16,0.78) 58%,rgba(0,12,16,0.97) 100%);}
+  .field__body{position:absolute;left:32px;right:32px;bottom:32px;color:#FFFFFF;}
+  .field__cat{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#FFFFFF;opacity:0.72;margin-bottom:12px;}
+  .field__title{font-size:30px;font-weight:400;letter-spacing:-0.01em;line-height:1.15;margin:0 0 12px;}
+  /* Beschreibung vollständig opak für maximale Lesbarkeit */
+  .field__desc{font-size:14.5px;color:rgba(248,248,247,1);line-height:1.55;margin:0 0 18px;text-align:left;}
+  .field__more{display:inline-flex;gap:10px;align-items:center;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;border-bottom:1px solid rgba(248,248,247,0.6);padding-bottom:4px;transition:border-color .2s, color .2s;}
+  .field:hover .field__cat{color:#DAE9EC;opacity:1;}
+  .field:hover .field__more{color:#DAE9EC;border-bottom-color:#DAE9EC;}
+
+  /* ===== Begrünung feature ===== */
+  .green-feature{background:#003B44;color:#FFFFFF;padding:140px 48px;position:relative;overflow:hidden;}
+  .green-feature .container{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:96px;align-items:center;}
+  .green-feature .kicker{color:#DAE9EC;}
+  .green-feature h2{font-size:clamp(36px,3.8vw,52px);font-weight:400;letter-spacing:-0.015em;line-height:1.1;margin:0 0 24px;}
+  .green-feature p{font-size:17px;line-height:1.65;color:rgba(248,248,247,0.82);margin:0 0 20px;}
+  .green-feature__img{aspect-ratio:1005/937;border-radius:8px;overflow:hidden;}
+  .green-feature__img img{width:100%;height:100%;object-fit:cover;object-position:center;}
+  .green-sublinks{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:32px;}
+  .green-sublink{padding:20px 24px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:6px;transition:background .2s, border-color .2s;}
+  .green-sublink:hover{background:rgba(255,255,255,0.08);border-color:#1A8B9A;}
+  .green-sublink b{display:block;font-size:15px;font-weight:500;color:#FFFFFF;margin-bottom:4px;}
+  .green-sublink span{font-size:12.5px;color:rgba(248,248,247,0.65);letter-spacing:0.02em;}
+  .green-sublink::after{content:"→";float:right;color:#DAE9EC;margin-top:-20px;}
+
+  /* ===== Referenzen-Strip ===== */
+  .ref-strip{background:#EEF5F6;}
+  .ref-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:56px;}
+  .ref{display:block;border-radius:8px;overflow:hidden;background:#FFF;filter:grayscale(1);transition:filter .7s cubic-bezier(.4,0,.2,1);}
+  .ref:hover{filter:grayscale(0);}
+  .ref__img{aspect-ratio:4/5;overflow:hidden;}
+  .ref__img img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease;image-rendering:smooth;transform:translateZ(0);}
+  .ref:hover .ref__img img{transform:scale(1.04);}
+  .ref__body{padding:20px 22px 24px;}
+  .ref__cat{font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#005F6A;margin-bottom:10px;}
+  .ref__title{font-size:19px;font-weight:400;letter-spacing:-0.005em;line-height:1.25;margin:0 0 8px;}
+  .ref__loc{font-size:12.5px;color:#666;letter-spacing:0.02em;}
+
+  /* ===== Values (approach) compact ===== */
+  .values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:64px;}
+  .value{background:#FFFFFF;border-radius:8px;padding:36px 32px;border:1px solid #D5D3CE;transition:transform .35s ease, border-color .35s ease;}
+  .value:hover{transform:translateY(-3px);border-color:#005F6A;}
+  .value__num{font-size:12px;letter-spacing:0.1em;color:#005F6A;margin-bottom:20px;text-transform:uppercase;}
+  .value__title{font-size:22px;font-weight:500;letter-spacing:-0.005em;line-height:1.2;margin:0 0 12px;color:#1A1A1A;}
+  .value__body{font-size:14.5px;color:#555;letter-spacing:0.015em;line-height:1.6;margin:0;}
+
+  /* ===== Quote ===== */
+  .quote-band{background:#FAFAF8;padding:160px 48px;border-top:1px solid #D5D3CE;border-bottom:1px solid #D5D3CE;}
+  .quote-band blockquote{font-size:clamp(28px,3.5vw,44px);font-weight:400;letter-spacing:-0.01em;line-height:1.25;color:#1A1A1A;max-width:960px;margin:0 auto;text-align:center;font-style:italic;}
+  .quote-band blockquote em{color:#003B44;font-style:italic;}
+  .quote-author{margin-top:48px;text-align:center;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#666;}
+  .quote-author b{color:#1A1A1A;font-weight:500;}
+
+  /* ===== Wer wir sind ===== */
+  .who__head{display:flex;flex-direction:column;gap:20px;align-items:flex-start;margin-bottom:72px;}
+  .who__head .kicker{margin:0;padding-top:0;}
+  .who__headline{font-size:clamp(36px,4vw,60px);font-weight:400;letter-spacing:-0.018em;line-height:1.06;color:#1A1A1A;margin:0;max-width:none;text-align:left;}
+
+  .who__body{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:80px;align-items:start;padding:48px 0;border-top:1px solid #D5D3CE;}
+  .who__lead{font-size:clamp(20px,1.8vw,24px);line-height:1.45;letter-spacing:-0.005em;color:#1A1A1A;font-weight:400;margin:0;max-width:none;text-align:justify;hyphens:auto;}
+  .who__lead em{font-style:italic;color:#003B44;}
+  .who__para{font-size:clamp(20px,1.8vw,24px);line-height:1.55;color:#444;letter-spacing:-0.005em;margin:0;max-width:none;text-align:justify;hyphens:auto;}
+
+  .who__meta{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:24px;border-top:1px solid #D5D3CE;border-bottom:1px solid #D5D3CE;padding:0;}
+  .who__meta-item{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:44px 32px;border-right:1px solid #D5D3CE;position:relative;}
+  .who__meta-item:first-child{padding-left:0;}
+  .who__meta-item:last-child{border-right:none;padding-right:0;}
+  .who__meta-num{font-size:clamp(17px,1.6vw,22px);font-weight:500;letter-spacing:0.04em;color:#1A8B9A;line-height:1.4;text-transform:uppercase;}
+  .who__meta-label{font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#5A6F72;}
+
+  .who__close{font-size:clamp(20px,1.7vw,24px);line-height:1.5;letter-spacing:-0.003em;color:#1A1A1A;margin:72px 0 0;max-width:none;text-align:justify;hyphens:manual;}
+  .who__close em{font-style:italic;color:#003B44;}
+
+  @media (max-width:900px){
+    .who__head,.who__body{grid-template-columns:1fr;gap:20px;}
+    .who__head{margin-bottom:40px;}
+    .who__body{padding:32px 0;}
+    .who__meta{grid-template-columns:1fr;padding:24px 0;}
+    .who__meta-item{flex-direction:row;align-items:baseline;gap:16px;padding:14px 0;border-right:none;border-bottom:1px solid #D5D3CE;}
+    .who__meta-item:last-child{border-bottom:none;}
+    .who__close{margin-top:48px;}
+  }
+
+  /* ===== Was uns unterscheidet ===== */
+  .diff__intro{margin-bottom:96px;}
+  .diff__intro-grid{display:grid;grid-template-columns:80px minmax(0,1.05fr) minmax(0,1.6fr);column-gap:48px;row-gap:32px;align-items:start;margin-top:32px;}
+  .diff__intro-left{grid-column:1/3;}
+  .diff__headline{max-width:none;margin:0;font-size:clamp(34px,3.8vw,56px);}
+  .diff__lead{max-width:none;margin:0 0 24px;text-align:justify;hyphens:auto;}
+  .diff__lead-sub{font-size:15.5px;line-height:1.65;color:#445;letter-spacing:0.01em;margin:0;text-align:justify;hyphens:auto;}
+
+  .diff__list-wrap{margin-bottom:104px;}
+  .diff__list-head{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:20px;border-bottom:1px solid #003B44;margin-bottom:0;gap:24px;flex-wrap:wrap;}
+  .diff__list-kicker{font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:#003B44;font-weight:500;}
+  .diff__list-count{font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:#5A6F72;font-variant-numeric:tabular-nums;}
+  .diff__list{list-style:none;padding:0;margin:0;counter-reset:none;}
+  .diff__row{display:grid;grid-template-columns:80px minmax(0,1.05fr) minmax(0,1.6fr);gap:48px;padding:36px 0;border-bottom:1px solid #C5D8D6;align-items:start;transition:background-color .25s ease;position:relative;}
+  .diff__row::before{content:"";position:absolute;left:0;top:-1px;width:0;height:1px;background:#1A8B9A;transition:width .45s cubic-bezier(.2,0,0,1);}
+  .diff__row:first-child::before{display:none;}
+  .diff__row:hover::before{width:100%;}
+  .diff__row:hover .diff__num{color:#1A8B9A;}
+  .diff__num{font-size:14.5px;letter-spacing:0.12em;color:#003B44;font-variant-numeric:tabular-nums;padding-top:4px;transition:color .25s ease;}
+  .diff__title{font-size:20px;font-weight:500;letter-spacing:-0.008em;color:#003B44;line-height:1.25;padding-top:0;}
+  .diff__body{font-size:15.5px;line-height:1.7;color:#445;letter-spacing:0.01em;text-align:justify;}
+
+  .diff__audience{padding-top:24px;}
+  .diff__audience-head{margin-bottom:36px;}
+  .diff__audience-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .diff__aud{background:#FFFFFF;border:1px solid #C5D8D6;border-radius:8px;padding:32px 28px 28px;display:flex;flex-direction:column;gap:6px;transition:border-color .25s ease, transform .35s ease;}
+  .diff__aud:hover{border-color:#1A8B9A;transform:translateY(-2px);}
+  .diff__aud-label{font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:#5A6F72;}
+  .diff__aud-who{font-size:24px;font-weight:500;letter-spacing:-0.008em;color:#003B44;line-height:1.15;margin-bottom:10px;}
+  .diff__aud-body{font-size:15.5px;line-height:1.6;color:#445;letter-spacing:0.01em;margin:0;}
+
+  @media (max-width:900px){
+    .diff__intro-grid{grid-template-columns:1fr;gap:24px;}
+    .diff__intro-left{grid-column:1;}
+    .diff__row{grid-template-columns:48px 1fr;gap:16px 24px;padding:28px 0;}
+    .diff__title{grid-column:2;}
+    .diff__body{grid-column:2;}
+    .diff__audience-grid{grid-template-columns:1fr;}
+    .diff__list-wrap{margin-bottom:64px;}
+    .diff__intro{margin-bottom:56px;}
+  }
+
+  @media (max-width:900px){
+    .fields-grid{grid-template-columns:1fr;}
+    .green-feature{padding:72px 20px;}
+    .green-feature .container{grid-template-columns:1fr;gap:40px;}
+    .green-sublinks{grid-template-columns:1fr;}
+    .ref-grid{grid-template-columns:1fr 1fr;}
+    .values-grid{grid-template-columns:1fr;}
+    .quote-band{padding:80px 20px;}
+  }
+
+  /* No-JS fallback: hero elements visible immediately, rotating phrase static */
+  .no-js .hero__sub,
+  .no-js .hero__title,
+  .no-js .hero__actions{opacity:1;animation:none;}
+  .no-js .hero__phrase{opacity:1;transform:none;position:relative;}
+  .no-js .hero__rotate-wrap{height:auto !important;}
+  .no-js .hero__phrase-sizer{display:none;}
+  .no-js .hero__phrase--noscript{display:inline;}
+  .hero__phrase--noscript{display:none;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="hdr" id="hdr">
+  <a href="index.html"><img src="assets/logo/casago-wortmarke-white.svg" alt="Casago"></a>
+  <nav>
+    <a href="#wer-wir-sind">Wer wir sind</a>
+    <a href="#was-uns-unterscheidet">Was uns unterscheidet</a>
+    <div class="has-dropdown">
+      <a href="#geschaeftsbereiche" class="dropdown-trigger">Geschäftsbereiche <span class="caret" aria-hidden="true"></span></a>
+      <div class="dropdown" role="menu">
+        <a href="bautraeger.html" class="dropdown__item" role="menuitem">
+          <span class="dropdown__body">
+            <b>Bauträger</b>
+            <span>Bestand und Neubau</span>
+          </span>
+        </a>
+        <a href="baubetreuung-plus.html" class="dropdown__item" role="menuitem">
+          <span class="dropdown__body">
+            <b>Baubetreuung Plus</b>
+            <span>Maximaler Einfluss auf Ihr Projekt</span>
+          </span>
+        </a>
+        <a href="projektrealisierung.html" class="dropdown__item" role="menuitem">
+          <span class="dropdown__body">
+            <b>Gemeinsame Projektrealisierung</b>
+            <span>Gemeinsam Werte schaffen</span>
+          </span>
+        </a>
+        <a href="begruenung.html" class="dropdown__item" role="menuitem">
+          <span class="dropdown__body">
+            <b>Begrünung &amp; Schwammstadt</b>
+            <span>Gründach · Solar · Wassermanagement</span>
+          </span>
+        </a>
+      </div>
+    </div>
+    <a href="#ansatz">Unser Ansatz</a>
+    <a href="#referenzen">Referenzen</a>
+    <a href="#kontakt">Kontakt</a>
+  </nav>
+  <a class="cta-btn" href="#kontakt">Projekt anfragen</a>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero__bg"><video src="assets/video/baum-360.mp4" autoplay loop muted playsinline preload="auto" onloadedmetadata="this.playbackRate=0.5"></video></div>
+  <div class="hero__veil"></div>
+  <div class="hero__content">
+    <div class="hero__title-block">
+    <p class="hero__sub">Planen. Umsetzen. Leben.</p>
+    <h1 class="hero__title">Wir schaffen Lebensräume,
+      <span class="hero__rotate-wrap" id="rotateWrap">
+        <span class="hero__phrase-sizer" id="rotateSizer" aria-hidden="true"></span>
+        <em class="hero__phrase active" id="rotatePhrase"></em>
+        <noscript><em class="hero__phrase--noscript">die Bestand haben.</em></noscript>
+      </span>
+    </h1>
+    </div>
+    <div class="hero__actions">
+      <div class="hero__meta">
+        <span><b>360°</b></span>
+        <span><b>Aus einer Hand</b></span>
+        <span><b>Ein Team, eine Verantwortung</b></span>
+      </div>
+      <div class="hero__btn">
+        <a class="btn-hero" href="#geschaeftsbereiche">Unsere Geschäftsbereiche <span class="arrow"></span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EINLEITUNG -->
+<section class="section who" id="wer-wir-sind" style="padding:140px 48px 72px;scroll-margin-top:80px;">
+  <div class="container">
+
+    <div class="reveal who__head">
+      <div class="kicker">Wer wir sind</div>
+      <h2 class="who__headline">Aus einer ersten Idee<br>wird ein Ort für lange Zeit.</h2>
+    </div>
+
+    <div class="reveal who__body" style="display:block;">
+      <p class="who__para">Bereits bei der Konzeption bilden wir ein interdisziplinäres Team aus erfahrenen Projektentwicklern, Finanzierungs- und Vermarktungsprofis, Architekten, Ingenieuren und Bauleitern. Mit dem in Jahrzehnten gewachsenen Wissen dieses Teams und unserem 360-Grad-Blick fließen Fördermittel, Vermarktungspotentiale und langfristige Entwicklungen von Gesellschaft und Umwelt genauso ein wie Flächeneffizienz, Energieverbrauch und die Wahrnehmung der Immobilie durch die künftigen Nutzer.</p>
+    </div>
+
+    <div class="reveal who__meta">
+      <div class="who__meta-item"><span class="who__meta-num">360°</span></div>
+      <div class="who__meta-item"><span class="who__meta-num">Aus einer Hand</span></div>
+      <div class="who__meta-item"><span class="who__meta-num">Ein Team, eine Verantwortung</span></div>
+    </div>
+
+    <p class="reveal who__lead" style="margin-top:56px;">Weil wir mit Herzblut Projekte realisieren und durch eigene Projekte alle damit verbundenen Herausforderungen selbst kennen und erleben, unterscheiden wir nicht nach <em>„unserem"</em> und <em>„Ihrem"</em> Projekt.</p>
+    <p class="reveal who__close" style="margin-top:20px;">Unser Anspruch: egal ob groß oder klein, gewerblich oder privat — es muss etwas Besonderes entstehen. Individuell und nicht von der Stange.</p>
+
+  </div>
+</section>
+
+<!-- WAS UNS UNTERSCHEIDET -->
+<section class="section diff" id="was-uns-unterscheidet" style="background:#EEF5F6;padding:72px 48px 80px;scroll-margin-top:80px;">
+  <div class="container">
+
+    <!-- Intro -->
+    <div class="reveal diff__intro">
+      <div class="kicker">Was uns unterscheidet</div>
+      <div class="diff__intro-grid">
+        <div class="diff__intro-left">
+          <h2 class="section-title diff__headline">Entwickeln, planen,<br>realisieren, vermarkten.</h2>
+        </div>
+        <div>
+          <p class="section-lead diff__lead">Von der ersten Idee bis zum Einzug begleitet Sie ein Team, ein Ansprechpartner und ein durchgängiger Prozess — planbar, transparent, sorgenfrei.</p>
+          <p class="diff__lead-sub">Die meisten Bauprojekte scheitern nicht an einzelnen Gewerken, sondern an den Übergängen dazwischen. Bei CASAGO gibt es diese Übergänge nicht: Projektentwicklung, Projektmanagement inklusive kaufmännischer Steuerung, Finanzierungsstrukturierung und Fördermitteln, Genehmigungs- und Ausführungsplanung, Ausschreibung, Einzelvergabe bis zur örtlichen Bauleitung und Vermarktung – alles in einem Team.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Editorial Liste: 5 Gründe -->
+    <div class="reveal diff__list-wrap">
+      <div class="diff__list-head">
+        <span class="diff__list-kicker">Sieben Gründe sich für Casago zu entscheiden.</span>
+        <span class="diff__list-count">01 — 07</span>
+      </div>
+      <ol class="diff__list">
+
+        <li class="diff__row">
+          <div class="diff__num">01</div>
+          <div class="diff__title">Ein Ansprechpartner, der das ganze Projekt kennt</div>
+          <div class="diff__body">Sie müssen Ihre Anliegen nicht jedes Mal neu erklären. Wer Sie heute zur Genehmigungsplanung berät, weiß morgen, was auf der Baustelle gerade passiert — und übermorgen, wie die Zahlen stehen.</div>
+        </li>
+
+        <li class="diff__row">
+          <div class="diff__num">02</div>
+          <div class="diff__title">Projektentwicklung, die den Unterschied macht</div>
+          <div class="diff__body">Unsere Projektentwicklung beantwortet die strategischen Fragen, die später nicht mehr zu korrigieren sind: Welche Nutzung passt zum Grundstück? Welche Flächen lassen sich realisieren? Welche Förderungen sind möglich? Welche steuerlichen Hebel? Welches Vermarktungskonzept?<br>Sie steht am Anfang jedes Bauprojekts — lange vor dem ersten Architektenstrich. In dieser Phase entstehen die größten Werte. Und werden die größten Fehler gemacht.</div>
+        </li>
+
+        <li class="diff__row">
+          <div class="diff__num">03</div>
+          <div class="diff__title">Vermarktung, die schon in der Planung beginnt</div>
+          <div class="diff__body">Viele Projekte werden erst vermarktet, wenn sie fertig geplant sind. Bei CASAGO ist es umgekehrt: Über 40 Jahre Vermarktungserfahrung fließen von Anfang an in die Projektentwicklung ein. Wir testen frühestmöglich, wie der Markt reagiert — und passen an, solange Änderungen noch einfach und wirtschaftlich sind. Denn das beste Projekt nützt wenig, wenn es an den Bedürfnissen der Käufer und späteren Nutzer vorbeigeht.</div>
+        </li>
+
+        <li class="diff__row">
+          <div class="diff__num">04</div>
+          <div class="diff__title">Transparente Kosten statt pauschaler Aufschläge</div>
+          <div class="diff__body">Wir arbeiten nicht mit Generalübernehmern. Stattdessen vergeben wir jedes Gewerk einzeln an ausgewählte regionale Handwerksbetriebe. Das spart Aufschläge und macht nachvollziehbar, wofür Sie bezahlen.</div>
+        </li>
+
+        <li class="diff__row">
+          <div class="diff__num">05</div>
+          <div class="diff__title">Qualität, die wir direkt steuern</div>
+          <div class="diff__body">Unsere Bauleitung ist vor Ort — nicht am Schreibtisch in der Zentrale. Wir koordinieren die Gewerke persönlich, prüfen die Ausführung und halten bei Mängeln direkten Kontakt zu den ausführenden Firmen.</div>
+        </li>
+
+        <li class="diff__row">
+          <div class="diff__num">06</div>
+          <div class="diff__title">Fördermittel und Finanzierung mitgedacht</div>
+          <div class="diff__body">KfW, BAFA, Landesprogramme — die Förderlandschaft verändert sich laufend. Wir prüfen für Ihr Vorhaben, was infrage kommt, und unterstützen Sie bei der Antragstellung.</div>
+        </li>
+
+        <li class="diff__row">
+          <div class="diff__num">07</div>
+          <div class="diff__title">Regional verwurzelt, partnerschaftlich verbunden</div>
+          <div class="diff__body">Wir arbeiten mit Handwerksbetrieben aus der Region, die wir kennen und die uns kennen. Gut für die Qualität, gut für die Wertschöpfung vor Ort — und die Grundlage dafür, dass wir Termine und Zusagen verlässlich einhalten.</div>
+        </li>
+
+      </ol>
+    </div>
+
+    <!-- Für wen -->
+    <div class="reveal diff__audience">
+      <div class="diff__audience-head">
+        <span class="kicker" style="margin:0;">Für wen wir der richtige Partner sind</span>
+      </div>
+      <div class="diff__audience-grid">
+        <div class="diff__aud">
+          <div class="diff__aud-label">Für</div>
+          <div class="diff__aud-who">Bauherren</div>
+          <p class="diff__aud-body">…die ihr Projekt in erfahrene Hände geben möchten, ohne die Kontrolle zu verlieren.</p>
+        </div>
+        <div class="diff__aud">
+          <div class="diff__aud-label">Für</div>
+          <div class="diff__aud-who">Eigentümer</div>
+          <p class="diff__aud-body">…die ihr Grundstück oder ihren Bestand partnerschaftlich entwickeln wollen.</p>
+        </div>
+        <div class="diff__aud">
+          <div class="diff__aud-label">Für</div>
+          <div class="diff__aud-who">Käufer</div>
+          <p class="diff__aud-body">…die ein Zuhause suchen, in dem Qualität und Transparenz selbstverständlich sind.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- GESCHÄFTSBEREICHE -->
+<section class="section fields" id="geschaeftsbereiche" style="padding:80px 48px 120px;">
+  <div class="container">
+    <div class="fields-head reveal">
+      <div>
+        <div class="kicker">Geschäftsbereiche</div>
+        <h2 class="section-title">Vier Wege,<br>ein Anspruch.</h2>
+      </div>
+      <p class="section-lead">Wir decken Neubauten im Bereich Wohnen und Gewerbe bis hin zur besonders anspruchsvollen Sanierung denkmalgeschützter Gebäude ab — jeweils mit dem passenden Modell für Sie. Oder wir realisieren gemeinsam mit Ihnen.</p>
+    </div>
+    <div class="fields-grid" style="grid-template-columns:repeat(4,1fr);">
+      <a class="field reveal" href="bautraeger.html">
+        <img src="assets/images/bautraeger-hero.webp" alt="Bauträger">
+        <div class="field__veil"></div>
+        <div class="field__body">
+          <div class="field__cat">Geschäftsbereich · 01</div>
+          <h3 class="field__title">Bauträger</h3>
+          <p class="field__desc">Ausgewählte Bestands- und Neubauprojekte auf eigenes Risiko. Qualität, Flächeneffizienz und Zukunftssicherheit vereint.</p>
+          <span class="field__more">Mehr erfahren →</span>
+        </div>
+      </a>
+      <a class="field reveal" href="baubetreuung-plus.html">
+        <img src="assets/images/baubetreuung-hero.webp" alt="Baubetreuung Plus">
+        <div class="field__veil"></div>
+        <div class="field__body">
+          <div class="field__cat">Geschäftsbereich · 02</div>
+          <h3 class="field__title">Baubetreuung Plus</h3>
+          <p class="field__desc">Ihr unabhängiger Vertreter über alle Projektphasen. Maximale Einflussnahme ohne eigene Ressourcen.</p>
+          <span class="field__more">Mehr erfahren →</span>
+        </div>
+      </a>
+      <a class="field reveal" href="projektrealisierung.html">
+        <img src="uploads/Gemeinsame Projektrealisierung_Kachel_neu.webp" alt="Gemeinsame Projektrealisierung">
+        <div class="field__veil"></div>
+        <div class="field__body">
+          <div class="field__cat">Geschäftsbereich · 03</div>
+          <h3 class="field__title">Gemeinsame<br>Projektrealisierung</h3>
+          <p class="field__desc">Profitieren Sie von unserem Know-how. Gemeinsam realisieren wir Bestands- und Neubauprojekte mit echtem Mehrwert.</p>
+          <span class="field__more">Mehr erfahren →</span>
+        </div>
+      </a>
+      <a class="field reveal" href="begruenung.html">
+        <img src="assets/images/dach-schwamm-hero.webp" alt="Begrünung &amp; Schwammstadt">
+        <div class="field__veil"></div>
+        <div class="field__body">
+          <div class="field__cat">Geschäftsbereich · 04</div>
+          <h3 class="field__title">Begrünung &amp;<br>Schwammstadt</h3>
+          <p class="field__desc">Gründach, Solargründach und dezentrales Wassermanagement — in Partnerschaft mit SECALFLOR.</p>
+          <span class="field__more">Mehr erfahren →</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section class="section" id="ansatz" style="background:#DAE9EC;scroll-margin-top:80px;">
+  <div class="container">
+    <div class="reveal">
+      <div class="kicker">Unser Ansatz</div>
+      <h2 class="section-title">Sechs Werte —<br>sechs Versprechen.</h2>
+    </div>
+    <div class="values-grid">
+      <div class="value reveal"><div class="value__num">01 · Partnerschaftlich</div><h3 class="value__title">Miteinander statt nebeneinander.</h3><p class="value__body">Wir arbeiten <u>mit</u> unseren Bauherren, nicht für sie. Aus „Ihrem" Projekt wird „unser gemeinsames" Projekt.</p></div>
+      <div class="value reveal"><div class="value__num">02 · Kompetent</div><h3 class="value__title">Jahrzehnte Erfahrung.</h3><p class="value__body">Wissen in Architektur, Bauingenieurwesen und nachhaltiger Innovation — belegt mit konkreten Referenzen und der beruflichen Erfahrung eines jeden Teammitglieds.</p></div>
+      <div class="value reveal"><div class="value__num">03 · Leidenschaftlich</div><h3 class="value__title">Herzblut in jedem Projekt.</h3><p class="value__body">Es muss etwas Besonderes entstehen — individuell und nicht von der Stange.</p></div>
+      <div class="value reveal"><div class="value__num">04 · Zukunftsorientiert</div><h3 class="value__title">Langfristig gedacht.</h3><p class="value__body">Von Dachbegrünung bis Schwammstadt — zukunftssichere Lösungen für Generationen.</p></div>
+      <div class="value reveal"><div class="value__num">05 · Lösungsorientiert</div><h3 class="value__title">Lösungen, keine Schuldigen.</h3><p class="value__body">„Obwohl es anfänglich unmöglich schien, ist es uns dennoch gelungen."</p></div>
+      <div class="value reveal"><div class="value__num">06 · Wertschätzend</div><h3 class="value__title">Zusammenarbeit braucht Vertrauen.</h3><p class="value__body">Mit dem Team, mit Partnern, mit Bauherren — Respekt ist bei uns kein Lippenbekenntnis, sondern gelebter Alltag.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- BEGRÜNUNG FEATURE -->
+<section class="green-feature" id="begruenung-feature" style="scroll-margin-top:80px;">
+  <div class="container">
+    <div class="reveal">
+      <div class="kicker">Schwerpunktthema — Begrünung</div>
+      <h2>Die „Magie" findet<br>unter der Oberfläche statt.</h2>
+      <p style="text-align:justify; text-align-last:left; hyphens:auto; -webkit-hyphens:auto;">Begrünungen speichern Wasser, verschaffen Abkühlung, sorgen für frische Luft und schützen die Bausubstanz. Gemeinsam mit unserem Partner <strong style="color:#DAE9EC; hyphens:none; -webkit-hyphens:none;">SECALFLOR</strong> realisieren wir Gründächer, Solargründächer und Schwammstadt-Konzepte — auf Grundlage patentierter, biozertifizierter Speicherpanels aus Roggenmehl, Holzfaser, Kalk und Bentonit.</p>
+      <p style="text-align:justify; text-align-last:left; hyphens:auto; -webkit-hyphens:auto;">Einzigartig leicht. Hoch wirksam. Ohne Plastik-Retentionselemente. Nach dem Vorbild der Natur.</p>
+      <div class="green-sublinks">
+        <a class="green-sublink" href="begruenung.html#warum">
+          <b>Warum Begrünung?</b>
+          <span>Klimawandel &amp; Handlungsoptionen</span>
+        </a>
+        <a class="green-sublink" href="secalflor.html">
+          <b>SECALFLOR-System</b>
+          <span>Das patentierte Speicherpanel</span>
+        </a>
+        <a class="green-sublink" href="gruendach.html">
+          <b>Gründach &amp; Solargründach</b>
+          <span>Aufbau, Vorteile, Förderung</span>
+        </a>
+        <a class="green-sublink" href="schwammstadt.html">
+          <b>Schwammstadt</b>
+          <span>Für Städte und Gemeinden</span>
+        </a>
+      </div>
+    </div>
+    <div class="green-feature__img reveal">
+      <img src="assets/images/SecalFlor.webp" alt="SECALFLOR Speicherpanel mit Logo">
+    </div>
+  </div>
+</section>
+
+<!-- REFERENZEN -->
+<section class="section ref-strip" id="referenzen" style="scroll-margin-top:80px;">
+  <div class="container">
+    <div class="fields-head reveal">
+      <div>
+        <div class="kicker">Referenzen</div>
+        <h2 class="section-title">Unsere Projekte sprechen für sich.</h2>
+      </div>
+      <a class="teaser__more" href="referenzen.html" style="font-size:13px;">Alle Referenzen ansehen →</a>
+    </div>
+    <div class="ref-grid">
+      <a class="ref reveal" href="referenzen.html#neubeuern">
+        <div class="ref__img"><img src="uploads/thumbs/neubeuern.webp" alt="Hollingerhaus Neubeuern"></div>
+        <div class="ref__body">
+          <div class="ref__cat">Sanierung · 2022</div>
+          <h3 class="ref__title">Hollingerhaus Neubeuern</h3>
+          <div class="ref__loc">17. Jhd. Bauernhaus · KfW 85</div>
+        </div>
+      </a>
+      <a class="ref reveal" href="referenzen.html#rott">
+        <div class="ref__img"><img src="uploads/thumbs/rott.webp" alt="Firmengebäude Rott am Inn"></div>
+        <div class="ref__body">
+          <div class="ref__cat">Neubau Gewerbe · 2024</div>
+          <h3 class="ref__title">Firmengebäude Rott am Inn</h3>
+          <div class="ref__loc">11½ Monate Bauzeit · –10 % unter Kostenrahmen</div>
+        </div>
+      </a>
+      <a class="ref reveal" href="referenzen.html#coburg">
+        <div class="ref__img"><img src="uploads/thumbs/coburg.webp" alt="Fachwerkhaus Coburg"></div>
+        <div class="ref__body">
+          <div class="ref__cat">Sanierung · 2025</div>
+          <h3 class="ref__title">Fachwerkhaus Coburg</h3>
+          <div class="ref__loc">500 Jahre alt · 10 Wohnungen · KfW 85</div>
+        </div>
+      </a>
+      <a class="ref reveal" href="referenzen.html#aschau">
+        <div class="ref__img"><img src="uploads/thumbs/aschau.webp" alt="Zweifamilienhaus Aschau im Chiemgau"></div>
+        <div class="ref__body">
+          <div class="ref__cat">Baubetreuung · 2026</div>
+          <h3 class="ref__title">Zweifamilienhaus Aschau</h3>
+          <div class="ref__loc">Effizienzhaus 55 · WP · PV · Gründach</div>
+        </div>
+      </a>
+      <a class="ref reveal" href="referenzen.html#edling">
+        <div class="ref__img"><img src="uploads/thumbs/edling.webp" alt="Mehrfamilienhaus Edling"></div>
+        <div class="ref__body">
+          <div class="ref__cat">Neubau Wohnen · in Planung</div>
+          <h3 class="ref__title">Mehrfamilienhaus Edling</h3>
+          <div class="ref__loc">5 ETW + 6 FeWo · WP · PV · Gründach</div>
+        </div>
+      </a>
+      <a class="ref reveal" href="referenzen.html#neubeuern2">
+        <div class="ref__img"><img src="uploads/Neubeuern II_Main_.webp" alt="Mehrfamilienhaus Neubeuern II"></div>
+        <div class="ref__body">
+          <div class="ref__cat">Gemeinsame Projektrealisierung · in Entwicklung</div>
+          <h3 class="ref__title">Mehrfamilienhaus Neubeuern II</h3>
+          <div class="ref__loc">Gründach · QNG-Standard · HOAI 1–9</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-band" id="kontakt">
+  <div class="container reveal">
+    <div class="kicker" style="color:#DAE9EC;">Kontakt</div>
+    <h2>Lassen Sie uns über<br>Ihr Projekt sprechen.</h2>
+    <p>Wir hören zu, bevor wir zeichnen. Jedes Projekt beginnt mit einem Gespräch.</p>
+    <div class="btn-row" style="justify-content:center;">
+      <a class="btn-white" href="mailto:info@casago.de" style="padding:20px 48px;font-size:15px;">Anfrage senden <span class="arrow" style="display:inline-block;width:14px;height:1px;background:currentColor;position:relative;"><span style="position:absolute;right:0;top:-3px;width:7px;height:7px;border-top:1px solid currentColor;border-right:1px solid currentColor;transform:rotate(45deg);display:block;"></span></span></a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site">
+  <div class="container">
+    <div class="foot-brand">
+      <img src="assets/logo/casago-wortmarke-white.svg" alt="">
+      <div class="claim">Planen. Umsetzen. Leben.</div>
+    </div>
+    <div><h4>Geschäftsbereiche</h4><ul>
+      <li><a href="bautraeger.html">Bauträger</a></li>
+      <li><a href="baubetreuung-plus.html">Baubetreuung Plus</a></li>
+      <li><a href="projektrealisierung.html">Gemeinsame Projektrealisierung</a></li>
+      <li><a href="begruenung.html">Begrünung</a></li>
+    </ul></div>
+    <div><h4>Begrünung</h4><ul>
+      <li><a href="secalflor.html">SECALFLOR-System</a></li>
+      <li><a href="gruendach.html">Gründach</a></li>
+      <li><a href="gruendach.html#solar">Solargründach</a></li>
+      <li><a href="schwammstadt.html">Schwammstadt</a></li>
+    </ul></div>
+    <div><h4>Unternehmen</h4><ul><li><a href="referenzen.html">Referenzen</a></li><li><a href="presse.html">Presse</a></li></ul></div>
+    <div><h4>Kontakt</h4><ul>
+      <li>info@casago.de</li>
+      <li>Deutschland</li>
+      </ul></div>
+  </div>
+  <div class="foot-bar">
+    <div>© 2026 Casago GmbH. Alle Rechte vorbehalten.</div>
+    <div class="links"><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></div>
+  </div>
+</footer>
+
+<script>
+  const hdr = document.getElementById('hdr');
+  const onScroll = () => { hdr.classList.toggle('scrolled', window.scrollY > 40); };
+  window.addEventListener('scroll', onScroll); onScroll();
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  /* Smooth-Scroll für Anker-Links auf der Hauptseite.
+     Funktioniert in beide Richtungen — von oben nach unten UND von unten nach oben.
+     Eigene Easing-Animation, damit lange Distanzen butterweich bleiben. */
+  const easeInOutCubic = (t) => t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3)/2;
+
+  let scrollAnim = null;
+  function smoothScrollTo(targetY, duration = 1100) {
+    if (scrollAnim) cancelAnimationFrame(scrollAnim);
+    const startY = window.scrollY;
+    const distance = targetY - startY;
+    if (Math.abs(distance) < 2) return;
+    // Längere Distanzen brauchen etwas mehr Zeit, aber mit Deckel
+    const dur = Math.min(1600, Math.max(700, Math.abs(distance) * 0.6));
+    const startTime = performance.now();
+    const step = (now) => {
+      const elapsed = now - startTime;
+      const t = Math.min(1, elapsed / dur);
+      const eased = easeInOutCubic(t);
+      window.scrollTo(0, startY + distance * eased);
+      if (t < 1) scrollAnim = requestAnimationFrame(step);
+      else scrollAnim = null;
+    };
+    scrollAnim = requestAnimationFrame(step);
+  }
+
+  // Falls Nutzer:in selbst scrollt (Wheel/Touch), Animation abbrechen
+  ['wheel','touchstart','keydown'].forEach(evt => {
+    window.addEventListener(evt, () => {
+      if (scrollAnim) { cancelAnimationFrame(scrollAnim); scrollAnim = null; }
+    }, { passive: true });
+  });
+
+  /* ===== Rotating hero phrase ===== */
+  (function(){
+    const phrases = [
+      "die Bestand haben.",
+      "gemeinsam mit Ihnen.",
+      "individuell, nicht von der Stange.",
+      "von der ersten Idee bis zur Übergabe.",
+      "zukunftssicher und mit Leidenschaft."
+    ];
+    const el    = document.getElementById('rotatePhrase');
+    const sizer = document.getElementById('rotateSizer');
+    const wrap  = document.getElementById('rotateWrap');
+    let idx = 0;
+    let transitioning = false;
+
+    function getFontScale(text) {
+      return '1em';
+    }
+
+    // Pre-measure the tallest phrase and lock the wrap to that height —
+    // so the meta/button block below NEVER shifts when phrases change.
+    function lockWrapHeight() {
+      let maxH = 0;
+      for (const p of phrases) {
+        sizer.textContent = p;
+        // getBoundingClientRect gives sub-pixel precision; ceil so we never
+        // under-allocate by a fractional pixel.
+        const h = Math.ceil(sizer.getBoundingClientRect().height || sizer.offsetHeight);
+        if (h > maxH) maxH = h;
+      }
+      // 32 px safety buffer so even the longest phrase never clips,
+      // regardless of font-metric differences between fallback and web font.
+      wrap.style.height = (maxH + 64) + 'px';
+    }
+
+    function setPhrase(text, animate) {
+      if (!animate) {
+        el.textContent = text;
+        el.classList.add('active');
+        el.classList.remove('exit');
+        return;
+      }
+      el.classList.remove('active');
+      el.classList.add('exit');
+      const onDone = () => {
+        el.removeEventListener('transitionend', onDone);
+        el.classList.remove('exit');
+        el.textContent = text;
+        void el.offsetWidth;
+        el.classList.add('active');
+        transitioning = false;
+      };
+      el.addEventListener('transitionend', onDone);
+    }
+
+    lockWrapHeight();
+    // Re-measure once web fonts are ready — fallback metrics can differ
+    // enough that the long phrase would otherwise be clipped.
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(lockWrapHeight);
+    }
+    window.addEventListener('resize', lockWrapHeight);
+
+    // Set initial phrase immediately (no animation)
+    setPhrase(phrases[0], false);
+
+    // Start cycling after hero fade-in
+    setTimeout(() => {
+      setInterval(() => {
+        if (transitioning) return;
+        transitioning = true;
+        idx = (idx + 1) % phrases.length;
+        setPhrase(phrases[idx], true);
+      }, 5000);
+    }, 2400);
+  })();
+
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const id = link.getAttribute('href').slice(1);
+      if (!id) return;
+      const target = document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      const headerOffset = 72;
+      const top = target.getBoundingClientRect().top + window.scrollY - headerOffset;
+      smoothScrollTo(top);
+      history.pushState(null, '', '#' + id);
+
+      // Falls der Klick aus einem Hover-Dropdown heraus erfolgte:
+      // Trigger blurren und Wrapper als "dismissed" markieren, damit das Menü
+      // nicht offen kleben bleibt. Sobald der Cursor das Element verlässt,
+      // wird die Klasse wieder entfernt.
+      const wrap = link.closest('.has-dropdown');
+      if (wrap) {
+        link.blur();
+        wrap.classList.add('dismissed');
+        const clear = () => {
+          wrap.classList.remove('dismissed');
+          wrap.removeEventListener('mouseleave', clear);
+        };
+        wrap.addEventListener('mouseleave', clear);
+      }
+    });
+  });
+</script>
+
+<template id="__bundler_thumbnail" data-bg-color="#003B44">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <!-- Dark teal background -->
+    <rect width="1200" height="800" fill="#003B44"/>
+    <!-- Casago wordmark silhouette — simple C letterform -->
+    <text x="600" y="460" font-family="Georgia, serif" font-size="260" font-weight="400" fill="#DAE9EC" text-anchor="middle" opacity="0.9">C</text>
+    <!-- Tagline bar -->
+    <rect x="440" y="520" width="320" height="2" fill="#1A8B9A" opacity="0.7"/>
+    <text x="600" y="570" font-family="Arial, sans-serif" font-size="28" fill="#DAE9EC" text-anchor="middle" letter-spacing="8" opacity="0.6">CASAGO</text>
+  </svg>
+</template>
+</body>
+</html>
