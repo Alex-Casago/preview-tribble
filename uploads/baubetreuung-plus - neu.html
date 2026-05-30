@@ -8,9 +8,8 @@
 <link rel="stylesheet" href="colors_and_type.css">
 <link rel="stylesheet" href="shared.css?v=2">
 <style>
-  /* Hero-Lead und Leistungsphasen-Lead: volle Containerbreite */
-  .sub-hero p.lead{max-width:100%;text-wrap:pretty;}
-  .section-lead{max-width:100% !important;}
+  /* Wider lead in hero so long sentence breaks cleanly */
+  .sub-hero p.lead{max-width:820px;text-wrap:pretty;}
 
   /* "Passt das zu Ihnen?" card grid */
   .fit-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:56px;}
@@ -32,29 +31,23 @@
   @media(max-width:960px){.benefits{grid-template-columns:1fr 1fr;}}
   @media(max-width:600px){.benefits{grid-template-columns:1fr;}}
 
-  /* Projektmanagement-Strahl — durchgängige Leiste, Phasen als Stationen darunter */
-  .b2{margin-top:56px;}
-  .b2__pm{position:relative;height:40px;border-radius:6px;background:#005F6A;display:flex;align-items:center;justify-content:center;color:#FFFFFF;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;overflow:hidden;}
-  .b2__pm span{position:relative;z-index:2;text-align:center;padding:0 16px;}
-  .b2__pm::after{content:"";position:absolute;inset:0 auto 0 -140px;width:140px;background:linear-gradient(90deg,transparent,rgba(212,168,67,.85),transparent);animation:b2Flow 3.4s linear infinite;}
-  @keyframes b2Flow{0%{left:-140px;}100%{left:100%;}}
-
-  .b2__grid{display:grid;grid-template-columns:repeat(8,1fr);}
-  .b2__col{position:relative;min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 10px;}
-  .b2__stem{width:2px;height:22px;background:#CFE0E2;}
-  .b2__col--key .b2__stem{background:#D4A843;}
-  .b2__dot{width:22px;height:22px;border-radius:50%;background:#005F6A;color:#FFFFFF;font-size:14px;font-weight:500;line-height:1;display:flex;align-items:center;justify-content:center;margin-bottom:13px;}
-  .b2__col--key .b2__dot{background:#D4A843;}
-  .b2__tag{min-height:14px;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#B58A2B;font-weight:500;margin-bottom:8px;}
-  .b2__col h4{font-size:14px;font-weight:500;line-height:1.34;margin:0;color:#1A1A1A;letter-spacing:-0.005em;text-wrap:balance;overflow-wrap:break-word;hyphens:auto;}
-  .b2__col--key h4{color:#9A7220;border-bottom:2px solid #E7CF92;padding-bottom:9px;}
-
-  @media(max-width:980px){
-    .b2__grid{grid-template-columns:repeat(4,1fr);row-gap:34px;margin-top:30px;}
-    .b2__stem{display:none;}
-  }
-  @media(max-width:560px){.b2__grid{grid-template-columns:repeat(2,1fr);}}
-  @media(prefers-reduced-motion:reduce){.b2__pm::after{animation:none;opacity:.25;left:0;width:100%;}}
+  /* Projektmanagement als schlanke, durchgängige Prozessschiene (verzahnt mit allen Phasen) */
+  .pm-rail{display:flex;align-items:center;gap:18px;margin-top:56px;}
+  .pm-rail__pill{display:inline-flex;align-items:baseline;gap:9px;background:#005F6A;color:#FFFFFF;border-radius:999px;padding:11px 24px;font-size:15px;font-weight:500;letter-spacing:0.01em;white-space:nowrap;}
+  .pm-rail__pill small{font-size:11px;font-weight:400;letter-spacing:0.14em;text-transform:uppercase;color:#9CC3C6;}
+  .pm-rail__teeth{position:relative;overflow:hidden;flex:1;height:16px;background-image:repeating-linear-gradient(90deg,rgba(0,95,106,.5) 0 2px,transparent 2px 15px);border-radius:1px;}
+  .pm-rail__teeth::after{content:"";position:absolute;top:0;bottom:0;left:-90px;width:90px;background:linear-gradient(90deg,transparent 0,rgba(212,168,67,.9) 50%,transparent 100%);animation:pmFlow 2.8s linear infinite;}
+  @keyframes pmFlow{0%{left:-90px;}100%{left:100%;}}
+  .pm-phases{margin-top:24px;}
+  .pm-phases .benefit{position:relative;background:#FFFFFF;border:1px solid #DCE7E8;border-top:2px solid #005F6A;padding:32px 28px 30px;}
+  .pm-phases .benefit::before{content:"";position:absolute;top:-7px;left:28px;width:12px;height:12px;border-radius:50%;background:#005F6A;border:3px solid #FFFFFF;}
+  .pm-phases .benefit:hover{background:#EEF5F6;}
+  /* CASAGO-Differenzierer: erste und letzte Phase hervorgehoben */
+  .pm-phases .benefit--key{background:#FBF4E3;border-top-color:#D4A843;}
+  .pm-phases .benefit--key::before{background:#D4A843;}
+  .pm-phases .benefit--key:hover{background:#F7ECCF;}
+  @media(max-width:600px){.pm-rail{flex-direction:column;align-items:stretch;gap:12px;}.pm-rail__teeth{height:12px;}}
+  @media(prefers-reduced-motion:reduce){.pm-rail__teeth::after{animation:none;left:0;width:100%;opacity:.18;}}
 
   /* Compare table — warmer, besser lesbar */
   .compare{
@@ -282,57 +275,43 @@
     <h2 class="section-title reveal">Alle Phasen —<br>ohne Bruchstellen.</h2>
     <p class="section-lead reveal" style="margin-top:24px;">Unser Angebot geht deutlich über die klassische kaufmännische oder technische Baubetreuung hinaus. Wir begleiten alle Phasen und verzahnen Projektentwicklung, Planung, Vergabe, Überwachung und Vermarktung — so vermeiden wir häufige Störquellen und unnötige Kosten. Das Projektmanagement bleibt dabei der durchgängige, allumfassende Prozess, der alle Phasen zusammenhält.</p>
 
-    <div class="b2 reveal">
-      <div class="b2__pm"><span>Projektmanagement · durchgängig über alle Phasen</span></div>
-      <div class="b2__grid">
-        <div class="b2__col b2__col--key">
-          <div class="b2__stem" aria-hidden="true"></div>
-          <div class="b2__dot">+</div>
-          <div class="b2__tag">Casago-Plus</div>
-          <h4>Projektentwicklung</h4>
-        </div>
-        <div class="b2__col">
-          <div class="b2__stem" aria-hidden="true"></div>
-          <div class="b2__dot"></div>
-          <div class="b2__tag"></div>
-          <h4>Vom Vorentwurf bis zur Genehmigungsplanung</h4>
-        </div>
-        <div class="b2__col">
-          <div class="b2__stem" aria-hidden="true"></div>
-          <div class="b2__dot"></div>
-          <div class="b2__tag"></div>
-          <h4>Ausführungsplanung, Leistungsverzeichnisse &amp; Vergaben</h4>
-        </div>
-        <div class="b2__col">
-          <div class="b2__stem" aria-hidden="true"></div>
-          <div class="b2__dot"></div>
-          <div class="b2__tag"></div>
-          <h4>Bauüberwachung &amp; örtliche Bauleitung</h4>
-        </div>
-        <div class="b2__col">
-          <div class="b2__stem" aria-hidden="true"></div>
-          <div class="b2__dot"></div>
-          <div class="b2__tag"></div>
-          <h4>Kaufmännische Betreuung &amp; bauablaufbasierte Liquiditätssteuerung</h4>
-        </div>
-        <div class="b2__col">
-          <div class="b2__stem" aria-hidden="true"></div>
-          <div class="b2__dot"></div>
-          <div class="b2__tag"></div>
-          <h4>Unterstützung bei Fördermitteln &amp; Finanzierung</h4>
-        </div>
-        <div class="b2__col">
-          <div class="b2__stem" aria-hidden="true"></div>
-          <div class="b2__dot"></div>
-          <div class="b2__tag"></div>
-          <h4>Abnahme, sowie Nachtrags- &amp; Mängelmanagement</h4>
-        </div>
-        <div class="b2__col b2__col--key">
-          <div class="b2__stem" aria-hidden="true"></div>
-          <div class="b2__dot">+</div>
-          <div class="b2__tag">Casago-Plus</div>
-          <h4>Vermarktung</h4>
-        </div>
+    <div class="pm-rail reveal">
+      <span class="pm-rail__pill">Projektmanagement <small>durchgängig</small></span>
+      <span class="pm-rail__teeth" aria-hidden="true"></span>
+    </div>
+
+    <div class="benefits pm-phases reveal">
+      <div class="benefit benefit--key">
+        <h3>Projektentwicklung</h3>
+        <p>Baurechtliche Prüfung, Standort- und Vermarktungspotentiale, Begleitung bei Bank- und Steuergesprächen.</p>
+      </div>
+      <div class="benefit">
+        <h3>Vom Vorentwurf bis zur Genehmigungsplanung</h3>
+        <p>Entwurf, Abstimmung mit Behörden und Fachplanern — bis zur erteilten Baugenehmigung.</p>
+      </div>
+      <div class="benefit">
+        <h3>Ausführungsplanung, Leistungsverzeichnisse &amp; Vergaben</h3>
+        <p>Detailplanung, gewerkeweise Leistungsverzeichnisse und Einzelvergabe an die besten Anbieter pro Gewerk.</p>
+      </div>
+      <div class="benefit">
+        <h3>Bauüberwachung &amp; örtliche Bauleitung</h3>
+        <p>Qualitäts-, Termin- und Kostenkontrolle direkt auf der Baustelle durch unser eigenes Team.</p>
+      </div>
+      <div class="benefit">
+        <h3>Abnahme, Nachtrags- &amp; Mängelmanagement</h3>
+        <p>Strukturierte Abnahmen, konsequente Mängelverfolgung und Prüfung von Nachträgen.</p>
+      </div>
+      <div class="benefit">
+        <h3>Unterstützung bei Fördermitteln &amp; Finanzierung</h3>
+        <p>KfW, BAFA und kommunale Programme — Identifikation, Antragstellung und Finanzierungsbegleitung.</p>
+      </div>
+      <div class="benefit">
+        <h3>Kaufmännische Betreuung &amp; bauablaufbasierte Liquiditätssteuerung</h3>
+        <p>Rechnungsprüfung und -freigabe, offene Bücher und liquiditätsschonende Zahlungssteuerung.</p>
+      </div>
+      <div class="benefit benefit--key">
+        <h3>Vermarktung</h3>
+        <p>Auf Wunsch: Vermarktung der fertiggestellten Immobilie durch unsere Partnergesellschaft.</p>
       </div>
     </div>
   </div>

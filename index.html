@@ -16,7 +16,7 @@
   /* hero__content is split into two parts:
      .hero__title-block  → flex-centered in the hero (the bit the user wants at visual center)
      .hero__actions      → sits below the title-block with its own spacing                  */
-  .hero__content{position:relative;z-index:2;text-align:center;color:#FFFFFF;max-width:1040px;padding:0 32px;display:flex;flex-direction:column;align-items:center;}
+  .hero__content{position:relative;z-index:2;text-align:center;color:#FFFFFF;width:100%;max-width:1040px;padding:0 32px;display:flex;flex-direction:column;align-items:center;justify-content:center;align-self:stretch;}
   .hero__title-block{display:flex;flex-direction:column;align-items:center;}
   .hero__sub{font-size:15px;letter-spacing:0.1em;text-transform:uppercase;color:#DAE9EC;margin-bottom:20px;opacity:0;animation:fadeUp 1s ease .2s forwards;}
   .hero__title{font-size:clamp(32px,4vw,60px);font-weight:400;letter-spacing:-0.02em;line-height:1.08;margin:0;opacity:0;animation:fadeUp 1s ease .4s forwards;}
@@ -24,16 +24,15 @@
 
   /* ===== Rotating phrase ===== */
   /* Wrap height is locked to the largest phrase (set in JS) so nothing below shifts. */
-  /* padding-bottom gives descenders (g, p, j) room so they aren't clipped by overflow:hidden. */
-  /* line-height auf der Rotate-Zeile großzügiger als beim Titel (1.02), damit Descender (g, ü, j) Platz haben. */
-  .hero__rotate-wrap{display:block;position:relative;overflow:hidden;line-height:1.18;padding-bottom:0.08em;}
-  .hero__phrase{display:block;font-style:italic;color:#DAE9EC;white-space:normal;position:absolute;top:0;left:0;right:0;line-height:1.18;opacity:0;transform:translateY(44px);transition:opacity .55s cubic-bezier(.4,0,.2,1), transform .55s cubic-bezier(.4,0,.2,1);}
-  .hero__phrase.active{opacity:1;transform:translateY(0);}
-  .hero__phrase.exit{opacity:0;transform:translateY(-44px);}
-  .hero__phrase-sizer{display:block;visibility:hidden;font-style:italic;white-space:normal;line-height:1.18;pointer-events:none;}
+  /* overflow:visible so descenders (g, p, j) are never clipped — transition is opacity-only. */
+  .hero__rotate-wrap{display:block;position:relative;overflow:visible;line-height:1.18;padding-bottom:0.32em;}
+  .hero__phrase{display:block;font-style:italic;color:#DAE9EC;white-space:normal;position:absolute;top:0;left:0;right:0;line-height:1.18;opacity:0;transition:opacity .65s cubic-bezier(.4,0,.2,1);}
+  .hero__phrase.active{opacity:1;}
+  .hero__phrase.exit{opacity:0;}
+  .hero__phrase-sizer{position:absolute;top:0;width:100%;display:block;visibility:hidden;font-style:italic;white-space:normal;line-height:1.18;pointer-events:none;}
 
   /* Action group: meta + button stay together as one stable block, decoupled from the rotating slogan above. */
-  .hero__actions{margin-top:72px;display:flex;flex-direction:column;align-items:center;gap:24px;opacity:0;animation:fadeUp 1s ease .6s forwards;}
+  .hero__actions{position:absolute;bottom:72px;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:24px;opacity:0;animation:fadeUp 1s ease .6s forwards;}
   .hero__meta{display:flex;gap:32px;justify-content:center;font-size:15px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(248,248,247,0.7);}
   .hero__meta b{color:#FFFFFF;font-weight:500;}
   .hero__btn{margin-top:8px;}
@@ -697,7 +696,7 @@
       }
       // 32 px safety buffer so even the longest phrase never clips,
       // regardless of font-metric differences between fallback and web font.
-      wrap.style.height = (maxH + 64) + 'px';
+      wrap.style.height = (maxH + 100) + 'px';
     }
 
     function setPhrase(text, animate) {
