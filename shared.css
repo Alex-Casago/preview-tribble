@@ -206,11 +206,11 @@ footer.site li a:hover{color:#DAE9EC;}
     flex-direction:column;align-items:center;justify-content:flex-start;
     gap:2px;padding:92px 22px 48px;
     background:#003B44;
-    transform:translateX(100%);
-    transition:transform .32s cubic-bezier(.2,0,0,1);
+    opacity:0;visibility:hidden;pointer-events:none;
+    transition:opacity .26s ease, visibility .26s ease;
     z-index:55;overflow-y:auto;
   }
-  .nav-toggle-cb:checked ~ nav{transform:translateX(0);}
+  .nav-toggle-cb:checked ~ nav{opacity:1;visibility:visible;pointer-events:auto;}
 
   /* hamburger morphs into an X when open */
   .nav-toggle-cb:checked ~ .nav-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg);}
