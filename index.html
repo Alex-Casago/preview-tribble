@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Casago — Planen. Umsetzen. Leben.</title>
 <link rel="stylesheet" href="colors_and_type.css">
-<link rel="stylesheet" href="shared.css?v=2">
+<link rel="stylesheet" href="shared.css?v=3">
 <style>
   /* ===== Hero ===== */
   .hero{position:relative;height:100vh;min-height:720px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#003B44;}
@@ -16,7 +16,7 @@
   /* hero__content is split into two parts:
      .hero__title-block  → flex-centered in the hero (the bit the user wants at visual center)
      .hero__actions      → sits below the title-block with its own spacing                  */
-  .hero__content{position:relative;z-index:2;text-align:center;color:#FFFFFF;max-width:1040px;padding:0 32px;display:flex;flex-direction:column;align-items:center;}
+  .hero__content{position:relative;z-index:2;text-align:center;color:#FFFFFF;width:100%;max-width:1040px;padding:0 32px;display:flex;flex-direction:column;align-items:center;justify-content:center;align-self:stretch;}
   .hero__title-block{display:flex;flex-direction:column;align-items:center;}
   .hero__sub{font-size:15px;letter-spacing:0.1em;text-transform:uppercase;color:#DAE9EC;margin-bottom:20px;opacity:0;animation:fadeUp 1s ease .2s forwards;}
   .hero__title{font-size:clamp(32px,4vw,60px);font-weight:400;letter-spacing:-0.02em;line-height:1.08;margin:0;opacity:0;animation:fadeUp 1s ease .4s forwards;}
@@ -24,16 +24,15 @@
 
   /* ===== Rotating phrase ===== */
   /* Wrap height is locked to the largest phrase (set in JS) so nothing below shifts. */
-  /* padding-bottom gives descenders (g, p, j) room so they aren't clipped by overflow:hidden. */
-  /* line-height auf der Rotate-Zeile großzügiger als beim Titel (1.02), damit Descender (g, ü, j) Platz haben. */
-  .hero__rotate-wrap{display:block;position:relative;overflow:hidden;line-height:1.18;padding-bottom:0.08em;}
-  .hero__phrase{display:block;font-style:italic;color:#DAE9EC;white-space:normal;position:absolute;top:0;left:0;right:0;line-height:1.18;opacity:0;transform:translateY(44px);transition:opacity .55s cubic-bezier(.4,0,.2,1), transform .55s cubic-bezier(.4,0,.2,1);}
-  .hero__phrase.active{opacity:1;transform:translateY(0);}
-  .hero__phrase.exit{opacity:0;transform:translateY(-44px);}
-  .hero__phrase-sizer{display:block;visibility:hidden;font-style:italic;white-space:normal;line-height:1.18;pointer-events:none;}
+  /* overflow:visible so descenders (g, p, j) are never clipped — transition is opacity-only. */
+  .hero__rotate-wrap{display:block;position:relative;overflow:visible;line-height:1.18;padding-bottom:0.32em;}
+  .hero__phrase{display:block;font-style:italic;color:#DAE9EC;white-space:normal;position:absolute;top:0;left:0;right:0;line-height:1.18;opacity:0;transition:opacity .65s cubic-bezier(.4,0,.2,1);}
+  .hero__phrase.active{opacity:1;}
+  .hero__phrase.exit{opacity:0;}
+  .hero__phrase-sizer{position:absolute;top:0;width:100%;display:block;visibility:hidden;font-style:italic;white-space:normal;line-height:1.18;pointer-events:none;}
 
   /* Action group: meta + button stay together as one stable block, decoupled from the rotating slogan above. */
-  .hero__actions{margin-top:72px;display:flex;flex-direction:column;align-items:center;gap:24px;opacity:0;animation:fadeUp 1s ease .6s forwards;}
+  .hero__actions{position:absolute;bottom:72px;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:24px;opacity:0;animation:fadeUp 1s ease .6s forwards;}
   .hero__meta{display:flex;gap:32px;justify-content:center;font-size:15px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(248,248,247,0.7);}
   .hero__meta b{color:#FFFFFF;font-weight:500;}
   .hero__btn{margin-top:8px;}
@@ -215,6 +214,14 @@
   .no-js .hero__phrase-sizer{display:none;}
   .no-js .hero__phrase--noscript{display:inline;}
   .hero__phrase--noscript{display:none;}
+
+  /* Mobile-Feinschliff Hero: Kennzahlen umbrechen, Abstände entspannen */
+  @media (max-width:600px){
+    .hero{min-height:600px;}
+    .hero__actions{bottom:48px;gap:20px;}
+    .hero__meta{flex-wrap:wrap;gap:10px 20px;font-size:13px;}
+    .hero__content{padding:0 22px;}
+  }
 </style>
 </head>
 <body>
@@ -222,6 +229,8 @@
 <!-- HEADER -->
 <header class="hdr" id="hdr">
   <a href="index.html"><img src="assets/logo/casago-wortmarke-white.svg" alt="Casago"></a>
+  <input type="checkbox" id="navToggle" class="nav-toggle-cb" aria-hidden="true">
+  <label class="nav-toggle" for="navToggle" aria-label="Menü öffnen oder schließen"><span></span><span></span><span></span></label>
   <nav>
     <a href="#wer-wir-sind">Wer wir sind</a>
     <a href="#was-uns-unterscheidet">Was uns unterscheidet</a>
@@ -422,7 +431,7 @@
       </div>
       <p class="section-lead">Wir decken Neubauten im Bereich Wohnen und Gewerbe bis hin zur besonders anspruchsvollen Sanierung denkmalgeschützter Gebäude ab — jeweils mit dem passenden Modell für Sie. Oder wir realisieren gemeinsam mit Ihnen.</p>
     </div>
-    <div class="fields-grid" style="grid-template-columns:repeat(4,1fr);">
+    <div class="fields-grid mgrid" style="grid-template-columns:repeat(4,1fr);">
       <a class="field reveal" href="bautraeger.html">
         <img src="assets/images/bautraeger-hero.webp" alt="Bauträger">
         <div class="field__veil"></div>
@@ -614,7 +623,7 @@
     </ul></div>
     <div><h4>Unternehmen</h4><ul><li><a href="referenzen.html">Referenzen</a></li><li><a href="presse.html">Presse</a></li></ul></div>
     <div><h4>Kontakt</h4><ul>
-      <li>info@casago.de</li>
+      <li><a href="mailto:info@casago.de">info@casago.de</a></li>
       <li>Deutschland</li>
       </ul></div>
   </div>
@@ -697,7 +706,7 @@
       }
       // 32 px safety buffer so even the longest phrase never clips,
       // regardless of font-metric differences between fallback and web font.
-      wrap.style.height = (maxH + 64) + 'px';
+      wrap.style.height = (maxH + 100) + 'px';
     }
 
     function setPhrase(text, animate) {
@@ -783,5 +792,5 @@
     <text x="600" y="570" font-family="Arial, sans-serif" font-size="28" fill="#DAE9EC" text-anchor="middle" letter-spacing="8" opacity="0.6">CASAGO</text>
   </svg>
 </template>
-</body>
-</html>
+<script>
+/* Mobi

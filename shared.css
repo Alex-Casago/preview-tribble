@@ -168,3 +168,80 @@ footer.site li a:hover{color:#DAE9EC;}
    immediately. If JS is disabled, these rules keep all content visible. */
 .no-js .reveal{opacity:1;transform:none;transition:none;}
 .no-js .hdr{background:rgba(0,59,68,0.92);backdrop-filter:blur(12px);border-bottom-color:rgba(255,255,255,0.06);}
+
+/* ============================================================
+   MOBILE NAVIGATION — Hamburger + Overlay (mobile optimisation)
+   Pure-CSS toggle: reuses each page's existing <nav>, works without JS.
+   Markup per header:  <input type=checkbox class="nav-toggle-cb">
+                       <label class="nav-toggle" for=…>…</label>
+   ============================================================ */
+.nav-toggle-cb{display:none;}        /* state holder, never shown */
+.nav-toggle{display:none;}           /* hamburger hidden on desktop */
+
+@media (max-width:900px){
+  /* show hamburger, keep logo tappable above the overlay */
+  .nav-toggle{
+    display:inline-flex;flex-direction:column;justify-content:center;gap:5px;
+    width:44px;height:44px;padding:10px;margin-left:auto;cursor:pointer;
+    position:relative;z-index:60;
+  }
+  .nav-toggle span{display:block;height:2px;width:24px;background:#FFFFFF;border-radius:2px;
+    transition:transform .3s ease, opacity .2s ease;}
+  .hdr > a:not(.cta-btn){position:relative;z-index:60;}
+  .hdr .cta-btn{display:none;}        /* "Kontakt" im Overlay übernimmt die Funktion */
+
+  /* turn the existing nav into a full-screen slide-in overlay */
+  .hdr nav{
+    display:flex !important;
+    position:fixed;inset:0;
+    flex-direction:column;align-items:center;justify-content:flex-start;
+    gap:2px;padding:92px 22px 48px;
+    background:rgba(0,59,68,0.98);
+    -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+    transform:translateX(100%);
+    transition:transform .32s cubic-bezier(.2,0,0,1);
+    z-index:55;overflow-y:auto;
+  }
+  .nav-toggle-cb:checked ~ nav{transform:translateX(0);}
+
+  /* hamburger morphs into an X when open */
+  .nav-toggle-cb:checked ~ .nav-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .nav-toggle-cb:checked ~ .nav-toggle span:nth-child(2){opacity:0;}
+  .nav-toggle-cb:checked ~ .nav-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+  /* big, centred touch targets */
+  .hdr nav > a,
+  .hdr nav .dropdown-trigger{
+    font-size:20px;opacity:1;color:#FFFFFF;
+    width:100%;max-width:420px;padding:15px 12px;text-align:center;letter-spacing:0.01em;
+  }
+  .hdr nav > a{border-bottom:1px solid rgba(255,255,255,0.08);}
+
+  /* dropdown shown expanded (no hover on touch) */
+  .hdr nav .has-dropdown{flex-direction:column;align-items:center;width:100%;max-width:420px;}
+  .hdr nav .has-dropdown .caret{display:none;}
+  .hdr nav .dropdown{
+    position:static;transform:none !important;
+    opacity:1;visibility:visible;pointer-events:auto;
+    min-width:0;width:100%;
+    background:transparent;border:none;box-shadow:none;
+    -webkit-backdrop-filter:none;backdrop-filter:none;
+    padding:2px 0 14px;gap:2px;
+  }
+  .hdr nav .dropdown__item{padding:12px 16px;}
+}
+
+/* lock background scroll while the menu is open (modern browsers) */
+html:has(.nav-toggle-cb:checked){overflow:hidden;}
+
+/* ============================================================
+   RESPONSIVE GRIDS — collapse inline-defined column grids on mobile
+   .mgrid : keeps the desktop columns (set inline) but forces ONE column
+            on mobile; overrides inline styles via !important.
+   .split2: a 2-column block that becomes a single column on mobile.
+   ============================================================ */
+@media (max-width:900px){
+  .mgrid{grid-template-columns:1fr !important;}
+  .split2{grid-template-columns:1fr !important;gap:40px !important;}
+}
+.split2{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
